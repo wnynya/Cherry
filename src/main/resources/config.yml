@@ -1,0 +1,198 @@
+#======================================#
+# Cherry    ©2019 와니
+#======================================#
+
+# cherry.wnynya.com
+#
+# 체리 플러그인 설정 파일입니다.
+#
+# 변경 및 저장 후 cherry reload 혹은 cherry reloadopt 명령어를 사용하여 적용하십시오.
+
+
+
+
+
+#======================================#
+# 플러그인 기능 동작 설정 [1.1.27]
+#======================================#
+
+function:
+  wand: true
+  portal: true
+
+event:
+  join: true
+  quit: true
+  chat: true
+  spawnjoin: false
+
+#======================================#
+# 플레이어 메타 기본값 [1.7]
+#======================================#
+
+playermeta:
+  function:
+    wand:
+      enable: true
+      data: '{"posMsg":"actionbar"}'
+    portal:
+      enable: true
+      data: '{"effect":""}'
+    nickname:
+      enable: false
+      data: '{"nickname":""}'
+    notetool:
+      enable: true
+      data: '{"blockOnHand":"use"}'
+
+#======================================#
+# 플러그인 메시징 설정 [1.5]
+#======================================#
+
+msg:
+  prefix:
+    info: "&5&l[i]: &r&f"
+    warn: "&e&l[!]: &r&e"
+    error: "&c&l[!]: &r&c"
+
+    cherry: "&5&l[체리]: &r&f"
+    wand: "&6&l[완드]: &r&f"
+    portal: "&b&l[포탈]: &r&f"
+
+    console:
+      info: "&r&f"
+      warn: "&r&e"
+      error: "&r&c"
+
+#======================================#
+# 완드 설정 [1.5]
+#======================================#
+
+wand:
+  undo-limit: 50
+
+  edit:
+    normal-item: SWEET_BERRIES
+
+  brush:
+    normal-item: SPECTRAL_ARROW
+    physics-item: ARROW
+    max-radius: 10
+
+#======================================#
+# 포탈 설정 [1.6]
+#======================================#
+
+portal:
+
+
+
+#======================================#
+# 채팅 설정 [1.8]
+#======================================#
+
+chat:
+  vault:
+    enable: true
+  reformat:
+    enable: true
+  effect:
+    enable: true
+
+# 텍스트 포멧
+#
+# {name}          : 플레이어 이름
+# {displayname}   : 플레이어 표시 이름
+# {msg}           : 메시지
+# {prefix}        : 플레이어 접두사 (Vault 연동)
+# {suffix}        : 플레이어 접미사 (Vault 연동)
+# &1-f,r,l,m,n,o,k: 컬러코드 및 텍스트 효과
+
+format:
+  join:
+    player: "&r&f{prefix}{displayname}{suffix} &r&7joined the game"
+    console: "&r{prefix}{displayname}{suffix} &rjoined the game"
+  quit:
+    player: "&r&f{prefix}{displayname}{suffix} &r&7left the game"
+    console: "&r{prefix}{displayname}{suffix} &rleft the game"
+  chat:
+    player: "&r&f{prefix}{displayname}{suffix}&r&f: &r&f{msg}"
+
+#======================================#
+# 로거 설정 [1.5]
+#======================================#
+
+# 서버에서 일어나는 일을 기록합니다. (웹소켓 터미널 사용시 중요)
+
+logger:
+  player:
+    join:
+      console: false
+      socket: true
+      player: true
+    quit:
+      console: false
+      socket: true
+      player: true
+    chat:
+      console: false
+      socket: true
+    
+  command:
+    player:
+      console: false
+      socket: true
+    console:
+      console: false
+      socket: true
+    remoteconsole:
+      console: false
+      socket: false
+    commandblock:
+      console: false
+      socket: false
+
+  server:
+    listping:
+      console: false
+      socket: true
+
+#======================================#
+# 웹소켓 설정 [1.5]
+#======================================#
+
+websocket:
+  enable: false
+  host: "cherry.wnynya.com"
+  port: 443
+  name: ""
+  auth: ""
+  path: ""
+
+#======================================#
+# 번지코드 설정 [1.1.27]
+#======================================#
+
+bungeecord:
+  enable: false
+  fallback: ""
+
+#======================================#
+# 업데이트 설정 [1.5]
+#======================================#
+
+updater:
+  type: "release"
+  auto: true
+  show-msg: true
+
+
+
+
+
+#======================================#
+debug: false
+config:
+  version: "1.1.27"
+bomber: true
+#======================================#

@@ -1,0 +1,50 @@
+name: Cherry
+main: com.wnynya.cherry.Cherry
+version: 1.1.27.dev
+description: Cherry 플러그인
+author: Wany (Wnynya)
+api-version: 1.15
+softdepend: [Vault, Cucumbery]
+
+commands:
+
+  cherry:
+    description: 플러그인 메타 명령어입니다.
+    usage: /cherry [reload|reloadopt|update]
+    aliases: [c]
+
+  prototype:
+    description: 프로토타입 명령어입니다.
+    usage: /prototype [args..]
+    aliases: [proto]
+
+  wand:
+    description: 완드 명령어업니다.
+    usage: /wand [args..]
+    aliases: [//, ww, e]
+
+  portal:
+    description: 포탈 명령어입니다.
+    usage: /portal [args..]
+
+  playermeta:
+    description: 플레이어 메타 설정 명령어입니다.
+    aliases: [pm, cpm]
+
+  pluginmeta:
+    description: 뭐
+
+  gm:
+    description: 뭐
+
+  rlc:
+    description: 뭐
+
+  menu:
+    description: 메뉴 이다.
+    usage: /menu
+    aliases: [ㅡ두ㅕ, 메뉴, apsb]
+
+  farm:
+    description: 뭐
+
