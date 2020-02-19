@@ -38,23 +38,10 @@
       <url>https://papermc.io/repo/repository/maven-public/</url>
     </repository>
 
-    <!-- BungeeCord repo -->
-    <repository>
-      <id>bungeecord-repo</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </repository>
-
     <!-- Vault repo -->
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
-    </repository>
-
-    <!-- Minecraft repo -->
-    <repository>
-      <id>minecraft-libraries</id>
-      <name>Minecraft Libraries</name>
-      <url>https://libraries.minecraft.net</url>
     </repository>
 
   </repositories>

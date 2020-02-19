@@ -47,26 +47,27 @@ public class Cherry extends JavaPlugin {
   public static boolean debug = false;
   public static UUID getUUID() { return UUID.fromString("00000000-0000-0000-0000-000000000000"); }
   public static String fileName = "";
-  public static boolean reloading = false;
 
   @Override
   public void onEnable() {
     plugin = this;
 
-    this.init();
+    init();
 
-    reloading = false;
+    if (Cherry.debug) {
+      Msg.info("Plugin Enabled");
+    }
 
-    if (Cherry.debug) { Msg.info("Cherry Plugin Enabled"); }
-
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), () -> {
-      Updater.init();
-    }, 100L);
+    // Updater init
+    fileName = this.getFile().getName();
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
   }
 
   @Override
   public void onDisable() {
-    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled"); }
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled");
+    }
   }
 
   // initiation
@@ -77,12 +78,11 @@ public class Cherry extends JavaPlugin {
     Msg.init();
 
     /*
-    Events Register
+      Events Register
      */
 
     PluginManager pm = Bukkit.getServer().getPluginManager();
 
-    // Player Events
     pm.registerEvents(new PlayerConnect(), this);
     pm.registerEvents(new PlayerChat(), this);
     pm.registerEvents(new PlayerInteract(), this);
@@ -92,51 +92,29 @@ public class Cherry extends JavaPlugin {
     pm.registerEvents(new BlockBreak(), this);
     pm.registerEvents(new BlockPlace(), this);
     //pm.registerEvents(new EventTester(), this);
-    //pm.registerEvents(new JumpChk(), this);
-
-    // Other Events
 
     /*
-    Commands Register
+      Commands Register
      */
 
-    // Basic Commands
     registerCommand("cherry", new CmdCherry(), new TabCompleter());
     registerCommand("menu", new CmdMenu(), new TabCompleter());
-
-    // Meta Commands
     registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
-
-    // Cherry Wand Commands
     registerCommand("wand", new WandCommand(), new WandTabCompleter());
-    //registerCommand("edit", new WandEditCommand(), new WandTabCompleter());
-    //registerCommand("brush", new WandBrushCommand(), new WandTabCompleter());
-
-    // Portal Commands
     registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
 
-    // Minigame Commands
-
-    //registerCommand("farm", new FarmCommand(), new TabCompleter());
-
-    // EtcCommands
     registerCommand("gm", new Gm(), new EasyTabCompleter());
     registerCommand("rlc", new Rlc(), new EasyTabCompleter());
 
     /*
-    Function Initiation
+      Function Initiation
      */
 
-    // Cherry Wand
     Wand.init();
 
-    // Portal
     Portal.init();
 
-    // PlayerMeta
     PlayerMeta.init();
-
-    // Minigame
 
     Commander.init();
 
@@ -146,11 +124,9 @@ public class Cherry extends JavaPlugin {
       Vault.loadVaultChat();
     }
 
-    // BungeeCord Msg Channel\
+    // BungeeCord Messaging Channel
     this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
-
-    fileName = this.getFile().getName();
 
     // Cucumbery Support
     if (CucumberySupport.exist()) { CucumberySupport.init(); }
@@ -165,7 +141,6 @@ public class Cherry extends JavaPlugin {
   // config.yml
   public boolean initConfig() {
     config = new Config("config").getConfig();
-
     this.getConfig().options().copyDefaults(true);
     this.saveDefaultConfig();
     config = this.getConfig();
@@ -176,6 +151,8 @@ public class Cherry extends JavaPlugin {
 
     String configVersion = "1.1.27";
     String currentVersion = config.getString("config.version");
+
+    // Config version check
     if (!currentVersion.equals(configVersion)) {
       Bukkit.getServer().getConsoleSender().sendMessage(
         "§c[Cherry] Cannot enable plugin properly!");
@@ -185,12 +162,12 @@ public class Cherry extends JavaPlugin {
         + "콘피그 파일을 삭제 후 리로드하여 재설정하거나, 콘피크 파일을 적절하게 수정하십시오.");
       return false;
     }
+
     return true;
   }
 
   // Unload Cherry
   public static void unload() {
-    reloading = true;
     Plugin plugin = Cherry.getPlugin();
     String name = plugin.getName();
     PluginManager pluginManager = Bukkit.getPluginManager();
@@ -258,20 +235,37 @@ public class Cherry extends JavaPlugin {
   public static void load() {
     Plugin plugin = null;
     File cherryFile = Cherry.getPlugin().getFile();
-    if (!cherryFile.isFile()) { return; }
-    try { plugin = Bukkit.getPluginManager().loadPlugin(cherryFile); }
-    catch (Exception e) { e.printStackTrace(); return; }
-    if (plugin == null) { return; }
+    if (!cherryFile.isFile()) {
+      return;
+    }
+    try {
+      plugin = Bukkit.getPluginManager().loadPlugin(cherryFile);
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+      return;
+    }
+    if (plugin == null) {
+      return;
+    }
     plugin.onLoad();
     Bukkit.getPluginManager().enablePlugin(plugin);
   }
 
   public static void load(File file) {
     Plugin plugin = null;
-    if (!file.isFile()) { return; }
-    try { plugin = Bukkit.getPluginManager().loadPlugin(file); }
-    catch (Exception e) { e.printStackTrace(); return; }
-    if (plugin == null) { return; }
+    if (!file.isFile()) {
+      return;
+    }
+    try {
+      plugin = Bukkit.getPluginManager().loadPlugin(file);
+    }
+    catch (Exception e) {
+      e.printStackTrace(); return;
+    }
+    if (plugin == null) {
+      return;
+    }
     plugin.onLoad();
     Bukkit.getPluginManager().enablePlugin(plugin);
   }

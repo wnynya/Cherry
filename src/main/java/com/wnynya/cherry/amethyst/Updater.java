@@ -2,6 +2,9 @@ package com.wnynya.cherry.amethyst;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -124,24 +127,25 @@ public class Updater {
 
   public static void loop() {
     String type = Cherry.config.getString("updater.type");
-    Timer timer = new Timer();
+
+    boolean showMsg = Cherry.config.getBoolean("updater.show-msg");
 
     if (Cherry.config.getBoolean("updater.auto")) {
 
       if (type.equals("release")) {
-        timer.schedule(new TimerTask() {
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.getPlugin(), new Runnable() {
           public void run() {
-            if (Cherry.config.getBoolean("updater.show-msg")) {
+            if (showMsg) {
               Msg.info("Check for plugin updates.");
             }
             VersionInfo vi = checkCherry();
             if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
-              if (Cherry.config.getBoolean("updater.show-msg")) {
+              if (showMsg) {
                 Msg.info("Plugin outdated. update plugin.");
               }
               updateCherry(vi.getVersion());
-              timer.cancel();
-              if (Cherry.config.getBoolean("updater.show-msg")) {
+              Bukkit.getScheduler().cancelTasks(Cherry.getPlugin());
+              if (showMsg) {
                 Msg.info("Update Complete.");
               }
             }
@@ -150,23 +154,22 @@ public class Updater {
               file.delete();
             }
           }
-        }, 0, 60 * 60 * 1000);
+        }, 0, 20 * 60 * 60);
       }
 
       else if (type.equals("dev")) {
-        timer.schedule(new TimerTask() {
+
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.getPlugin(), new Runnable() {
           public void run() {
             //Msg.info("Check for plugin updates.");
             VersionInfo vi = checkCherry();
             if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
-              if (Cherry.config.getBoolean("updater.show-msg")) {
+              if (showMsg) {
                 Msg.info("[Dev] Plugin outdated. update plugin.");
               }
-              Cherry.reloading = true;
               updateCherry(vi.getVersion());
-              timer.cancel();
-              Cherry.reloading = false;
-              if (Cherry.config.getBoolean("updater.show-msg")) {
+              Bukkit.getScheduler().cancelTasks(Cherry.getPlugin());
+              if (showMsg) {
                 Msg.info("[Dev] Update Complete.");
               }
             }
@@ -175,7 +178,8 @@ public class Updater {
               file.delete();
             }
           }
-        }, 0, 10 * 1000);
+        }, 0, 20 * 10);
+
       }
 
     }

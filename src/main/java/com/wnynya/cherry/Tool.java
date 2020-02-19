@@ -84,7 +84,7 @@ public class Tool {
 		string = string.replaceAll("§k", "\u001b[5m");
 		return string;
 	}
-	
+
 	/* 접두사 접미사 붙은 이름 get */
 	public static String getFancyName(Player player) {
 

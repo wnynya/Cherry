@@ -12,6 +12,7 @@ import java.lang.reflect.Method;
 public class Msg {
 
 	// Player
+
 	/**
 	 * 플레이어에게 일반 메시지를 보냅니다.
 	 *
@@ -19,8 +20,9 @@ public class Msg {
 	 * @param msg 글자들
 	 */
 	public static void info(org.bukkit.entity.Player player, String msg) {
-		player.sendMessage(msg);
+		player.sendMessage("§7" + msg);
 	}
+
 	/**
 	 * 플레이어에게 경고 메시지를 보냅니다.
 	 *
@@ -29,8 +31,9 @@ public class Msg {
 	 */
 	public static void warn(org.bukkit.entity.Player player, String msg) {
 		msg = Msg.Prefix.WARN + msg;
-		player.sendMessage(msg);
+		player.sendMessage("§e" + msg);
 	}
+
 	/**
 	 * 플레이어에게 에러 메시지를 보냅니다.
 	 *
@@ -39,10 +42,11 @@ public class Msg {
 	 */
 	public static void error(org.bukkit.entity.Player player, String msg) {
 		msg = Msg.Prefix.ERROR + msg;
-		player.sendMessage(msg);
+		player.sendMessage("§c" + msg);
 	}
 
 	// Console
+
 	/**
 	 * 콘솔에 일반 메시지를 출력합니다.
 	 *
@@ -70,6 +74,7 @@ public class Msg {
 		msg = Msg.Console.INFO + msg;
 		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&5[Cherry] &r" + msg));
 	}
+
 	/**
 	 * 콘솔에 경고 메시지를 출력합니다.
 	 *
@@ -79,6 +84,7 @@ public class Msg {
 		msg = Msg.Console.WARN + msg;
 		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&5[Cherry] &r" + msg));
 	}
+
 	/**
 	 * 콘솔에 에러 메시지를 출력합니다.
 	 *
@@ -90,6 +96,7 @@ public class Msg {
 	}
 
 	// CommandSender
+
 	/**
 	 * 커멘드 센더에게 일반 메시지를 보냅니다.
 	 *
@@ -105,6 +112,7 @@ public class Msg {
 			info(msg);
 		}
 	}
+
 	/**
 	 * 커멘드 센더에게 에러 메시지를 보냅니다.
 	 *
@@ -120,6 +128,7 @@ public class Msg {
 			warn(msg);
 		}
 	}
+
 	/**
 	 * 커멘드 센더에게 에러 메시지를 보냅니다.
 	 *
@@ -146,6 +155,7 @@ public class Msg {
 			player.sendMessage(msg);
 		}
 	}
+
 	/**
 	 * 모든 대상에게 메시지를 보냅니다.
 	 *
@@ -155,8 +165,8 @@ public class Msg {
 		Bukkit.broadcastMessage(msg);
 	}
 
-
 	private static String nmsVersion;
+
 	/**
 	 * 플레이어에게 액션바 메시지를 보여줍니다.
 	 *
@@ -210,17 +220,29 @@ public class Msg {
 		}
 	}
 
-	/* & 을 § 로 */
+	/**
+	 * & 을 마인크래프트에서 가능한 효과 문자로 대채합니다.
+	 *
+	 * @param string 변환할 문자열
+	 */
 	public static String n2s(String string) {
 		return ChatColor.translateAlternateColorCodes('&', string);
 	}
 
-	/* § 를 & 으로 */
+	/**
+	 * § 을 & 으로 대채합니다.
+	 *
+	 * @param string 변환할 문자열
+	 */
 	public static String s2n(String string) {
 		return string.replaceAll("§", "&");
 	}
 
-	/* § 을 ANSI ESCAPE 로 */
+	/**
+	 * § 을 터미널에서 표현 가능한 ANSI ESCAPE 문자로 대채합니다.
+	 *
+	 * @param string 변환할 문자열
+	 */
 	public static String s2a(String string) {
 		string = string.replaceAll("§0", "\u001b[30m");
 		string = string.replaceAll("§4", "\u001b[31m");
@@ -247,7 +269,13 @@ public class Msg {
 		return string;
 	}
 
-	/* 조사 처리 */
+	/**
+	 * 한글 단어 뒤에 올 적절한 조사를 선택합니다.
+	 *
+	 * @param word 단어
+	 * @param type1 조사 1
+	 * @param type2 조사 2
+	 */
 	public static String getJosa(String word, String type1, String type2) {
 		if (word == null || word.length() == 0) {
 			return null;
@@ -260,6 +288,7 @@ public class Msg {
 			return type2;
 		}
 	}
+
 	private static boolean hasBatchim(String word) {
 		char lastChar = word.charAt( word.length() - 1 );
 
@@ -330,22 +359,23 @@ public class Msg {
 
 	public static void load() {
 
-		Prefix.INFO   = Tool.n2s(Cherry.config.getString("msg.prefix.info"));
-		Prefix.WARN   = Tool.n2s(Cherry.config.getString("msg.prefix.warn"));
-		Prefix.ERROR  = Tool.n2s(Cherry.config.getString("msg.prefix.error"));
+		Prefix.INFO   = Msg.n2s(Cherry.config.getString("msg.prefix.info"));
+		Prefix.WARN   = Msg.n2s(Cherry.config.getString("msg.prefix.warn"));
+		Prefix.ERROR  = Msg.n2s(Cherry.config.getString("msg.prefix.error"));
 
-		Prefix.CHERRY = Tool.n2s(Cherry.config.getString("msg.prefix.cherry"));
-		Prefix.WAND   = Tool.n2s(Cherry.config.getString("msg.prefix.wand"));
-		Prefix.PORTAL = Tool.n2s(Cherry.config.getString("msg.prefix.portal"));
+		Prefix.CHERRY = Msg.n2s("&5&l[Cherry]:&r&7");
+		Prefix.WAND   = Msg.n2s(Cherry.config.getString("msg.prefix.wand"));
+		Prefix.PORTAL = Msg.n2s(Cherry.config.getString("msg.prefix.portal"));
 
-		Console.INFO  = Tool.n2s(Cherry.config.getString("msg.prefix.console.info"));
-		Console.WARN  = Tool.n2s(Cherry.config.getString("msg.prefix.console.warn"));
-		Console.ERROR = Tool.n2s(Cherry.config.getString("msg.prefix.console.error"));
+		Console.INFO  = Msg.n2s(Cherry.config.getString("msg.prefix.console.info"));
+		Console.WARN  = Msg.n2s(Cherry.config.getString("msg.prefix.console.warn"));
+		Console.ERROR = Msg.n2s(Cherry.config.getString("msg.prefix.console.error"));
 
 		Player.ONLY   = "§r§7플레이어만 사용 가능한 명령어입니다.";
 
 		NO_PERMISSION = "§r§7명령어의 사용 권한이 없습니다.";
 		NO_ARGS       = "§r§7명령어의 구성 요소가 부족합니다.";
+
 		NO_PLAYER     = "§r§7플레이어를 찾을 수 없습니다.";
 
 		UNKNOWN       = "§r§7알 수 없는 명령어입니다.";

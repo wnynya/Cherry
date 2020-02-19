@@ -51,13 +51,12 @@ playermeta:
 
 msg:
   prefix:
-    info: "&5&l[i]: &r&f"
-    warn: "&e&l[!]: &r&e"
-    error: "&c&l[!]: &r&c"
+    info: "&5&l[i]:"
+    warn: "&e&l[!]:"
+    error: "&c&l[!]:"
 
-    cherry: "&5&l[체리]: &r&f"
-    wand: "&6&l[완드]: &r&f"
-    portal: "&b&l[포탈]: &r&f"
+    wand: "&6&l[완드]:"
+    portal: "&b&l[포탈]:"
 
     console:
       info: "&r&f"
