@@ -1,12 +1,12 @@
 package com.wnynya.cherry.portal;
 
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -83,6 +83,12 @@ public class PortalEvent {
     if (!onJoinPortal.contains(player)) {
       onJoinPortal.add(player);
     }
+
+  }
+
+  public static void playerPortal(PlayerPortalEvent event) {
+    Player player = event.getPlayer();
+
 
   }
 

@@ -62,6 +62,20 @@ public enum Area implements AreaGenerator {
     }
   },
 
+  CUBE_PARTICLE {
+    public List<Location> getArea(Location pos1, Location pos2) {
+      return Cube.getAreaParticle(pos1, pos2);
+    }
+
+    public List<Location> getArea(Location pos, int r) {
+      return null;
+    }
+
+    public List<Location> getArea(Location pos, int r, int h) {
+      return null;
+    }
+  },
+
   CYLINDER {
     public List<Location> getArea(Location pos1, Location pos2) {
       double minX = Math.min(pos1.getX(), pos2.getX());

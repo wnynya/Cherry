@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -72,7 +74,7 @@ public class Msg {
 		}
 
 		msg = Msg.Console.INFO + msg;
-		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&5[Cherry] &r" + msg));
+		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&r[Cherry] &r" + msg));
 	}
 
 	/**
@@ -82,7 +84,7 @@ public class Msg {
 	 */
 	public static void warn(String msg) {
 		msg = Msg.Console.WARN + msg;
-		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&5[Cherry] &r" + msg));
+		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&e[Cherry] &e" + msg));
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class Msg {
 	 */
 	public static void error(String msg) {
 		msg = Msg.Console.ERROR + msg;
-		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&5[Cherry] &r" + msg));
+		Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("&c[Cherry] &c" + msg));
 	}
 
 	// CommandSender
@@ -312,18 +314,27 @@ public class Msg {
 		}
 	}
 
-	public static String chatFormatter(AsyncPlayerChatEvent event) {
-		org.bukkit.entity.Player player = event.getPlayer();
-		String msg = event.getMessage();
-
-		String format = Cherry.config.getString("format.chat.player");
-
+	public static String playerFormatter(org.bukkit.entity.Player player, String format) {
 		format = format.replace(FormatHolder.PREFIX_PLACEHOLDER, Vault.getPrefix(player));
 		format = format.replace(FormatHolder.SUFFIX_PLACEHOLDER, Vault.getSuffix(player));
 		format = format.replace(FormatHolder.NAME_PLACEHOLDER, player.getName());
 		format = format.replace(FormatHolder.DISPLAYNAME_PLACEHOLDER, player.getDisplayName());
 		format = Msg.n2s(format);
-		if (Cherry.config.getBoolean("chat.effect.enable")) {
+
+		format = format.replace("%", "%%");
+
+		return format;
+	}
+
+	public static String chatFormatter(AsyncPlayerChatEvent event) {
+		org.bukkit.entity.Player player = event.getPlayer();
+		String msg = event.getMessage();
+
+		String format = Cherry.config.getString("event.chat.setFormat.format");
+
+		format = playerFormatter(player, format);
+
+		if (Cherry.config.getBoolean("chat.chat.setFormat.effect")) {
 			format = format.replace(FormatHolder.MESSAGE_PLACEHOLDER, Msg.n2s(msg));
 		}
 		else {
@@ -359,17 +370,17 @@ public class Msg {
 
 	public static void load() {
 
-		Prefix.INFO   = Msg.n2s(Cherry.config.getString("msg.prefix.info"));
-		Prefix.WARN   = Msg.n2s(Cherry.config.getString("msg.prefix.warn"));
-		Prefix.ERROR  = Msg.n2s(Cherry.config.getString("msg.prefix.error"));
+		Prefix.INFO   = Msg.n2s("&5&l[i]:&r&7");
+		Prefix.WARN   = Msg.n2s("&e&l[!]:&r&7");
+		Prefix.ERROR  = Msg.n2s("&c&l[!]:&r&7");
 
 		Prefix.CHERRY = Msg.n2s("&5&l[Cherry]:&r&7");
-		Prefix.WAND   = Msg.n2s(Cherry.config.getString("msg.prefix.wand"));
-		Prefix.PORTAL = Msg.n2s(Cherry.config.getString("msg.prefix.portal"));
+		Prefix.WAND   = Msg.n2s("&6&l[Wand]:&r&7");
+		Prefix.PORTAL = Msg.n2s("&b&l[Portal]:&r&7");
 
-		Console.INFO  = Msg.n2s(Cherry.config.getString("msg.prefix.console.info"));
-		Console.WARN  = Msg.n2s(Cherry.config.getString("msg.prefix.console.warn"));
-		Console.ERROR = Msg.n2s(Cherry.config.getString("msg.prefix.console.error"));
+		Console.INFO  = Msg.n2s("&r");
+		Console.WARN  = Msg.n2s("&e");
+		Console.ERROR = Msg.n2s("&c");
 
 		Player.ONLY   = "§r§7플레이어만 사용 가능한 명령어입니다.";
 

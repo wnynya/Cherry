@@ -3,17 +3,17 @@ package com.wnynya.cherry.wand;
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.amethyst.Updater;
 import com.wnynya.cherry.wand.area.Area;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.io.File;
 import java.util.*;
 
 /*
@@ -25,11 +25,15 @@ public class Wand {
   private static Config config = new Config("wand");
   private static HashMap<UUID, Wand> wands = new HashMap<>();
 
+  private Player player = null;
   private UUID uuid;
   private WandEdit edit;
   private WandBrush brush;
 
   private static int undoLimit = 50;
+
+  private List<Location> particleArea = new ArrayList<>();
+  private boolean particleAreaPlay = false;
 
   private Wand(UUID uuid) {
     this.uuid = uuid;
@@ -38,7 +42,27 @@ public class Wand {
     wands.put(uuid, this);
   }
 
+  private Wand(Player player) {
+    this.player = player;
+    this.uuid = player.getUniqueId();
+    this.edit = new WandEdit(this);
+    this.brush = new WandBrush(this);
+    wands.put(uuid, this);
+
+    spawnAreaParticle();
+  }
+
   public UUID getUuid() { return uuid; }
+
+  public boolean setPlayer(Player player) {
+    if (this.uuid.equals(player.getUniqueId())) {
+      this.player = player;
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
   public Config getConfig() { return config; }
 
@@ -405,6 +429,33 @@ public class Wand {
     return scannedBlocks;
   }
 
+  public void setParticleArea(List<Location> area) {
+    particleArea = area;
+  }
+
+  public void enableParticleArea() {
+    particleAreaPlay = true;
+  }
+
+  public void disableParticleArea() {
+    particleAreaPlay = false;
+  }
+
+  public void spawnAreaParticle() {
+    Timer timer = new Timer();
+    timer.schedule(new TimerTask() {
+      public void run() {
+        if (particleAreaPlay) {
+          if (player.isOnline()) {
+            for (Location loc : particleArea) {
+              player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 85, 255), 1));
+            }
+          }
+        }
+      }
+    }, 0, 100);
+  }
+
   // 완드 가져오기
   public static Wand getWand(UUID uuid) {
     if (wands.containsKey(uuid)) {
@@ -413,6 +464,19 @@ public class Wand {
     else {
       return new Wand(uuid);
     }
+  }
+
+  public static Wand getWand(Player player) {
+    if (wands.containsKey(player.getUniqueId())) {
+      return wands.get(player.getUniqueId());
+    }
+    else {
+      return new Wand(player);
+    }
+  }
+
+  public static boolean exist(UUID uuid) {
+    return wands.containsKey(uuid);
   }
 
 

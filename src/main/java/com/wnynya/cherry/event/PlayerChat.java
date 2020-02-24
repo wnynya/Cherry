@@ -10,7 +10,7 @@ public class PlayerChat implements Listener {
 
   @EventHandler
   public void onChat(AsyncPlayerChatEvent event) {
-    if (Cherry.config.getBoolean("event.chat")) {
+    if (Cherry.config.getBoolean("event.chat.setFormat.enable")) {
       event.setFormat(Msg.chatFormatter(event));
     }
   }

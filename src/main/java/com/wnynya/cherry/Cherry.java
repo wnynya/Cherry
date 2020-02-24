@@ -1,13 +1,10 @@
 package com.wnynya.cherry;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.amethyst.*;
 import com.wnynya.cherry.command.*;
 import com.wnynya.cherry.command.easy.EasyTabCompleter;
 import com.wnynya.cherry.command.easy.Gm;
 import com.wnynya.cherry.command.easy.Rlc;
-import com.wnynya.cherry.command.farm.FarmCommand;
 import com.wnynya.cherry.command.playermeta.PlayerMetaCommand;
 import com.wnynya.cherry.command.playermeta.PlayerMetaTabCompleter;
 import com.wnynya.cherry.command.portal.PortalCommand;
@@ -25,7 +22,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -38,8 +34,7 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 public class Cherry extends JavaPlugin {
-
-  # yee pull request test
+  
   public static Cherry plugin = null;
   public static Cherry getPlugin() {
     return plugin;
@@ -98,7 +93,7 @@ public class Cherry extends JavaPlugin {
       Commands Register
      */
 
-    registerCommand("cherry", new CmdCherry(), new TabCompleter());
+    registerCommand("cherry", new CherryCommand(), new TabCompleter());
     registerCommand("menu", new CmdMenu(), new TabCompleter());
     registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
     registerCommand("wand", new WandCommand(), new WandTabCompleter());

@@ -33,20 +33,23 @@ public class WandCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-    UUID uuid;
-    Player player = null;
-
     if (!Cherry.config.getBoolean("function.wand")) {
       Msg.info(sender, Msg.Prefix.WAND + "완드 기능이 비활성화 상태입니다");
       return true;
     }
 
+    UUID uuid;
+    Player player = null;
+    Wand wand = null;
+
     if (sender instanceof Player) {
       uuid = ((Player) sender).getUniqueId();
       player = (Player) sender;
+      wand = Wand.getWand(player);
     }
     else {
       uuid = Cherry.getUUID();
+      wand = Wand.getWand(uuid);
     }
 
     if (args.length == 0) {
@@ -89,7 +92,7 @@ public class WandCommand implements CommandExecutor {
           if (str.equalsIgnoreCase("-player:::console")
             || str.equalsIgnoreCase("-p:::console")) {
             if (sender.hasPermission("cherry.wand.undo.another")) {
-              uuid = Cherry.getUUID();
+              wand = Wand.getWand(Cherry.getUUID());
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -104,7 +107,7 @@ public class WandCommand implements CommandExecutor {
                 Msg.error(sender, Msg.NO_PLAYER);
                 return true;
               }
-              uuid = thisPlayer.getUniqueId();
+              wand = Wand.getWand(thisPlayer);
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -120,7 +123,7 @@ public class WandCommand implements CommandExecutor {
                 Msg.error(sender, Msg.NO_PLAYER);
                 return true;
               }
-              uuid = thisPlayer.getUniqueId();
+              wand = Wand.getWand(thisPlayer);
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -140,8 +143,6 @@ public class WandCommand implements CommandExecutor {
         }
       }
 
-      Wand wand = Wand.getWand(uuid);
-
       for (int i = 0; i < n; i++) {
         if (wand.undo()) {
           if (!silent) { Msg.info(sender, Msg.Prefix.WAND + "이전으로 되돌렸습니다."); }
@@ -151,6 +152,7 @@ public class WandCommand implements CommandExecutor {
           return true;
         }
       }
+
       return true;
     }
 
@@ -170,7 +172,7 @@ public class WandCommand implements CommandExecutor {
           if (str.equalsIgnoreCase("-player:::console")
             || str.equalsIgnoreCase("-p:::console")) {
             if (sender.hasPermission("cherry.wand.redo.another")) {
-              uuid = Cherry.getUUID();
+              wand = Wand.getWand(Cherry.getUUID());
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -185,7 +187,7 @@ public class WandCommand implements CommandExecutor {
                 Msg.error(sender, Msg.NO_PLAYER);
                 return true;
               }
-              uuid = thisPlayer.getUniqueId();
+              wand = Wand.getWand(thisPlayer);
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -201,7 +203,7 @@ public class WandCommand implements CommandExecutor {
                 Msg.error(sender, Msg.NO_PLAYER);
                 return true;
               }
-              uuid = thisPlayer.getUniqueId();
+              wand = Wand.getWand(thisPlayer);
             }
             else {
               Msg.error(sender, Msg.NO_PERMISSION);
@@ -220,8 +222,6 @@ public class WandCommand implements CommandExecutor {
           }
         }
       }
-
-      Wand wand = Wand.getWand(uuid);
 
       for (int i = 0; i < n; i++) {
         if (wand.redo()) {
@@ -242,7 +242,6 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
       Location loc = null;
 
       boolean silent = false;
@@ -251,7 +250,7 @@ public class WandCommand implements CommandExecutor {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           World world = Bukkit.getWorld(args[4]);
           if (world == null) {
-            Msg.error(sender, "없는 월드입니다.");
+            Msg.error(sender, "월드를 찾을 수 없습니다.");
             return true;
           }
           loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
@@ -302,10 +301,15 @@ public class WandCommand implements CommandExecutor {
       if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
         if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" +
           "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)")); }
+        wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)));
+        wand.enableParticleArea();
       }
       else {
         if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)")); }
+        wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(1)));
+        wand.enableParticleArea();
       }
+
       return true;
     }
 
@@ -315,7 +319,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location loc = null;
 
       boolean silent = false;
@@ -375,9 +379,13 @@ public class WandCommand implements CommandExecutor {
       if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
         if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" +
           "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)")); }
+        wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)));
+        wand.enableParticleArea();
       }
       else {
         if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)")); }
+        wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(2), wand.getEdit().getPosition(2)));
+        wand.enableParticleArea();
       }
       return true;
     }
@@ -397,7 +405,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -460,7 +468,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -520,7 +528,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -611,7 +619,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -640,7 +648,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -782,7 +790,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -853,7 +861,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -949,7 +957,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos = wand.getEdit().getPosition(1);
       if (pos == null) {
         Msg.error(sender, "포지션이 지정되지 않았습니다");
@@ -1052,7 +1060,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos = wand.getEdit().getPosition(1);
       if (pos == null) {
         Msg.error(sender, "포지션이 지정되지 않았습니다");
@@ -1145,7 +1153,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
 
-      Wand wand = Wand.getWand(uuid);
+
       Location pos1 = wand.getEdit().getPosition(1);
       Location pos2 = wand.getEdit().getPosition(2);
       if (pos1 == null || pos2 == null) {
@@ -1220,7 +1228,7 @@ public class WandCommand implements CommandExecutor {
 
       List<Location> area = Area.SPHERE.getArea(loc, radius);
 
-      Wand wand = Wand.getWand(uuid);
+
       List<WandBlock> wbs = new ArrayList<>();
       wbs.addAll(wand.scan(area, Bukkit.createBlockData(Material.COMMAND_BLOCK)));
       wbs.addAll(wand.scan(area, Bukkit.createBlockData(Material.CHAIN_COMMAND_BLOCK)));

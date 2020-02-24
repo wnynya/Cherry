@@ -15,22 +15,7 @@ public class PlayerInteract implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerInteractEvent(PlayerInteractEvent event) {
 
-    if (event.getAction().equals(Action.RIGHT_CLICK_AIR)) {
-      WandEvent.rightClick(event);
-    }
-
-    else if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
-      WandEvent.rightClick(event);
-      //SoilEvent.plow(event);
-    }
-
-    else if (event.getAction().equals(Action.LEFT_CLICK_AIR)) {
-      WandEvent.leftClick(event);
-    }
-
-    else if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
-      WandEvent.leftClick(event);
-    }
+    WandEvent.playerInteract(event);
 
     NoteTool.clickNoteBlock(event);
 

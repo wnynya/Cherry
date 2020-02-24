@@ -127,13 +127,14 @@ public class Updater {
 
   public static void loop() {
     String type = Cherry.config.getString("updater.type");
+    Timer timer = new Timer();
 
     boolean showMsg = Cherry.config.getBoolean("updater.show-msg");
 
     if (Cherry.config.getBoolean("updater.auto")) {
 
       if (type.equals("release")) {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.getPlugin(), new Runnable() {
+        timer.schedule(new TimerTask() {
           public void run() {
             if (showMsg) {
               Msg.info("Check for plugin updates.");
@@ -144,7 +145,7 @@ public class Updater {
                 Msg.info("Plugin outdated. update plugin.");
               }
               updateCherry(vi.getVersion());
-              Bukkit.getScheduler().cancelTasks(Cherry.getPlugin());
+              timer.cancel();
               if (showMsg) {
                 Msg.info("Update Complete.");
               }
@@ -154,21 +155,20 @@ public class Updater {
               file.delete();
             }
           }
-        }, 0, 20 * 60 * 60);
+        }, 0, 60 * 60 * 1000);
       }
 
       else if (type.equals("dev")) {
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.getPlugin(), new Runnable() {
+        timer.schedule(new TimerTask() {
           public void run() {
-            //Msg.info("Check for plugin updates.");
             VersionInfo vi = checkCherry();
             if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
               if (showMsg) {
                 Msg.info("[Dev] Plugin outdated. update plugin.");
               }
               updateCherry(vi.getVersion());
-              Bukkit.getScheduler().cancelTasks(Cherry.getPlugin());
+              timer.cancel();
               if (showMsg) {
                 Msg.info("[Dev] Update Complete.");
               }
@@ -178,7 +178,7 @@ public class Updater {
               file.delete();
             }
           }
-        }, 0, 20 * 10);
+        }, 0, 10 * 1000);
 
       }
 
