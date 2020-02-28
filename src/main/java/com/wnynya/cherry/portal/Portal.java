@@ -17,85 +17,109 @@ import java.util.*;
 
 /**
  * Cherry Portal
- * <br />
  * 좌표계 / 월드계 / 서버계(번지코드) 간 포탈
  */
 public class Portal {
 
-  //private static ConfigHandler portalConfig = new ConfigHandler("portal/config");
   private static Config portalData = new Config("portal/data");
 
   private static HashMap<String, Portal> portals = new HashMap<>();
 
   private String name;
   private String displayName;
-  private PortalProtocol protocol = Protocol.SERVER;
+  private PortalProtocol protocol;
   private Location gotoLocation = null;
   private String gotoServer = null;
   private boolean enable = false;
   private HashMap<String, PortalArea> areas = new HashMap<>();
-  private HashMap<String, Option> options = new HashMap<>();
 
   private Portal(String name) {
     this.name = name;
+    if (!portalData.getConfig().isString(this.name + ".name")) {
+      portalData.set(this.name + ".name", this.name);
+    }
     this.displayName = name;
-    portalData.set(this.name + ".name", this.name);
-    this.options.put("showEnterMsg", new Option("showEnterMsg", false));
-    this.options.put("showDisabledMsg", new Option("showDisabledMsg", false));
-    this.options.put("enterMsg", new Option("enterMsg", "Use {portalName}."));
-    this.options.put("disabledMsg", new Option("disabledMsg", "{portalName} is disabled."));
+    if (!portalData.getConfig().isString(this.name + ".displayName")) {
+      portalData.set(this.name + ".displayName", this.name);
+    }
+    this.protocol = Protocol.SERVER;
+    if (!portalData.getConfig().isString(this.name + ".protocol")) {
+      portalData.set(this.name + ".protocol", this.protocol.toString());
+    }
+    if (!portalData.getConfig().isBoolean(this.name + ".enable")) {
+      portalData.set(this.name + ".enable", this.enable);
+    }
+    if (!portalData.getConfig().isLocation(this.name + ".goto.location")) {
+      portalData.set(this.name + ".goto.location", "");
+    }
+    if (!portalData.getConfig().isString(this.name + ".goto.server")) {
+      portalData.set(this.name + ".goto.server", "");
+    }
+    if (!portalData.getConfig().isBoolean(this.name + ".msg.enter.enable")) {
+      portalData.set(this.name + ".msg.enter.enable", true);
+    }
+    if (!portalData.getConfig().isBoolean(this.name + ".msg.permissionError.enable")) {
+      portalData.set(this.name + ".msg.permissionError.enable", true);
+    }
+    if (!portalData.getConfig().isBoolean(this.name + ".msg.disabledError.enable")) {
+      portalData.set(this.name + ".msg.disabledError.enable", true);
+    }
+    if (!portalData.getConfig().isBoolean(this.name + ".msg.destError.enable")) {
+      portalData.set(this.name + ".msg.destError.enable", false);
+    }
     portals.put(name, this);
   }
 
 
 
   public void use(Player player) {
-    if (!this.enable) {
-      if (options.get("showDisabledMsg").getBoolean()) {
-        Msg.error(player, "활성화되지 않은 포탈입니다");
+
+    if (!player.hasPermission("cherry.portal.use." + this.name)) {
+      if (portalData.getConfig().getBoolean(this.name + ".msg.permissionError.enable")) {
+        Msg.error(player, "포탈을 사용할 권한이 없습니다");
       }
       return;
     }
+
+    if (!this.enable) {
+      if (portalData.getConfig().getBoolean(this.name + ".msg.disabledError.enable")) {
+        Msg.error(player, "비활성화된 포탈입니다");
+      }
+      return;
+    }
+
     if (this.protocol.equals(Protocol.SERVER)) {
-      /* Check */
+
       if (this.gotoLocation == null) {
-        Msg.error(player, "목적지 좌표가 설정되지 않은 포탈입니다");
+        Msg.error(player, "목적지가 설정되지 않은 포탈입니다");
         return;
       }
+
       this.protocol.use(player, this.gotoLocation);
-      if (options.get("showEnterMsg").getBoolean()) {
+
+      if (portalData.getConfig().getBoolean(this.name + ".msg.enter.enable")) {
         Msg.info(player, Msg.Prefix.PORTAL + getDisplayName() + "포탈을 사용하였습니다");
       }
+
       Portal.setLastUsedTime(player);
     }
+
     else if (this.protocol.equals(Protocol.BUNGEECORD)) {
-      /* Check */
+
       if (this.gotoServer == null) {
-        Msg.error(player, "목적지 서버가 설정되지 않은 포탈입니다");
+        Msg.error(player, "목적지가 설정되지 않은 포탈입니다");
         return;
       }
+
       this.protocol.use(player, this.gotoServer);
-      if (options.get("showEnterMsg").getBoolean()) {
+
+      if (portalData.getConfig().getBoolean(this.name + ".msg.enter.enable")) {
         Msg.info(player, Msg.Prefix.PORTAL + getDisplayName() + "포탈을 사용하였습니다");
       }
+
       Portal.setLastUsedTime(player);
     }
-  }
 
-
-
-  public void saveData() {
-    portalData.set(this.name + ".display-name", this.displayName);
-    portalData.set(this.name + ".enable", this.enable);
-    portalData.set(this.name + ".protocol", this.protocol.toString());
-    portalData.set(this.name + ".goto.location", this.gotoLocation);
-    portalData.set(this.name + ".goto.server", this.gotoServer);
-    portalData.set(this.name + ".areas", null);
-    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
-      portalData.set(this.name + ".areas." + data.getKey() + ".type", data.getValue().getType().toString());
-      portalData.set(this.name + ".areas." + data.getKey() + ".axis", data.getValue().getAxis());
-      portalData.set(this.name + ".areas." + data.getKey() + ".location", data.getValue().getArea());
-    }
   }
 
 
@@ -106,6 +130,7 @@ public class Portal {
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
+    portalData.set(this.name + ".displayName", this.displayName);
   }
 
   public String getDisplayName() {
@@ -116,16 +141,18 @@ public class Portal {
 
   public void setEnable(boolean bool) {
     this.enable = bool;
+    portalData.set(this.name + ".enable", this.enable);
   }
 
   public boolean isEnable() {
-    return enable;
+    return this.enable;
   }
 
 
 
   public void setProtocol(PortalProtocol protocol) {
     this.protocol = protocol;
+    portalData.set(this.name + ".protocol", this.protocol.toString());
   }
 
   public enum Protocol implements PortalProtocol {
@@ -182,10 +209,12 @@ public class Portal {
 
   public void setGotoLocation(Location loc) {
     this.gotoLocation = loc;
+    portalData.set(this.name + ".goto.location", this.gotoLocation);
   }
 
   public void setGotoServer(String server) {
     this.gotoServer = server;
+    portalData.set(this.name + ".goto.server", this.gotoServer);
   }
 
 
@@ -197,6 +226,12 @@ public class Portal {
     else {
       areas.put(portalArea.getName(), portalArea);
     }
+    saveAreas();
+  }
+
+  public void removePortalArea(String areaName) {
+    areas.remove(areaName);
+    saveAreas();
   }
 
   public PortalArea getPortalArea(String areaName) {
@@ -281,50 +316,13 @@ public class Portal {
     }
   }
 
-  public void removePortalArea(String areaName) {
-    areas.remove(areaName);
-  }
-
-
-
-  public Option getOption(String optionName) {
-    return options.getOrDefault(optionName, null);
-  }
-
-  private static class Option {
-
-    private String name;
-    private boolean b;
-    private String s;
-
-    public Option(String name, boolean b) {
-      this.name = name;
-      this.b = b;
-    }
-
-    public Option(String name, String s) {
-      this.name = name;
-      this.s = s;
-    }
-
-    public void set(boolean b) {
-      this.b = b;
-    }
-
-    public void set(String s) {
-      this.s = s;
-    }
-
-    public boolean getBoolean() {
-      return b;
-    }
-
-    public String getString() {
-      return s;
+  public void saveAreas() {
+    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
+      portalData.set(this.name + ".areas." + data.getKey() + ".type", data.getValue().getType().toString());
+      portalData.set(this.name + ".areas." + data.getKey() + ".axis", data.getValue().getAxis());
+      portalData.set(this.name + ".areas." + data.getKey() + ".location", data.getValue().getArea());
     }
   }
-
-
 
 
 
@@ -463,8 +461,8 @@ public class Portal {
 
       FileConfiguration data = portalData.getConfig();
 
-      if (data.isString(key + ".display-name")) {
-        portal.setDisplayName(data.getString(key + ".display-name"));
+      if (data.isString(key + ".displayName")) {
+        portal.setDisplayName(data.getString(key + ".displayName"));
       }
       if (data.isBoolean(key + ".enable")) {
         portal.setEnable(data.getBoolean(key + ".enable"));
@@ -495,8 +493,6 @@ public class Portal {
           }
         }
       }
-
-      portal.saveData();
 
     }
   }

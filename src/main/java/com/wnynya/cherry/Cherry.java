@@ -11,11 +11,14 @@ import com.wnynya.cherry.command.portal.PortalCommand;
 import com.wnynya.cherry.command.portal.PortalTabCompleter;
 import com.wnynya.cherry.command.wand.WandCommand;
 import com.wnynya.cherry.command.wand.WandTabCompleter;
+import com.wnynya.cherry.command.world.WorldCommand;
+import com.wnynya.cherry.command.world.WorldTabCompleter;
 import com.wnynya.cherry.event.*;
 
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
 import com.wnynya.cherry.wand.Wand;
+import com.wnynya.cherry.world.CherryWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -23,6 +26,7 @@ import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.Event;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredListener;
@@ -34,18 +38,22 @@ import java.net.URLClassLoader;
 import java.util.*;
 
 public class Cherry extends JavaPlugin {
-  
+
   public static Cherry plugin = null;
   public static Cherry getPlugin() {
     return plugin;
   }
   public static FileConfiguration config;
-  public static boolean debug = false;
   public static UUID getUUID() { return UUID.fromString("00000000-0000-0000-0000-000000000000"); }
   public static String fileName = "";
+  //public static File serverDir = new File(new File(".").getAbsolutePath());
+  public static File serverDir;
+
+  public static boolean debug = false;
 
   @Override
   public void onEnable() {
+
     plugin = this;
 
     init();
@@ -54,9 +62,8 @@ public class Cherry extends JavaPlugin {
       Msg.info("Plugin Enabled");
     }
 
-    // Updater init
-    fileName = this.getFile().getName();
     Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
+
   }
 
   @Override
@@ -73,20 +80,23 @@ public class Cherry extends JavaPlugin {
 
     Msg.init();
 
+    serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
+    Msg.info(serverDir.toString());
+    fileName = this.getFile().getName();
+
     /*
       Events Register
      */
 
-    PluginManager pm = Bukkit.getServer().getPluginManager();
-
-    pm.registerEvents(new PlayerConnect(), this);
-    pm.registerEvents(new PlayerChat(), this);
-    pm.registerEvents(new PlayerInteract(), this);
-    pm.registerEvents(new PlayerMove(), this);
-    pm.registerEvents(new PlayerCommandPreprocess(), this);
-    pm.registerEvents(new InventoryClick(), this);
-    pm.registerEvents(new BlockBreak(), this);
-    pm.registerEvents(new BlockPlace(), this);
+    registerEvent(new PlayerChat());
+    registerEvent(new PlayerConnect());
+    registerEvent(new PlayerCommandPreprocess());
+    registerEvent(new PlayerInteract());
+    registerEvent(new PlayerMove());
+    registerEvent(new PlayerPortal());
+    registerEvent(new InventoryClick());
+    registerEvent(new BlockBreak());
+    registerEvent(new BlockPlace());
     //pm.registerEvents(new EventTester(), this);
 
     /*
@@ -94,10 +104,11 @@ public class Cherry extends JavaPlugin {
      */
 
     registerCommand("cherry", new CherryCommand(), new TabCompleter());
-    registerCommand("menu", new CmdMenu(), new TabCompleter());
+    registerCommand("menu", new MenuCommand(), new TabCompleter());
     registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
     registerCommand("wand", new WandCommand(), new WandTabCompleter());
     registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
+    registerCommand("world", new WorldCommand(), new WorldTabCompleter());
 
     registerCommand("gm", new Gm(), new EasyTabCompleter());
     registerCommand("rlc", new Rlc(), new EasyTabCompleter());
@@ -107,16 +118,15 @@ public class Cherry extends JavaPlugin {
      */
 
     Wand.init();
-
     Portal.init();
-
     PlayerMeta.init();
-
     Commander.init();
+    WebSocketClient.init();
+    CherryWorld.init();
 
     // Vault
     if (Vault.exist()) {
-      pm.registerEvents(new Vault(), this);
+      registerEvent(new Vault());
       Vault.loadVaultChat();
     }
 
@@ -125,7 +135,9 @@ public class Cherry extends JavaPlugin {
     this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
 
     // Cucumbery Support
-    if (CucumberySupport.exist()) { CucumberySupport.init(); }
+    if (CucumberySupport.exist()) {
+      CucumberySupport.init();
+    }
 
   }
 
@@ -134,8 +146,15 @@ public class Cherry extends JavaPlugin {
     this.getCommand(command).setTabCompleter(cmdTab);
   }
 
+  private void registerEvent(Listener eventListener) {
+    PluginManager pm = Bukkit.getServer().getPluginManager();
+    pm.registerEvents(eventListener, this);
+  }
+
+
+
   // config.yml
-  public boolean initConfig() {
+  private boolean initConfig() {
     config = new Config("config").getConfig();
     this.getConfig().options().copyDefaults(true);
     this.saveDefaultConfig();
@@ -220,9 +239,9 @@ public class Cherry extends JavaPlugin {
         pluginInitField.setAccessible(true);
         pluginInitField.set(cl, null);
       }
-      catch (Exception ignored) { }
+      catch (Exception e) { e.printStackTrace(); }
       try { ((URLClassLoader) cl).close(); }
-      catch (Exception ignored) { }
+      catch (Exception e) { e.printStackTrace(); }
     }
     System.gc();
   }

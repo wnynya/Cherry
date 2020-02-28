@@ -22,7 +22,7 @@ public class Msg {
 	 * @param msg 글자들
 	 */
 	public static void info(org.bukkit.entity.Player player, String msg) {
-		player.sendMessage("§7" + msg);
+		player.sendMessage("§f" + msg);
 	}
 
 	/**
@@ -370,9 +370,9 @@ public class Msg {
 
 	public static void load() {
 
-		Prefix.INFO   = Msg.n2s("&5&l[i]:&r&7");
-		Prefix.WARN   = Msg.n2s("&e&l[!]:&r&7");
-		Prefix.ERROR  = Msg.n2s("&c&l[!]:&r&7");
+		Prefix.INFO   = Msg.n2s("&5&l[i]:&r&7 ");
+		Prefix.WARN   = Msg.n2s("&e&l[!]:&r&7 ");
+		Prefix.ERROR  = Msg.n2s("&c&l[!]:&r&7 ");
 
 		Prefix.CHERRY = Msg.n2s("&5&l[Cherry]:&r&7");
 		Prefix.WAND   = Msg.n2s("&6&l[Wand]:&r&7");

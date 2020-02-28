@@ -114,7 +114,6 @@ public class PortalCommand implements CommandExecutor {
       }
 
       portal.setEnable(true);
-      portal.saveData();
       Msg.info(sender, Msg.Prefix.PORTAL + portal.getDisplayName() + "포탈을 활성화하였습니다");
       return true;
     }
@@ -139,7 +138,7 @@ public class PortalCommand implements CommandExecutor {
       }
 
       portal.setEnable(false);
-      portal.saveData();
+      
       Msg.info(sender, Msg.Prefix.PORTAL + portal.getDisplayName() + "포탈을 비활성화하였습니다");
       return true;
     }
@@ -167,7 +166,7 @@ public class PortalCommand implements CommandExecutor {
           displayName += " " + args[n];
         }
         portal.setDisplayName(Msg.n2s(displayName));
-        portal.saveData();
+        
         Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(oldname + " 포탈의 표시 이름이 " + portal.getDisplayName() + " (으)로 설정되었습니다"));
         return true;
       }
@@ -195,7 +194,7 @@ public class PortalCommand implements CommandExecutor {
               block.getZ() + 0.5
             );
             portal.setGotoLocation(loc);
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(portal.getDisplayName() + "포탈의 목적지 좌표가 &e" + Tool.loc2Str(loc) + "&r로 설정되었습니다"));
             return true;
           }
@@ -206,7 +205,7 @@ public class PortalCommand implements CommandExecutor {
             }
             Location loc = player.getLocation();
             portal.setGotoLocation(loc);
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(portal.getDisplayName() + "포탈의 목적지 좌표가 &e" + Tool.loc2Str(loc) + "&r로 설정되었습니다"));
             return true;
           }
@@ -222,7 +221,7 @@ public class PortalCommand implements CommandExecutor {
               Double.parseDouble(args[6])
             );
             portal.setGotoLocation(loc);
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(portal.getDisplayName() + "포탈의 목적지 좌표가 &e" + Tool.loc2Str(loc) + "&r로 설정되었습니다"));
             return true;
           }
@@ -239,7 +238,7 @@ public class PortalCommand implements CommandExecutor {
               Double.parseDouble(args[6])
             );
             portal.setGotoLocation(loc);
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(portal.getDisplayName() + "포탈의 목적지 좌표가 &e" + Tool.loc2StrWithWorld(loc) + "&r로 설정되었습니다"));
             return true;
           }
@@ -250,7 +249,7 @@ public class PortalCommand implements CommandExecutor {
             return true;
           }
           portal.setGotoServer(args[4]);
-          portal.saveData();
+          
           Msg.info(sender, Msg.Prefix.PORTAL + Msg.n2s(portal.getDisplayName() + "포탈의 목적지 서버가 &e" + args[4] + "&r서버로 설정되었습니다"));
           return true;
         }
@@ -263,7 +262,7 @@ public class PortalCommand implements CommandExecutor {
           return true;
         }
         portal.setProtocol(protocol);
-        portal.saveData();
+        
         Msg.info(sender, Msg.Prefix.PORTAL + "포탈의 프로토콜을 설정하였습니다.");
         return true;
       }
@@ -385,7 +384,7 @@ public class PortalCommand implements CommandExecutor {
             }
 
             portal.setPortalArea(new PortalArea(name, area, type, axis));
-            portal.saveData();
+            
 
             Msg.info(sender, Msg.Prefix.PORTAL + "포탈의 출발 영역을 설정하였습니다 (" + portal.getName() + "." + name + ")");
 
@@ -409,7 +408,7 @@ public class PortalCommand implements CommandExecutor {
             }
 
             portal.setPortalArea(new PortalArea(name, area, PortalArea.Type.SIGN, "none"));
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + "포탈의 출발 영역이 설정되었습니다 (" + portal.getName() + "." + name + ")");
             return true;
           }
@@ -432,7 +431,7 @@ public class PortalCommand implements CommandExecutor {
             }
 
             portal.setPortalArea(new PortalArea(name, area, PortalArea.Type.SIGN, "none"));
-            portal.saveData();
+            
             Msg.info(sender, Msg.Prefix.PORTAL + "포탈의 출발 영역이 설정되었습니다 (" + portal.getName() + "." + name + ")");
             return true;
           }
@@ -450,7 +449,7 @@ public class PortalCommand implements CommandExecutor {
           return true;
         }
         portal.removePortalArea(args[3]);
-        portal.saveData();
+        
         Msg.info(sender, Msg.Prefix.PORTAL + "포탈의 출발 영역을 제거하였습니다 (" + portal.getName() + "." + args[3] + ")");
         return true;
       }

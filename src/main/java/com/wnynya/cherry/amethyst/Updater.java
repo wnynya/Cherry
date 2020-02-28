@@ -91,20 +91,19 @@ public class Updater {
     }
 
     Cherry.unload();
-
     File plugins = new File("plugins");
     File cherryJar = new File(plugins, "Cherry.jar");
 
     try {
       File origin = new File(plugins, Cherry.fileName);
+      Msg.info(origin.toString());
 
       byte[] data = Files.readAllBytes(file.toPath());
       Path path = cherryJar.toPath();
 
       if (origin.exists()) {
-        if (!origin.delete()) {
-          return false;
-        }
+        //Files.delete(origin.toPath()); <- 이게 좋음
+        origin.delete();
       }
 
       Files.write(path, data);
@@ -116,6 +115,7 @@ public class Updater {
     }
 
     file.delete();
+
 
     Cherry.load(cherryJar);
     return true;
@@ -144,10 +144,11 @@ public class Updater {
               if (showMsg) {
                 Msg.info("Plugin outdated. update plugin.");
               }
-              updateCherry(vi.getVersion());
-              timer.cancel();
-              if (showMsg) {
-                Msg.info("Update Complete.");
+              if (updateCherry(vi.getVersion())) {
+                timer.cancel();
+                if (showMsg) {
+                  Msg.info("Update Complete.");
+                }
               }
             }
             File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");

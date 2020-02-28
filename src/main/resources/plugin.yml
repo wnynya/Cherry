@@ -48,3 +48,7 @@ commands:
   farm:
     description: 뭐
 
+  world:
+    description: 월드 관련 명령어
+    aliases: [cworld]
+

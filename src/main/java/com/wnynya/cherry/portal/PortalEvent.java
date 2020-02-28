@@ -16,6 +16,7 @@ public class PortalEvent {
   private static List<Player> onJoinPortal = new ArrayList<>();
 
   public static void playerMove(PlayerMoveEvent event) {
+
     Player player = event.getPlayer();
 
     PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
@@ -89,6 +90,12 @@ public class PortalEvent {
   public static void playerPortal(PlayerPortalEvent event) {
     Player player = event.getPlayer();
 
+    Location loc = player.getLocation().getBlock().getLocation();
+
+    Portal portal = Portal.getPortal(loc);
+    if (portal != null) {
+      event.setCancelled(true);
+    }
 
   }
 

@@ -53,36 +53,36 @@ public class Config implements Listener {
 	
 	/* 여러 가지 콘피그를 사용할 때 */
 	public Config() {}
-	
+
 	public FileConfiguration getConfig(String configName) {
-		
+
 		this.configName = configName;
 		this.configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + this.configName + ".yml");
-		
+
 		if (!(this.configFile.exists())) { createConfig(); }
-		
+
 		config = YamlConfiguration.loadConfiguration(configFile);
 		return config;
 	}
-	
+
 	/* 콘피그 저장 */
 	public void saveConfig() {
-		
+
 		//if (!(this.configFile.exists())) { createConfig(); }
-		
+
 		try {
 			this.config.save(configFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 	}
-	
+
 	/* 콘피그 만들기 */
 	public void createConfig() {
-		
+
 		if (!(configFile.exists())) {
-			
+
 			try {
 				Msg.info("Create new config file (" + this.configName + ")");
 				YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
@@ -90,7 +90,7 @@ public class Config implements Listener {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			
+
 		}
 	}
 

@@ -8,6 +8,8 @@ import com.wnynya.cherry.amethyst.Updater;
 import com.wnynya.cherry.gui.CherryMenu;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
+import org.bukkit.World;
+import org.bukkit.WorldCreator;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
@@ -154,6 +156,54 @@ public class CherryCommand implements CommandExecutor {
       player.getWorld().setSpawnLocation(player.getLocation());
       Msg.info(player, "서버의 스폰 지점을 지정하였습니다.");
       return true;
+    }
+
+    // 스폰 설정
+    // it.getServer().unloadWorld(World w, bool save);
+
+    if (args[0].equalsIgnoreCase("loadworld")) {
+      if (args.length < 2) {
+        return true;
+      }
+
+      String worldName = args[1];
+
+      Msg.info(sender, worldName + "월드를 로드합니다...");
+
+      World world = new WorldCreator(worldName).createWorld();
+
+      if (world != null) {
+        Msg.info(sender, world.getName() + "월드 로드 성공");
+      }
+      else {
+        Msg.error(sender, "월드 로드 실패");
+      }
+
+      return true;
+    }
+
+    if (args[0].equalsIgnoreCase("gotoworld")) {
+      if (args.length < 2) {
+        return true;
+      }
+
+      Player player = null;
+      if (sender instanceof Player) {
+        player = (Player) sender;
+      }
+
+      String worldName = args[1];
+
+      World world = Bukkit.getWorld(worldName);
+      if (world != null) {
+        Msg.info(player, world.getName() + "월드로 이동합니다...");
+        player.teleport(world.getSpawnLocation());
+        return true;
+      }
+      else {
+        Msg.error(player, "월드가 없습니다.");
+        return true;
+      }
     }
 
     /*if (args[0].equalsIgnoreCase("test")) {
