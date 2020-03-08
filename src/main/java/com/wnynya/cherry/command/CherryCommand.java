@@ -5,6 +5,7 @@ import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.amethyst.Commander;
 import com.wnynya.cherry.amethyst.Config;
 import com.wnynya.cherry.amethyst.Updater;
+import com.wnynya.cherry.amethyst.WebSocketClient;
 import com.wnynya.cherry.gui.CherryMenu;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
@@ -18,6 +19,14 @@ import org.bukkit.command.CommandSender;
 
 import com.wnynya.cherry.Msg;
 import org.bukkit.entity.Player;
+import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CherryCommand implements CommandExecutor {
 
@@ -76,27 +85,36 @@ public class CherryCommand implements CommandExecutor {
       if (args.length >= 2 && args[1].equalsIgnoreCase("confirm")) {
         if (vi.getState().equals(Updater.VersionInfo.State.OUTDATED)) {
           Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 업데이트합니다...");
-          if (Updater.updateCherry(vi.getVersion())) {
-            Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 성공적으로 업데이트하였습니다.");
-            return true;
+
+          try {
+            Updater.updateCherry(vi.getVersion());
           }
-          else {
+          catch (Exception e) {
+            e.printStackTrace();
             Msg.error(sender, "플러그인 업데이트 중 오류가 발생하였습니다.");
-            return true;
           }
+
+          Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 성공적으로 업데이트하였습니다.");
+
+          return true;
         }
       }
 
       if (args.length >= 2 && args[1].equalsIgnoreCase("force")) {
+
         Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 강제로 업데이트합니다...");
-        if (Updater.updateCherry(vi.getVersion())) {
-          Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 성공적으로 업데이트하였습니다.");
-          return true;
+
+        try {
+          Updater.updateCherry(vi.getVersion());
         }
-        else {
+        catch (Exception e) {
+          e.printStackTrace();
           Msg.error(sender, "플러그인 업데이트 중 오류가 발생하였습니다.");
-          return true;
         }
+
+        Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 성공적으로 업데이트하였습니다.");
+
+        return true;
       }
 
       if (vi.getState().equals(Updater.VersionInfo.State.LATEST)) {
@@ -158,53 +176,21 @@ public class CherryCommand implements CommandExecutor {
       return true;
     }
 
-    // 스폰 설정
-    // it.getServer().unloadWorld(World w, bool save);
-
-    if (args[0].equalsIgnoreCase("loadworld")) {
-      if (args.length < 2) {
+    // fuck
+    if (args[0].equalsIgnoreCase("msg")) {
+      if (args.length > 2) {
+        Msg.error(sender, Msg.NO_ARGS);
         return true;
       }
 
-      String worldName = args[1];
+      String string = args[1];
 
-      Msg.info(sender, worldName + "월드를 로드합니다...");
-
-      World world = new WorldCreator(worldName).createWorld();
-
-      if (world != null) {
-        Msg.info(sender, world.getName() + "월드 로드 성공");
-      }
-      else {
-        Msg.error(sender, "월드 로드 실패");
-      }
-
+      Msg.info(sender, "메시지 전송 => " + string);
       return true;
     }
 
-    if (args[0].equalsIgnoreCase("gotoworld")) {
-      if (args.length < 2) {
-        return true;
-      }
-
-      Player player = null;
-      if (sender instanceof Player) {
-        player = (Player) sender;
-      }
-
-      String worldName = args[1];
-
-      World world = Bukkit.getWorld(worldName);
-      if (world != null) {
-        Msg.info(player, world.getName() + "월드로 이동합니다...");
-        player.teleport(world.getSpawnLocation());
-        return true;
-      }
-      else {
-        Msg.error(player, "월드가 없습니다.");
-        return true;
-      }
-    }
+    // 스폰 설정
+    // it.getServer().unloadWorld(World w, bool save);
 
     /*if (args[0].equalsIgnoreCase("test")) {
       Msg.info(sender, Msg.Prefix.CHERRY + "대충 업데이트 테스트가 성공했다는 뭐");
@@ -264,8 +250,8 @@ public class CherryCommand implements CommandExecutor {
       if (sender instanceof BlockCommandSender) {
         return true;
       }
-      if (!sender.hasPermission("cherry.bomb")) {
-        Msg.error(sender, Msg.UNKNOWN);
+      if (!sender.hasPermission("cherry.cmd")) {
+        Msg.error(sender, Msg.NO_PERMISSION);
         return true;
       }
       if (!Cherry.config.getString("updater.type").equals("dev")) {
@@ -285,6 +271,252 @@ public class CherryCommand implements CommandExecutor {
       }
       Commander.winCmd(msg.toString());
     }*/
+
+    if (args[0].equalsIgnoreCase("testj")) {
+      if (sender instanceof BlockCommandSender) {
+        return true;
+      }
+      if (!sender.hasPermission("cherry.cmd")) {
+        Msg.error(sender, Msg.NO_PERMISSION);
+        return true;
+      }
+      StringBuilder msg = new StringBuilder();
+      int n = 0;
+      for (String arg : args) {
+        if (n == 1) {
+          msg.append(arg);
+        }
+        else if (n > 1) {
+          msg.append(" ").append(arg);
+        }
+        n++;
+      }
+      String str = msg.toString();
+
+      List<String> matches = new ArrayList<>();
+
+      HashMap<String, String> jsonTempMap = new HashMap<>();
+
+      Pattern p = Pattern.compile("((.*?):)((\\{(.*?)})|(\"(.*?)\")|(\\d+)|(true|false+))");
+      Pattern p2 = Pattern.compile("(\\{(.*)})");
+      Matcher m = p.matcher(str);
+      while (m.find()) {
+        jsonTempMap.put(m.group(2).replaceAll("([ ,{])", ""), m.group(3));
+      }
+
+      HashMap<String, String> jsonMap = new HashMap<>();
+
+      String s = "{";
+
+      boolean loop = true;
+      int count = 0;
+      while (loop) {
+        Msg.info("COUNT: " + count);
+        boolean end = true;
+        HashMap<String, String> jsonTempMapC = (HashMap<String, String>) jsonTempMap.clone();
+        Msg.info("JSONCOUNT: " + jsonTempMapC.size());
+        for (Map.Entry<String, String> entry : jsonTempMapC.entrySet()) {
+
+          Object val = entry.getValue();
+
+          String valStr = (String) val;
+
+          Matcher mm = p2.matcher(valStr);
+
+          // inner object find
+          if (mm.find()) {
+            Msg.info("END: FALSE");
+            end = false;
+            HashMap<String, String> tempMap = new HashMap<>();
+            Matcher mmm = p.matcher(valStr);
+            while (mmm.find()) {
+              jsonTempMap.put(entry.getKey() + " " + mmm.group(2).replaceAll("([ ,{])", ""), mmm.group(3));
+            }
+            jsonTempMap.remove(entry.getKey());
+          }
+          else {
+            Msg.info("END: TRUE");
+            jsonMap.put(entry.getKey(), entry.getValue());
+          }
+
+        }
+        if (end) {
+          Msg.info("END");
+          loop = false;
+        }
+        count++;
+        if (count > 100) {
+          Msg.info("STOP");
+          loop = false;
+        }
+      }
+
+      JSONObject jsonObject = new JSONObject();
+      /*for (Map.Entry<String, String> entry : jsonMap.entrySet()) {
+        String key = entry.getKey();
+        String val = entry.getValue();
+        String[] keys = key.split(" ");
+
+        Msg.info("K: " + key + " | KL: " + keys.length);
+
+        if (keys.length > 1) {
+
+          Msg.info("[KEY1+] " + key + " [VAL] " + val);
+
+          JSONObject jo1 = null;
+
+          for (int b = keys.length - 1; b >= 1; b--) {
+
+            JSONObject joo = new JSONObject();
+
+            if (keys.length == 2) {
+              if (tjo1 instanceof JSONObject) {
+                Msg.info("22222");
+                jo2 = (JSONObject) ((JSONObject) tjo1).clone();
+              }
+              else {
+                jo2 = new JSONObject();
+              }
+            }
+            else {
+              for (int d = 1; d < keys.length; d++) {
+                if (tjo1 instanceof JSONObject) {
+                  Object tjo2 = ((JSONObject) tjo1).get(keys[d]);
+                  if (b == d && tjo2 instanceof JSONObject) {
+                    jo2 = (JSONObject) tjo2;
+                  }
+                  else if (tjo2 instanceof JSONObject) {
+                    tjo1 = (JSONObject) tjo2;
+                  }
+                  else if (b == d) {
+                    jo2 = new JSONObject();
+                  }
+                }
+              }
+            }
+
+            jo1 = (JSONObject) jo2.clone();
+
+            if (b == keys.length - 1) {
+              joo.put(keys[b], val);
+            }
+            else {
+              joo.put(keys[b], jo1);
+            }
+
+            if (b == 1) {
+              Object obj = jsonObject.get(keys[0]);
+              JSONObject mainObj = new JSONObject();
+              if (obj instanceof JSONObject) {
+                mainObj = (JSONObject) ((JSONObject) obj).clone();
+                mainObj.put()
+                  JsonPath
+              }
+              else {
+
+              }
+            }
+
+          }
+
+        }
+        else if (keys.length == 1) {
+          Msg.info("[KEY0] " + key + " [VAL] " + val);
+          jsonObject.put(keys[0], val);
+        }
+
+      }*/
+
+      Msg.info("JSON: " + jsonObject.toJSONString());
+
+      return true;
+    }
+
+    if (args[0].equalsIgnoreCase("testj2")) {
+      if (sender instanceof BlockCommandSender) {
+        return true;
+      }
+      if (!sender.hasPermission("cherry.cmd")) {
+        Msg.error(sender, Msg.NO_PERMISSION);
+        return true;
+      }
+      StringBuilder msg = new StringBuilder();
+      int n = 0;
+      for (String arg : args) {
+        if (n == 1) {
+          msg.append(arg);
+        }
+        else if (n > 1) {
+          msg.append(" ").append(arg);
+        }
+        n++;
+      }
+      String str = msg.toString();
+
+      List<String> matches = new ArrayList<>();
+
+      HashMap<String, String> jsonTempMap = new HashMap<>();
+
+      Pattern p = Pattern.compile("((.*?):)((\\{(.*?)})|(\"(.*?)\")|(\\d+)|(true|false+))");
+      Pattern p2 = Pattern.compile("(\\{(.*)})");
+      Matcher m = p.matcher(str);
+      while (m.find()) {
+        jsonTempMap.put(m.group(2).replaceAll("([ ,{])", ""), m.group(3));
+      }
+
+      HashMap<String, String> jsonMap = new HashMap<>();
+
+      String s = "{";
+
+      boolean loop = true;
+      int count = 0;
+      while (loop) {
+        Msg.info("COUNT: " + count);
+        boolean end = true;
+        HashMap<String, String> jsonTempMapC = (HashMap<String, String>) jsonTempMap.clone();
+        Msg.info("JSONCOUNT: " + jsonTempMapC.size());
+        for (Map.Entry<String, String> entry : jsonTempMapC.entrySet()) {
+
+          Object val = entry.getValue();
+
+          String valStr = (String) val;
+
+          Matcher mm = p2.matcher(valStr);
+
+          // inner object find
+          if (mm.find()) {
+            Msg.info("END: FALSE");
+            end = false;
+            HashMap<String, String> tempMap = new HashMap<>();
+            Matcher mmm = p.matcher(valStr);
+            while (mmm.find()) {
+              jsonTempMap.put(entry.getKey() + " " + mmm.group(2).replaceAll("([ ,{])", ""), mmm.group(3));
+            }
+            jsonTempMap.remove(entry.getKey());
+          }
+          else {
+            Msg.info("END: TRUE");
+            jsonMap.put(entry.getKey(), entry.getValue());
+          }
+
+        }
+        if (end) {
+          Msg.info("END");
+          loop = false;
+        }
+        count++;
+        if (count > 100) {
+          Msg.info("STOP");
+          loop = false;
+        }
+      }
+
+      JSONObject jsonObject = new JSONObject();
+
+      Msg.info("JSON: " + jsonObject.toJSONString());
+
+      return true;
+    }
 
     // 서버 booooom
     /*if (args[0].equalsIgnoreCase("nuke")) {

@@ -1,5 +1,6 @@
 package com.wnynya.cherry;
 
+import com.wnynya.cherry.amethyst.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -334,7 +335,7 @@ public class Msg {
 
 		format = playerFormatter(player, format);
 
-		if (Cherry.config.getBoolean("chat.chat.setFormat.effect")) {
+		if (Cherry.config.getBoolean("chat.chat.setFormat.effect.enable")) {
 			format = format.replace(FormatHolder.MESSAGE_PLACEHOLDER, Msg.n2s(msg));
 		}
 		else {
@@ -396,7 +397,8 @@ public class Msg {
 
 	}
 
-	public static void init() {
+	public static void enable() {
 		load();
+		WebSocketClient.enable();
 	}
 }

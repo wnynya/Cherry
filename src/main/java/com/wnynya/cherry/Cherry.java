@@ -20,7 +20,6 @@ import com.wnynya.cherry.portal.Portal;
 import com.wnynya.cherry.wand.Wand;
 import com.wnynya.cherry.world.CherryWorld;
 import org.bukkit.Bukkit;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.command.SimpleCommandMap;
@@ -46,8 +45,8 @@ public class Cherry extends JavaPlugin {
   public static FileConfiguration config;
   public static UUID getUUID() { return UUID.fromString("00000000-0000-0000-0000-000000000000"); }
   public static String fileName = "";
-  //public static File serverDir = new File(new File(".").getAbsolutePath());
   public static File serverDir;
+  public static WebSocketClient.Status status;
 
   public static boolean debug = false;
 
@@ -56,73 +55,47 @@ public class Cherry extends JavaPlugin {
 
     plugin = this;
 
-    init();
-
-    if (Cherry.debug) {
-      Msg.info("Plugin Enabled");
-    }
-
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
-
-  }
-
-  @Override
-  public void onDisable() {
-    if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled");
-    }
-  }
-
-  // initiation
-  private void init() {
-
     initConfig();
 
-    Msg.init();
+    Msg.enable();
 
     serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
-    Msg.info(serverDir.toString());
     fileName = this.getFile().getName();
 
-    /*
-      Events Register
-     */
+    // 기본 명령어
+    registerCommand("cherry", new CherryCommand(), new TabCompleter());
+    registerCommand("menu", new MenuCommand(), new TabCompleter());
 
+    // PlayerMeta
+    PlayerMeta.init();
+    registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
+
+    // Wand
+    Wand.init();
+    registerCommand("wand", new WandCommand(), new WandTabCompleter());
+
+    // Portal
+    Portal.init();
+    registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
+
+    // World
+    CherryWorld.init();
+    registerCommand("world", new WorldCommand(), new WorldTabCompleter());
+
+    // Events
     registerEvent(new PlayerChat());
     registerEvent(new PlayerConnect());
-    registerEvent(new PlayerCommandPreprocess());
     registerEvent(new PlayerInteract());
     registerEvent(new PlayerMove());
     registerEvent(new PlayerPortal());
     registerEvent(new InventoryClick());
+    registerEvent(new Command());
     registerEvent(new BlockBreak());
     registerEvent(new BlockPlace());
-    //pm.registerEvents(new EventTester(), this);
 
-    /*
-      Commands Register
-     */
-
-    registerCommand("cherry", new CherryCommand(), new TabCompleter());
-    registerCommand("menu", new MenuCommand(), new TabCompleter());
-    registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
-    registerCommand("wand", new WandCommand(), new WandTabCompleter());
-    registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
-    registerCommand("world", new WorldCommand(), new WorldTabCompleter());
-
-    registerCommand("gm", new Gm(), new EasyTabCompleter());
-    registerCommand("rlc", new Rlc(), new EasyTabCompleter());
-
-    /*
-      Function Initiation
-     */
-
-    Wand.init();
-    Portal.init();
-    PlayerMeta.init();
-    Commander.init();
-    WebSocketClient.init();
-    CherryWorld.init();
+    // BungeeCord Messaging Channel
+    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+    this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
 
     // Vault
     if (Vault.exist()) {
@@ -130,15 +103,26 @@ public class Cherry extends JavaPlugin {
       Vault.loadVaultChat();
     }
 
-    // BungeeCord Messaging Channel
-    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-    this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
-
     // Cucumbery Support
     if (CucumberySupport.exist()) {
       CucumberySupport.init();
     }
 
+    // Easy
+    registerCommand("gm", new Gm(), new EasyTabCompleter());
+    registerCommand("rlc", new Rlc(), new EasyTabCompleter());
+
+    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Enabled"); }
+
+    // Updater
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
+
+  }
+
+  @Override
+  public void onDisable() {
+    WebSocketClient.disable();
+    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled"); }
   }
 
   private void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
@@ -189,7 +173,7 @@ public class Cherry extends JavaPlugin {
     SimpleCommandMap commandMap = null;
     List<Plugin> plugins = null;
     Map<String, Plugin> names = null;
-    Map<String, Command> commands = null;
+    Map<String, org.bukkit.command.Command> commands = null;
     Map<Event, SortedSet<RegisteredListener>> listeners = null;
     boolean reloadlisteners = true;
     pluginManager.disablePlugin(plugin);
@@ -211,7 +195,7 @@ public class Cherry extends JavaPlugin {
       commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
       Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
       knownCommandsField.setAccessible(true);
-      commands = (Map<String, Command>) knownCommandsField.get(commandMap);
+      commands = (Map<String, org.bukkit.command.Command>) knownCommandsField.get(commandMap);
     }
     catch (Exception e) { e.printStackTrace(); }
     pluginManager.disablePlugin(plugin);
@@ -221,8 +205,8 @@ public class Cherry extends JavaPlugin {
       for (SortedSet<RegisteredListener> set : listeners.values()) { set.removeIf(value -> value.getPlugin() == plugin); }
     }
     if (commandMap != null) {
-      for (Iterator<Map.Entry<String, Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
-        Map.Entry<String, Command> entry = it.next();
+      for (Iterator<Map.Entry<String, org.bukkit.command.Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
+        Map.Entry<String, org.bukkit.command.Command> entry = it.next();
         if (entry.getValue() instanceof PluginCommand) {
           PluginCommand c = (PluginCommand) entry.getValue();
           if (c.getPlugin() == plugin) { c.unregister(commandMap); it.remove(); }

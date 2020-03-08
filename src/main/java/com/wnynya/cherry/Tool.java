@@ -1,7 +1,6 @@
 package com.wnynya.cherry;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -17,20 +16,20 @@ public class Tool {
 	/* 포멧 변환 */
 	public static String reFormatEventMsg(PlayerJoinEvent event, String msg) {
 		Player player = event.getPlayer();
-		msg = Tool.n2s(Tool.reFormatEventMsgPlayer(player, msg));
+		msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
 		return msg;
 	}
 	public static String reFormatEventMsg(PlayerQuitEvent event, String msg) {
 		Player player = event.getPlayer();
-		msg = Tool.n2s(Tool.reFormatEventMsgPlayer(player, msg));
+		msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
 		return msg;
 	}
 	public static String reFormatEventMsg(AsyncPlayerChatEvent event, String msg) {
 		Player player = event.getPlayer();
-		msg = Tool.n2s(Tool.reFormatEventMsgPlayer(player, msg));
+		msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
 		if (Cherry.getPlugin().getConfig().getBoolean("chat.effect.enable")) {
-			msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, Tool.n2s(event.getMessage()));
-			msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER_ALIAS, Tool.n2s(event.getMessage()));
+			msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, Msg.n2s(event.getMessage()));
+			msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER_ALIAS, Msg.n2s(event.getMessage()));
 		}
 		else {
 			msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, event.getMessage());
@@ -54,37 +53,6 @@ public class Tool {
 		return msg;
 	}
 
-	/* & 을 § 로 */
-	public static String n2s(String string) {
-		return ChatColor.translateAlternateColorCodes('&', string);
-	}
-	/* § 을 ANSI ESCAPE 로 */
-	public static String s2a(String string) {
-		string = string.replaceAll("§0", "\u001b[30m");
-		string = string.replaceAll("§4", "\u001b[31m");
-		string = string.replaceAll("§2", "\u001b[32m");
-		string = string.replaceAll("§6", "\u001b[33m");
-		string = string.replaceAll("§1", "\u001b[34m");
-		string = string.replaceAll("§5", "\u001b[35m");
-		string = string.replaceAll("§3", "\u001b[36m");
-		string = string.replaceAll("§7", "\u001b[37m");
-		string = string.replaceAll("§8", "\u001b[90m");
-		string = string.replaceAll("§c", "\u001b[91m");
-		string = string.replaceAll("§a", "\u001b[92m");
-		string = string.replaceAll("§e", "\u001b[93m");
-		string = string.replaceAll("§9", "\u001b[94m");
-		string = string.replaceAll("§d", "\u001b[95m");
-		string = string.replaceAll("§b", "\u001b[96m");
-		string = string.replaceAll("§f", "\u001b[97m");
-		string = string.replaceAll("§l", "\u001b[1m");
-		string = string.replaceAll("§m", "\u001b[2m");
-		string = string.replaceAll("§n", "\u001b[4m");
-		string = string.replaceAll("§o", "\u001b[3m");
-		string = string.replaceAll("§r", "\u001b[0m");
-		string = string.replaceAll("§k", "\u001b[5m");
-		return string;
-	}
-
 	/* 접두사 접미사 붙은 이름 get */
 	public static String getFancyName(Player player) {
 
@@ -98,7 +66,7 @@ public class Tool {
 		}
 		String playerName = player.getDisplayName();
 
-		String playerFancyName = Tool.n2s("&r" + prefix + playerName + suffix + "&r");
+		String playerFancyName = Msg.n2s("&r" + prefix + playerName + suffix + "&r");
 
 		return playerFancyName;
 
@@ -320,6 +288,14 @@ public class Tool {
 			}
 			return list;
 		}
+
+	}
+
+	public static class ServerInfo {
+
+	}
+
+	public static void init() {
 
 	}
 

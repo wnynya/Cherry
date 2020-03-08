@@ -134,11 +134,23 @@ portal:
 
 websocket:
   enable: false
-  host: "cherry.wnynya.com"
-  port: 443
+  host: ""
   name: ""
   auth: ""
   path: ""
+  event:
+    player:
+      join: false
+      quit: false
+      chat: false
+      command: false
+
+    console:
+      command: true
+
+    commandblock:
+      command: false
+
 
 #======================================#
 # 번지코드 설정 [1.1.27]

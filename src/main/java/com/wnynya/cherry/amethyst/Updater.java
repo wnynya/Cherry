@@ -2,9 +2,6 @@ package com.wnynya.cherry.amethyst;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -20,34 +17,41 @@ public class Updater {
    * 플러그인이 최신 버전인지 확인합니다.
    */
   public static VersionInfo checkCherry() {
-    StringBuilder content = new StringBuilder();
+
     try {
+
       String type = Cherry.config.getString("updater.type");
       URL url = new URL("http://cherry.wnynya.com/check/" + type + "?a=" + Cherry.getPlugin().getDescription().getAPIVersion() + "&s=updater");
 
       URLConnection urlConnection = url.openConnection();
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+
+      StringBuilder content = new StringBuilder();
       String line;
+      
       while ((line = bufferedReader.readLine()) != null) {
         content.append(line).append("\n");
       }
+
       bufferedReader.close();
 
-      JSONParser parser = new JSONParser();
-      Object obj = parser.parse(String.valueOf(content));
-      JSONObject data = (JSONObject) obj;
+      JSONObject data  = (JSONObject) new JSONParser().parse(String.valueOf(content));
 
       String latestVersion = data.get("latest").toString();
+
       if (Cherry.getPlugin().getDescription().getVersion().equals(latestVersion)) {
-        return new VersionInfo(VersionInfo.State.LATEST, "");
+        return new VersionInfo(VersionInfo.State.LATEST, data.get("latest").toString());
       }
       else {
         return new VersionInfo(VersionInfo.State.OUTDATED, data.get("latest").toString());
       }
+
     }
+
     catch (Exception e) {
       return new VersionInfo(VersionInfo.State.ERROR, e.toString());
     }
+
   }
 
   /**
@@ -55,13 +59,18 @@ public class Updater {
    *
    * @param version 다운로드할 버전
    */
-  public static void downloadCherry(String version) {
+  public static void downloadCherry(String version) throws IOException {
+
     File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
+
     try {
       String type = Cherry.config.getString("updater.type");
+
       URL url = new URL("http://cherry.wnynya.com/get/" + version + "?s=updater");
+
       file.getParentFile().mkdirs();
       file.createNewFile();
+
       BufferedInputStream bis = new BufferedInputStream(url.openStream());
       FileOutputStream fis = new FileOutputStream(file);
       byte[] buffer = new byte[1024];
@@ -69,11 +78,12 @@ public class Updater {
       while ((count = bis.read(buffer, 0, 1024)) != -1) {
         fis.write(buffer, 0, count);
       }
+
       fis.close();
       bis.close();
     }
     catch (Exception e) {
-      e.printStackTrace();
+      throw e;
     }
 
   }
@@ -83,11 +93,20 @@ public class Updater {
    *
    * @param version 업데이트할 버전
    */
-  public static boolean updateCherry(String version) {
-    downloadCherry(version);
+  public static void updateCherry(String version) throws Exception {
+
+    WebSocketClient.Message.status(WebSocketClient.Status.UPDATE);
+
+    try {
+      downloadCherry(version);
+    }
+    catch (Exception e) {
+      throw e;
+    }
+
     File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
     if (!file.exists()) {
-      return false;
+      throw new Exception(file.toString() + " 파일을 찾을 수 없습니다.");
     }
 
     Cherry.unload();
@@ -107,18 +126,14 @@ public class Updater {
       }
 
       Files.write(path, data);
-
     }
     catch (Exception e) {
-      e.printStackTrace();
-      return false;
+      throw e;
     }
 
     file.delete();
 
-
     Cherry.load(cherryJar);
-    return true;
   }
 
   public static void init() {
@@ -136,21 +151,25 @@ public class Updater {
       if (type.equals("release")) {
         timer.schedule(new TimerTask() {
           public void run() {
-            if (showMsg) {
-              Msg.info("Check for plugin updates.");
-            }
+            if (showMsg) { Msg.info("Check for plugin updates."); }
+
             VersionInfo vi = checkCherry();
+
             if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
-              if (showMsg) {
-                Msg.info("Plugin outdated. update plugin.");
+
+              if (showMsg) { Msg.info("Plugin outdated. update plugin."); }
+              try {
+                updateCherry(vi.getVersion());
               }
-              if (updateCherry(vi.getVersion())) {
-                timer.cancel();
-                if (showMsg) {
-                  Msg.info("Update Complete.");
-                }
+              catch (Exception e) {
+                if (showMsg) { Msg.info("Update Failed."); }
               }
+              timer.cancel();
+
+              if (showMsg) { Msg.info("Update Complete."); }
+
             }
+
             File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
             if (file.exists()) {
               file.delete();
@@ -163,21 +182,28 @@ public class Updater {
 
         timer.schedule(new TimerTask() {
           public void run() {
+
             VersionInfo vi = checkCherry();
+
             if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
-              if (showMsg) {
-                Msg.info("[Dev] Plugin outdated. update plugin.");
+
+              if (showMsg) { Msg.info("[Dev] Plugin outdated. update plugin."); }
+              try {
+                updateCherry(vi.getVersion());
               }
-              updateCherry(vi.getVersion());
+              catch (Exception e) {
+                e.printStackTrace();
+                if (showMsg) { Msg.info("[Dev] Update Failed."); }
+              }
               timer.cancel();
-              if (showMsg) {
-                Msg.info("[Dev] Update Complete.");
-              }
+
+              if (showMsg) { Msg.info("[Dev] Update Complete."); }
+
             }
+
             File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
-            if (file.exists()) {
-              file.delete();
-            }
+            if (file.exists()) { file.delete(); }
+
           }
         }, 0, 10 * 1000);
 
