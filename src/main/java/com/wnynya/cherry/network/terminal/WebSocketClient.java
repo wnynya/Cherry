@@ -1,7 +1,6 @@
-package com.wnynya.cherry.terminal;
+package com.wnynya.cherry.network.terminal;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Tool;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;

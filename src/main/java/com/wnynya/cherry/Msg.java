@@ -1,6 +1,5 @@
 package com.wnynya.cherry;
 
-import com.wnynya.cherry.terminal.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -155,6 +154,14 @@ public class Msg {
 	public static void allP(String msg) {
 		for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
 			player.sendMessage(msg);
+		}
+	}
+
+	public static void allPwO(String msg, org.bukkit.entity.Player p) {
+		for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
+			if (p != player) {
+				player.sendMessage(msg);
+			}
 		}
 	}
 

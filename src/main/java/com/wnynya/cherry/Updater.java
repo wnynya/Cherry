@@ -1,6 +1,6 @@
 package com.wnynya.cherry;
 
-import com.wnynya.cherry.terminal.WebSocketClient;
+import com.wnynya.cherry.network.terminal.WebSocketClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -160,28 +160,39 @@ public class Updater {
       if (type.equals("release")) {
         timer.schedule(new TimerTask() {
           public void run() {
-            if (showMsg) { Msg.info("Check for plugin updates."); }
 
-            VersionInfo vi = checkCherry();
-
-            if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
-
-              if (showMsg) { Msg.info("Plugin outdated. update plugin."); }
-              try {
-                updateCherry(vi.getVersion());
+            if (!updated) {
+              if (showMsg) {
+                Msg.info("Check for plugin updates.");
               }
-              catch (Exception e) {
-                if (showMsg) { Msg.info("Update Failed."); }
+
+              VersionInfo vi = checkCherry();
+
+              if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
+
+                if (showMsg) {
+                  Msg.info("Plugin outdated. update plugin.");
+                }
+                try {
+                  updateCherry(vi.getVersion());
+                }
+                catch (Exception e) {
+                  if (showMsg) {
+                    Msg.info("Update Failed.");
+                  }
+                }
+                timer.cancel();
+
+                if (showMsg) {
+                  Msg.info("Update Complete.");
+                }
+
               }
-              timer.cancel();
 
-              if (showMsg) { Msg.info("Update Complete."); }
-
-            }
-
-            File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
-            if (file.exists()) {
-              file.delete();
+              File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
+              if (file.exists()) {
+                file.delete();
+              }
             }
           }
         }, 0, 60 * 60 * 1000);

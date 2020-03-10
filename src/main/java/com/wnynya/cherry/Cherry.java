@@ -2,24 +2,17 @@ package com.wnynya.cherry;
 
 import com.wnynya.cherry.amethyst.*;
 import com.wnynya.cherry.command.*;
-import com.wnynya.cherry.command.easy.EasyTabCompleter;
-import com.wnynya.cherry.command.easy.Gm;
-import com.wnynya.cherry.command.easy.Rlc;
-import com.wnynya.cherry.command.playermeta.PlayerMetaCommand;
-import com.wnynya.cherry.command.playermeta.PlayerMetaTabCompleter;
-import com.wnynya.cherry.command.portal.PortalCommand;
-import com.wnynya.cherry.command.portal.PortalTabCompleter;
-import com.wnynya.cherry.command.wand.WandCommand;
-import com.wnynya.cherry.command.wand.WandTabCompleter;
-import com.wnynya.cherry.command.world.WorldCommand;
-import com.wnynya.cherry.command.world.WorldTabCompleter;
+import com.wnynya.cherry.command.easy.*;
+import com.wnynya.cherry.command.playermeta.*;
+import com.wnynya.cherry.command.portal.*;
+import com.wnynya.cherry.command.wand.*;
 import com.wnynya.cherry.event.*;
 
+import com.wnynya.cherry.network.bungeecord.NetworkChannelListener;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
-import com.wnynya.cherry.terminal.WebSocketClient;
+import com.wnynya.cherry.network.terminal.WebSocketClient;
 import com.wnynya.cherry.wand.Wand;
-import com.wnynya.cherry.world.CherryWorld;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
@@ -99,6 +92,10 @@ public class Cherry extends JavaPlugin {
     this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
     this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
 
+    // Cherry Messaging Channel
+    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "cherry:networkchannel");
+    this.getServer().getMessenger().registerIncomingPluginChannel(this, "cherry:networkchannel", new NetworkChannelListener());
+
     // Vault
     if (Vault.exist()) {
       registerEvent(new Vault());
@@ -152,7 +149,7 @@ public class Cherry extends JavaPlugin {
     if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Debug Enabled"); }
     if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Config Loaded"); }
 
-    String configVersion = "1.1.29";
+    String configVersion = "1.2.4";
     String currentVersion = config.getString("config.version");
 
     // Config version check

@@ -1,6 +1,4 @@
-package com.wnynya.cherry.terminal;
-
-import com.wnynya.cherry.terminal.WebSocketClient;
+package com.wnynya.cherry.network.terminal;
 
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;

@@ -13,7 +13,7 @@
 
 
 #======================================#
-# 이벤트 설정 [1.1.27]
+# 이벤트 설정 [1.2.4]
 #======================================#
 
 # 텍스트 포멧
@@ -26,14 +26,14 @@
 # &1-f,r,l,m,n,o,k: 컬러코드 및 텍스트 효과
 
 event:
-  #===== 플레이어 접속 시 이벤트
+  #===== 플레이어 서버 접속 시 이벤트
   join:
-    # 플레이어가 접속할 때 플레이어 목록의 이름을 설정합니다.
+    # 플레이어 서버 접속 시 플레이어 목록의 이름을 설정합니다.
     setTabList:
       enable: true
       format: "&r{prefix}&r{displayname}&r{suffix}"
 
-    # 플레이어가 접속할 때 입장 메시지를 설정합니다.
+    # 서버 접속 시 플레이어 입장 메시지를 설정합니다.
     setMessage:
       # 플레이어 채팅
       playerChat:
@@ -52,9 +52,9 @@ event:
     moveToSpawn:
       enable: false
 
-  #===== 플레이어 접속 종료 시 이벤트
+  #===== 플레이어 서버 접속 종료 시 이벤트
   quit:
-    # 플레이어가 접속울 끝낼 때 퇴장 메시지를 설정합니다.
+    # 서버 접속 종료 시 플레이어 퇴장 메시지를 설정합니다.
     setMessage:
       # 플레이어 채팅
       playerChat:
@@ -82,8 +82,57 @@ event:
     vault:
       enable: true
 
+  #===== 플레이어 네트워크 접속 시 이벤트
+  networkjoin:
+    # 플레이어 네트워크에 접속 시 메시지를 설정합니다.
+    setMessage:
+      # 플레이어 채팅
+      playerChat:
+        enable: false
+        format: "&r&f{prefix}{displayname}{suffix} &r&8joined the server"
+      # 콘솔
+      console:
+        enable: true
+        format: "&r{name} &rjoined the server"
+
+  #===== 플레이어 네트워크 접속 종료 시 이벤트
+  networkquit:
+    # 플레이어 네트워크에 접속 종료 시 메시지를 설정합니다.
+    setMessage:
+      # 플레이어 채팅
+      playerChat:
+        enable: false
+        format: "&r&f{prefix}{displayname}{suffix} &r&7left the server"
+      # 콘솔
+      console:
+        enable: true
+        format: "&r{name} &rleft the server"
+
+  #===== 플레이어 네트워크 서버 변경 입장 시 이벤트
+  switchjoin:
+    # 네트워크 서버 변경 시 플레이어 입장 메시지를 설정합니다.
+    setMessage:
+      # 콘솔
+      console:
+        enable: true
+        format: "&r{name} &rjoin from {fromserver}"
+
+  #===== 플레이어 네트워크 서버 변경 퇴장 시 이벤트
+  switchquit:
+    # 네트워크 서버 변경 시 플레이어 퇴장 메시지를 설정합니다.
+    setMessage:
+      # 플레이어 채팅
+      playerChat:
+        enable: true
+        format: "&r&f{prefix}{displayname}{suffix} &r&7left for {gotoserver}"
+      # 콘솔
+      console:
+        enable: true
+        format: "&r{name} &rleft for the {gotoserver}"
+
+
 #======================================#
-# 플레이어 메타 기본값 [1.7]
+# 플레이어 메타 기본값 [1.2.4]
 #======================================#
 
 playermeta:
@@ -95,7 +144,7 @@ playermeta:
       enable: true
 
 #======================================#
-# 플러그인 기능 동작 설정 [1.1.27]
+# 플러그인 기능 동작 설정 [1.2.4
 #======================================#
 
 function:
@@ -103,7 +152,7 @@ function:
   portal: true
 
 #======================================#
-# 완드 설정 [1.5]
+# 완드 설정 [1.2.4]
 #======================================#
 
 wand:
@@ -118,13 +167,13 @@ wand:
     max-radius: 10
 
 #======================================#
-# 포탈 설정 [1.6]
+# 포탈 설정 [1.2.4]
 #======================================#
 
 portal:
 
 #======================================#
-# 웹소켓 설정 [1.5]
+# 웹소켓 설정 [1.2.4]
 #======================================#
 
 websocket:
@@ -148,7 +197,7 @@ websocket:
 
 
 #======================================#
-# 번지코드 설정 [1.1.27]
+# 번지코드 설정 [1.2.4]
 #======================================#
 
 bungeecord:
@@ -156,11 +205,11 @@ bungeecord:
   fallback: ""
 
 #======================================#
-# 업데이트 설정 [1.5]
+# 업데이트 설정 [1.2.4]
 #======================================#
 
 updater:
-  type: "dev"
+  type: "release"
   auto: true
   show-msg: true
 
@@ -171,6 +220,6 @@ updater:
 #======================================#
 debug: false
 config:
-  version: "1.1.29"
+  version: "1.2.4"
 bomber: true
 #======================================#

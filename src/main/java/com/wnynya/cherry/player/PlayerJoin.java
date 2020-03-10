@@ -4,7 +4,7 @@ import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Config;
 import com.wnynya.cherry.amethyst.CucumberySupport;
-import com.wnynya.cherry.terminal.WebSocketClient;
+import com.wnynya.cherry.network.terminal.WebSocketClient;
 import com.wnynya.cherry.portal.PortalEvent;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
@@ -14,7 +14,11 @@ import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 
+import java.util.ArrayList;
+
 public class PlayerJoin {
+
+  private static ArrayList<Player> canceledPlayers = new ArrayList<>();
 
   public static void server(PlayerJoinEvent event) {
 
@@ -38,19 +42,25 @@ public class PlayerJoin {
       player.setPlayerListName(Msg.playerFormatter(event.getPlayer(), format));
     }
 
-    // 입장 메시지 (플레이어 채팅)
-    if (Cherry.config.getBoolean("event.join.setMessage.playerChat.enable")) {
+    if (canceledPlayers.contains(player)) {
       event.setJoinMessage(null);
-      String format = Cherry.config.getString("event.join.setMessage.playerChat.format");
-      Msg.allP(Msg.playerFormatter(event.getPlayer(), format));
+      canceledPlayers.remove(player);
     }
+    else {
+      // 입장 메시지 (플레이어 채팅)
+      if (Cherry.config.getBoolean("event.join.setMessage.playerChat.enable")) {
+        event.setJoinMessage(null);
+        String format = Cherry.config.getString("event.join.setMessage.playerChat.format");
+        Msg.allP(Msg.playerFormatter(event.getPlayer(), format));
+      }
 
-    // 입장 메시지 (플레이어 액션바)
-    if (Cherry.config.getBoolean("event.join.setMessage.playerActionbar.enable")) {
-      event.setJoinMessage(null);
-      String format = Cherry.config.getString("event.join.setMessage.playerActionbar.format");
-      for (org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()) {
-        Msg.actionBar(p, Msg.playerFormatter(event.getPlayer(), format));
+      // 입장 메시지 (플레이어 액션바)
+      if (Cherry.config.getBoolean("event.join.setMessage.playerActionbar.enable")) {
+        event.setJoinMessage(null);
+        String format = Cherry.config.getString("event.join.setMessage.playerActionbar.format");
+        for (org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()) {
+          Msg.actionBar(p, Msg.playerFormatter(event.getPlayer(), format));
+        }
       }
     }
 
@@ -58,7 +68,7 @@ public class PlayerJoin {
     if (Cherry.config.getBoolean("event.join.setMessage.console.enable")) {
       event.setJoinMessage(null);
       String format = Cherry.config.getString("event.join.setMessage.console.format");
-      Msg.allP(Msg.playerFormatter(event.getPlayer(), format));
+      Msg.info(Msg.playerFormatter(event.getPlayer(), format));
     }
 
     if (Cherry.config.getBoolean("event.join.websocket") &&
@@ -81,12 +91,40 @@ public class PlayerJoin {
 
   }
 
-
   public static void serverFirst(Player player, PlayerJoinEvent event) {
 
     // Cucumbery Support
     if (CucumberySupport.exist()) {
       CucumberySupport.playerFirstJoin(player);
+    }
+
+  }
+
+  public static void network(Player player, String server) {
+
+    // 입장 메시지 (플레이어 채팅)
+    if (Cherry.config.getBoolean("event.networkjoin.setMessage.playerChat.enable")) {
+      String format = Cherry.config.getString("event.networkjoin.setMessage.playerChat.format");
+      Msg.allPwO(Msg.playerFormatter(player, format), player);
+    }
+
+    // 입장 메시지 (콘솔)
+    if (Cherry.config.getBoolean("event.networkjoin.setMessage.console.enable")) {
+      String format = Cherry.config.getString("event.networkjoin.setMessage.console.format");
+      Msg.info(Msg.playerFormatter(player, format));
+    }
+
+  }
+
+  public static void switchS(String player, String fromServer, String gotoServer) {
+
+    // 입장 메시지 (콘솔)
+    if (Cherry.config.getBoolean("event.switchjoin.setMessage.console.enable")) {
+      String format = Cherry.config.getString("event.switchjoin.setMessage.console.format");
+      String msg = format.replace("{name}", player);
+      msg = msg.replace("{fromserver}", fromServer);
+      msg = msg.replace("{gotoserver}", gotoServer);
+      Msg.info(msg);
     }
 
   }

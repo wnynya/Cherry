@@ -1,6 +1,6 @@
 name: Cherry
 main: com.wnynya.cherry.Cherry
-version: 1.2.4.dev
+version: 1.2.4
 description: Cherry 플러그인
 author: Wany (Wnynya)
 api-version: 1.15

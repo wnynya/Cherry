@@ -1,6 +1,5 @@
-package com.wnynya.cherry.terminal;
+package com.wnynya.cherry.network.terminal;
 
-import com.wnynya.cherry.terminal.WebSocketClient;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
