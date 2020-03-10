@@ -28,12 +28,12 @@
 event:
   #===== 플레이어 접속 시 이벤트
   join:
-    # 플레이어가 접속할 때 플레이어 목록의 이름을 변경할 지 설정합니다.
+    # 플레이어가 접속할 때 플레이어 목록의 이름을 설정합니다.
     setTabList:
       enable: true
       format: "&r{prefix}&r{displayname}&r{suffix}"
 
-    # 플레이어가 접속할 때 입장 메시지를 표시할 지 설정합니다.
+    # 플레이어가 접속할 때 입장 메시지를 설정합니다.
     setMessage:
       # 플레이어 채팅
       playerChat:
@@ -54,7 +54,7 @@ event:
 
   #===== 플레이어 접속 종료 시 이벤트
   quit:
-    # 플레이어가 접속울 끝낼 때 퇴장 메시지를 표시할 지 설정합니다.
+    # 플레이어가 접속울 끝낼 때 퇴장 메시지를 설정합니다.
     setMessage:
       # 플레이어 채팅
       playerChat:
@@ -71,12 +71,14 @@ event:
 
   #===== 플레이어 채팅 시 이벤트
   chat:
-    # 플레이어가 채팅할 때 채팅 형식을 지정할 지 설정합니다.
+    # 플레이어가 채팅할 때 채팅 형식을 설정합니다.
     setFormat:
       enable: true
       format: "&r&f{prefix}{displayname}{suffix}&r&f: &r&f{msg}"
+    # 플레이어가 채팅할 때 텍스트 효과를 적용항 지 설정합니다.
     effect:
       enable: true
+    # 플레이어가 채팅할 때 Vault 채팅과 연동하여 출력할 지 설정합니다.
     vault:
       enable: true
 
@@ -88,16 +90,9 @@ playermeta:
   function:
     wand:
       enable: true
-      data: '{"posMsg":"actionbar"}'
-    portal:
-      enable: true
-      data: '{"effect":""}'
-    nickname:
-      enable: false
-      data: '{"nickname":""}'
+      data: "actionbar"
     notetool:
       enable: true
-      data: '{"blockOnHand":"use"}'
 
 #======================================#
 # 플러그인 기능 동작 설정 [1.1.27]
@@ -176,6 +171,6 @@ updater:
 #======================================#
 debug: false
 config:
-  version: "1.1.27"
+  version: "1.1.29"
 bomber: true
 #======================================#

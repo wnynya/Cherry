@@ -19,18 +19,6 @@ public class PortalEvent {
 
     Player player = event.getPlayer();
 
-    PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
-
-    if (pm == null) {
-      return;
-    }
-
-    PlayerMeta.FunctionData fd = pm.getFunction(PlayerMeta.Function.PORTAL);
-
-    if (fd == null || !fd.isEnable()) {
-      return;
-    }
-
     Long time = System.currentTimeMillis();
     Long lastTime = Portal.getLastUsedTime(player);
     if (lastTime == null) {
@@ -69,10 +57,6 @@ public class PortalEvent {
 
   public static void playerJoin(PlayerJoinEvent event) {
     Player player = event.getPlayer();
-
-    if (!PlayerMeta.getPlayerMeta(player).getFunction(PlayerMeta.Function.PORTAL).isEnable()) {
-      return;
-    }
 
     Location loc = player.getLocation().getBlock().getLocation();
 

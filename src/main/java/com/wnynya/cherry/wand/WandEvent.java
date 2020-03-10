@@ -34,6 +34,11 @@ public class WandEvent {
       return;
     }
 
+    PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
+    if (!pm.is(PlayerMeta.Path.WAND_ENABLE)) {
+      return;
+    }
+
     if (event.getItem().getType().equals(Wand.getWandItem(Wand.ItemType.EDIT_POSITIONER).getType())) {
 
       Wand wand = Wand.getWand(player);
@@ -43,18 +48,12 @@ public class WandEvent {
         if (block == null) {
           return;
         }
-        boolean bool = wand.getEdit().setPosition(1, block.getLocation());
 
         Location loc = block.getLocation();
-        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
-        if (pm == null) {
-          return;
-        }
-        PlayerMeta.FunctionData fd = pm.getFunction(PlayerMeta.Function.WAND);
-        if (fd == null) {
-          return;
-        }
-        if (fd.getData().get("posMsg").equals("actionbar")) {
+
+        wand.getEdit().setPosition(1, loc);
+
+        if (pm.get(PlayerMeta.Path.WAND_MSG).equals("actionbar")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
             Msg.actionBar(player, Msg.n2s("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
@@ -62,7 +61,7 @@ public class WandEvent {
             Msg.actionBar(player, Msg.n2s("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
-        if (fd.getData().get("posMsg").equals("normal") && bool) {
+        if (pm.get(PlayerMeta.Path.WAND_MSG).equals("normal")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
             Msg.info(player, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
@@ -87,17 +86,12 @@ public class WandEvent {
         if (block == null) {
           return;
         }
-        boolean bool = wand.getEdit().setPosition(2, block.getLocation());
+
         Location loc = block.getLocation();
-        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
-        if (pm == null) {
-          return;
-        }
-        PlayerMeta.FunctionData fd = pm.getFunction(PlayerMeta.Function.WAND);
-        if (fd == null) {
-          return;
-        }
-        if (fd.getData().get("posMsg").equals("actionbar")) {
+
+        wand.getEdit().setPosition(2, loc);
+
+        if (pm.get(PlayerMeta.Path.WAND_MSG).equals("actionbar")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
             Msg.actionBar(player, Msg.n2s("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
@@ -105,7 +99,7 @@ public class WandEvent {
             Msg.actionBar(player, Msg.n2s("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
-        else if (fd.getData().get("posMsg").equals("normal") && bool) {
+        else if (pm.get(PlayerMeta.Path.WAND_MSG).equals("normal")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
             Msg.info(player, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }

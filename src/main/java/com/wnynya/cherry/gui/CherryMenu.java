@@ -1,12 +1,11 @@
 package com.wnynya.cherry.gui;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.amethyst.Skull;
 import com.wnynya.cherry.amethyst.SkullBank;
 import com.wnynya.cherry.player.PlayerMeta;
-import me.jho5245.cucumbery.Cucumbery;
+import com.wnynya.cherry.wand.Wand;
+import me.jho5245.cucumbery.command.sound.NoteBlockAPISong;
 import me.jho5245.cucumbery.util.CustomConfig;
 import org.bukkit.*;
 import org.bukkit.block.banner.Pattern;
@@ -109,18 +108,14 @@ public class CherryMenu {
         PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
 
         // 체리 완드
-        PlayerMeta.FunctionData fd1 = pm.getFunction(PlayerMeta.Function.WAND);
-
-        setBoolBtn(inv, 10, fd1.isEnable(),
+        setBoolBtn(inv, 10, pm.is(PlayerMeta.Path.WAND_ENABLE),
           new ItemStack(new ItemStack(Material.SWEET_BERRIES)), "체리 완드",
           Arrays.asList("&f체리 완드의 포지셔너 사용 여부를 설정합니다"),
           new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
 
 
         // 노트 툴즈
-        PlayerMeta.FunctionData fd2 = pm.getFunction(PlayerMeta.Function.NOTETOOL);
-
-        setBoolBtn(inv, 11, fd2.isEnable(),
+        setBoolBtn(inv, 11, pm.is(PlayerMeta.Path.NOTETOOL_ENABLE),
           new ItemStack(new ItemStack(Material.NOTE_BLOCK)), "노트 툴즈",
           Arrays.asList("&f노트 툴즈의 사용 여부를 설정합니다"),
           new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
@@ -161,26 +156,22 @@ public class CherryMenu {
           //MainMenu.showMenu(player);
         }
         if (n == 10 || n == 19) {
-          PlayerMeta.FunctionData fd1 = pm.getFunction(PlayerMeta.Function.WAND);
-          if (fd1.isEnable()) {
-            fd1.disable();
-            pm.getConfig().set("function.wand.enable", false);
+          if (pm.is(PlayerMeta.Path.WAND_ENABLE)) {
+            pm.set(PlayerMeta.Path.WAND_ENABLE, false);
+            Wand.getWand(player).disableParticleArea();
           }
           else {
-            fd1.enable();
-            pm.getConfig().set("function.wand.enable", true);
+            pm.set(PlayerMeta.Path.WAND_ENABLE, true);
+            Wand.getWand(player).enableParticleArea();
           }
           SubMenu.CherrySetting.showMenu(player);
         }
         if (n == 11 || n == 20) {
-          PlayerMeta.FunctionData fd2 = pm.getFunction(PlayerMeta.Function.NOTETOOL);
-          if (fd2.isEnable()) {
-            fd2.disable();
-            pm.getConfig().set("function.notetool.enable", false);
+          if (pm.is(PlayerMeta.Path.NOTETOOL_ENABLE)) {
+            pm.set(PlayerMeta.Path.NOTETOOL_ENABLE, false);
           }
           else {
-            fd2.enable();
-            pm.getConfig().set("function.notetool.enable", true);
+            pm.set(PlayerMeta.Path.NOTETOOL_ENABLE, true);
           }
           SubMenu.CherrySetting.showMenu(player);
         }
@@ -528,6 +519,14 @@ public class CherryMenu {
           else {
             cConfig.set("서버-라디오-들음", true);
             ccConfig.saveConfig();
+          }
+          if (NoteBlockAPISong.radioSongPlayer != null) {
+            if (cConfig.getBoolean(CustomConfig.Key.LISTEN_GLOBAL.getKey()) || cConfig.getBoolean(CustomConfig.Key.LISTEN_GLOBAL_FORCE.getKey())) {
+              NoteBlockAPISong.radioSongPlayer.addPlayer(player);
+            }
+            else {
+              NoteBlockAPISong.radioSongPlayer.removePlayer(player);
+            }
           }
           Setting_Sound.showMenu(player);
         }

@@ -1,7 +1,6 @@
-package com.wnynya.cherry.amethyst;
+package com.wnynya.cherry;
 
-import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -13,6 +12,8 @@ import java.util.*;
 
 public class Updater {
 
+  private static boolean updated = false;
+
   /**
    * 플러그인이 최신 버전인지 확인합니다.
    */
@@ -21,14 +22,14 @@ public class Updater {
     try {
 
       String type = Cherry.config.getString("updater.type");
-      URL url = new URL("http://cherry.wnynya.com/check/" + type + "?a=" + Cherry.getPlugin().getDescription().getAPIVersion() + "&s=updater");
+      URL url = new URL("http://cherry.wnynya.com/build/check/" + type + "?a=" + Cherry.getPlugin().getDescription().getAPIVersion() + "&s=updater");
 
       URLConnection urlConnection = url.openConnection();
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
 
       StringBuilder content = new StringBuilder();
       String line;
-      
+
       while ((line = bufferedReader.readLine()) != null) {
         content.append(line).append("\n");
       }
@@ -64,9 +65,10 @@ public class Updater {
     File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
 
     try {
+
       String type = Cherry.config.getString("updater.type");
 
-      URL url = new URL("http://cherry.wnynya.com/get/" + version + "?s=updater");
+      URL url = new URL("http://cherry.wnynya.com/build/get/" + type + "/" + version + "?s=updater");
 
       file.getParentFile().mkdirs();
       file.createNewFile();
@@ -115,7 +117,6 @@ public class Updater {
 
     try {
       File origin = new File(plugins, Cherry.fileName);
-      Msg.info(origin.toString());
 
       byte[] data = Files.readAllBytes(file.toPath());
       Path path = cherryJar.toPath();
@@ -131,7 +132,11 @@ public class Updater {
       throw e;
     }
 
+    updated = true;
+
     file.delete();
+
+    timer.cancel();
 
     Cherry.load(cherryJar);
   }
@@ -140,13 +145,17 @@ public class Updater {
     loop();
   }
 
+
+  private static Timer timer = new Timer();
+
   public static void loop() {
     String type = Cherry.config.getString("updater.type");
-    Timer timer = new Timer();
 
     boolean showMsg = Cherry.config.getBoolean("updater.show-msg");
 
     if (Cherry.config.getBoolean("updater.auto")) {
+
+      String ver = Cherry.getPlugin().getDescription().getVersion();
 
       if (type.equals("release")) {
         timer.schedule(new TimerTask() {
@@ -183,26 +192,39 @@ public class Updater {
         timer.schedule(new TimerTask() {
           public void run() {
 
-            VersionInfo vi = checkCherry();
+            if (!updated) {
 
-            if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
+              VersionInfo vi = checkCherry();
 
-              if (showMsg) { Msg.info("[Dev] Plugin outdated. update plugin."); }
-              try {
-                updateCherry(vi.getVersion());
+              if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
+
+                if (showMsg) {
+                  Msg.info("[Dev] Plugin outdated. update plugin.");
+                }
+                try {
+                  updateCherry(vi.getVersion());
+                }
+                catch (Exception e) {
+                  e.printStackTrace();
+                  if (showMsg) {
+                    Msg.info("[Dev] Update Failed.");
+                  }
+                  return;
+                }
+                timer.cancel();
+
+                if (showMsg) {
+                  Msg.info("[Dev] Update Complete.");
+                }
+
               }
-              catch (Exception e) {
-                e.printStackTrace();
-                if (showMsg) { Msg.info("[Dev] Update Failed."); }
-              }
-              timer.cancel();
 
-              if (showMsg) { Msg.info("[Dev] Update Complete."); }
+              File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
+              if (file.exists()) {
+                file.delete();
+              }
 
             }
-
-            File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
-            if (file.exists()) { file.delete(); }
 
           }
         }, 0, 10 * 1000);

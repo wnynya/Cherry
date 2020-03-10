@@ -1,5 +1,6 @@
-package com.wnynya.cherry.amethyst;
+package com.wnynya.cherry.terminal;
 
+import com.wnynya.cherry.terminal.WebSocketClient;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;

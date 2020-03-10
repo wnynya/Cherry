@@ -1,10 +1,8 @@
-package com.wnynya.cherry.amethyst;
+package com.wnynya.cherry;
 
 import java.io.File;
 
-import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.Tool;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.event.Listener;
@@ -84,7 +82,12 @@ public class Config implements Listener {
 		if (!(configFile.exists())) {
 
 			try {
-				Msg.info("Create new config file (" + this.configName + ")");
+				if (Msg.enabled) {
+					Msg.info("Create new config file (" + this.configName + ")");
+				}
+				else {
+					Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Create new config file (" + this.configName + ")");
+				}
 				YamlConfiguration config = YamlConfiguration.loadConfiguration(configFile);
 				config.save(configFile);
 			} catch (Exception e) {

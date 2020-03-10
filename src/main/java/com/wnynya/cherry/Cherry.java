@@ -17,6 +17,7 @@ import com.wnynya.cherry.event.*;
 
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import com.wnynya.cherry.wand.Wand;
 import com.wnynya.cherry.world.CherryWorld;
 import org.bukkit.Bukkit;
@@ -58,6 +59,7 @@ public class Cherry extends JavaPlugin {
     initConfig();
 
     Msg.enable();
+    WebSocketClient.enable();
 
     serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
     fileName = this.getFile().getName();
@@ -79,8 +81,8 @@ public class Cherry extends JavaPlugin {
     registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
 
     // World
-    CherryWorld.init();
-    registerCommand("world", new WorldCommand(), new WorldTabCompleter());
+    //CherryWorld.init();
+    //registerCommand("world", new WorldCommand(), new WorldTabCompleter());
 
     // Events
     registerEvent(new PlayerChat());
@@ -126,8 +128,11 @@ public class Cherry extends JavaPlugin {
   }
 
   private void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
-    this.getCommand(command).setExecutor(cmdExc);
-    this.getCommand(command).setTabCompleter(cmdTab);
+    Map commandMap = Cherry.getPlugin().getDescription().getCommands();
+    if (commandMap.containsKey(command)) {
+      this.getCommand(command).setExecutor(cmdExc);
+      this.getCommand(command).setTabCompleter(cmdTab);
+    }
   }
 
   private void registerEvent(Listener eventListener) {
@@ -139,16 +144,15 @@ public class Cherry extends JavaPlugin {
 
   // config.yml
   private boolean initConfig() {
-    config = new Config("config").getConfig();
+    config = this.getConfig();
     this.getConfig().options().copyDefaults(true);
     this.saveDefaultConfig();
-    config = this.getConfig();
 
     debug = config.getBoolean("debug");
     if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Debug Enabled"); }
     if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Config Loaded"); }
 
-    String configVersion = "1.1.27";
+    String configVersion = "1.1.29";
     String currentVersion = config.getString("config.version");
 
     // Config version check
@@ -242,7 +246,6 @@ public class Cherry extends JavaPlugin {
     }
     catch (Exception e) {
       e.printStackTrace();
-      return;
     }
     if (plugin == null) {
       return;

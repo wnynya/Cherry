@@ -1,5 +1,6 @@
 package com.wnynya.cherry.amethyst;
 
+import com.wnynya.cherry.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -13,7 +14,7 @@ public class CucumberySupport {
 
   public static void playerFirstJoin(Player player) {
     Config c = new Config("cucumbery");
-    if (exist()) {
+    if (!exist()) {
       // notetools 충돌
       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setuserdata " + player.getName() + " TOGGLE_INVERT_NOTE_BLOCK_PITCH_WHEN_SNEAKING_IN_CREATIVE_MODE " + c.getConfig().getBoolean("default.setuserdata.TOGGLE_INVERT_NOTE_BLOCK_PITCH_WHEN_SNEAKING_IN_CREATIVE_MODE") + " true");
       Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "setuserdata " + player.getName() + " TOGGLE_PLAY_NOTE_BLOCK_WHEN_SNEAKING_IN_CREATIVE_MODE " + c.getConfig().getBoolean("default.setuserdata.TOGGLE_PLAY_NOTE_BLOCK_WHEN_SNEAKING_IN_CREATIVE_MODE") + " true");

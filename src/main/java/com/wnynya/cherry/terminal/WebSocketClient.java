@@ -1,4 +1,4 @@
-package com.wnynya.cherry.amethyst;
+package com.wnynya.cherry.terminal;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
@@ -340,7 +340,6 @@ public class WebSocketClient {
     try {
       uri = new URI(Cherry.config.getString("websocket.host"));
       name = Cherry.config.getString("websocket.name");
-      Msg.info("connect to " + uri.toString());
     }
     catch (Exception e) {
       throw e;

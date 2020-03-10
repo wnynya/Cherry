@@ -2,9 +2,9 @@ package com.wnynya.cherry.player;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.Config;
 import com.wnynya.cherry.amethyst.CucumberySupport;
-import com.wnynya.cherry.amethyst.WebSocketClient;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import com.wnynya.cherry.portal.PortalEvent;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;

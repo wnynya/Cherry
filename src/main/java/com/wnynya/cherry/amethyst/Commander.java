@@ -1,9 +1,8 @@
 package com.wnynya.cherry.amethyst;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.Config;
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import java.io.*;

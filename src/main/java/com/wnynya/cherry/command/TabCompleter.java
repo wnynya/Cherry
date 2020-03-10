@@ -18,7 +18,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
     if (name.equalsIgnoreCase("cherry")) {
 
       if (args.length == 1) {
-        List<String> list = Arrays.asList("reload", "update", "version", "info", "reloadopt");
+        List<String> list = Arrays.asList("reload", "update", "version", "info");
         return autoComplete(list, args[0]);
       }
 

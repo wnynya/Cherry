@@ -1,6 +1,6 @@
-package com.wnynya.cherry.amethyst;
+package com.wnynya.cherry.terminal;
 
-import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.terminal.WebSocketClient;
 
 import java.net.http.WebSocket;
 import java.util.concurrent.CompletableFuture;

@@ -1,7 +1,7 @@
 package com.wnynya.cherry.farm;
 
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.Config;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;

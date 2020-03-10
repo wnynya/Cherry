@@ -1,8 +1,7 @@
 package com.wnynya.cherry.world;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.Config;
 import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.World;

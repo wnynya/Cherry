@@ -1,18 +1,17 @@
 package com.wnynya.cherry;
 
-import com.wnynya.cherry.amethyst.WebSocketClient;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 public class Msg {
+
+	public static boolean enabled = false;
 
 	// Player
 
@@ -399,6 +398,6 @@ public class Msg {
 
 	public static void enable() {
 		load();
-		WebSocketClient.enable();
+		enabled = true;
 	}
 }

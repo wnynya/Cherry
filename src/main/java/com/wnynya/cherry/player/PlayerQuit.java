@@ -2,7 +2,7 @@ package com.wnynya.cherry.player;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.WebSocketClient;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;

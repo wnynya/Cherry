@@ -22,7 +22,7 @@ public class NoteTool {
       if (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.NOTE_BLOCK)) {
         Player player = event.getPlayer();
         PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
-        if (pm == null || !pm.getFunction(PlayerMeta.Function.NOTETOOL).isEnable()) {
+        if (!pm.is(PlayerMeta.Path.NOTETOOL_ENABLE)) {
           return;
         }
         if (player.isSneaking()) {
@@ -31,9 +31,6 @@ public class NoteTool {
             || !event.getItem().getType().isBlock() ) {
           }
           else {
-            if (pm.getFunction(PlayerMeta.Function.NOTETOOL).getData().get("blockOnHand").equals("use")) {
-              return;
-            }
           }
           if (event.getHand().equals(EquipmentSlot.OFF_HAND)) {
             return;
@@ -136,7 +133,7 @@ public class NoteTool {
       if (event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.NOTE_BLOCK)) {
         Player player = event.getPlayer();
         PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
-        if (pm == null || !pm.getFunction(PlayerMeta.Function.NOTETOOL).isEnable()) {
+        if (!pm.is(PlayerMeta.Path.NOTETOOL_ENABLE)) {
           return;
         }
         if ((player.isSneaking()

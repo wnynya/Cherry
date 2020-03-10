@@ -4,7 +4,7 @@ import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.Config;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

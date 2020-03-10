@@ -1,122 +1,81 @@
 package com.wnynya.cherry.player;
 
-import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.amethyst.Config;
+import com.wnynya.cherry.Config;
 import org.bukkit.Bukkit;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 import java.util.HashMap;
 
 public class PlayerMeta {
 
   private static HashMap<Player, PlayerMeta> playerMetas = new HashMap<>();
-
-  private HashMap<Function, FunctionData> functions = new HashMap<>();
   private static Config playerConfig;
 
   PlayerMeta(Player player) {
 
     playerConfig = new Config("player/" + player.getUniqueId().toString());
 
-    if (playerConfig.getConfig().get("name") == null) {
+    FileConfiguration config = playerConfig.getConfig();
+
+    if (config.get("name") == null) {
       playerConfig.set("name", player.getName());
     }
 
-    if (playerConfig.getConfig().get("uuid") == null) {
+    if (config.get("uuid") == null) {
       playerConfig.set("uuid", player.getUniqueId().toString());
     }
 
-    // 완드
-    functions.put(Function.WAND, initFunctionData("wand", "{\"posMsg\":\"actionbar\"}"));
+    if (!config.isBoolean(Path.WAND_ENABLE.val())) {
+      playerConfig.set(Path.WAND_ENABLE.val(), true);
+    }
 
-    // 포탈
-    functions.put(Function.PORTAL, initFunctionData("portal", "{\"effect\":\"\"}"));
+    if (!config.isString(Path.WAND_MSG.val())) {
+      playerConfig.set(Path.WAND_MSG.val(), "actionbar");
+    }
 
-    functions.put(Function.NICKNAME, initFunctionData("nickname", "{\"nickname\":\"\"}"));
-
-    functions.put(Function.NOTETOOL, initFunctionData("notetool", "{\"blockOnHand\":\"use\"}"));
+    if (!config.isBoolean(Path.NOTETOOL_ENABLE.val())) {
+      playerConfig.set(Path.NOTETOOL_ENABLE.val(), true);
+    }
 
   }
 
-  public FunctionData getFunction(Function function) {
-    return functions.getOrDefault(function, null);
+  public boolean is(Path path) {
+    return playerConfig.getConfig().getBoolean(path.val());
+  }
+
+  public String get(Path path) {
+    return playerConfig.getConfig().getString(path.val());
+  }
+
+  public void set(Path path, Object val) {
+    playerConfig.set(path.val(), val);
   }
 
   public Config getConfig() {
     return playerConfig;
   }
 
-  public static class FunctionData {
-    private String name;
-    private boolean enable;
-    private JSONObject data;
+  public static enum Path {
+    WAND_ENABLE("wand.enable"),
+    WAND_MSG("wand.msg"),
+    NOTETOOL_ENABLE("notetool.enable"),
+    ;
 
-    FunctionData(boolean defaultEnable, JSONObject defaultData) {
-      name = name;
-      enable = defaultEnable;
-      data = defaultData;
-    }
+    private String path;
 
-    public void enable() {
-      enable = true;
-    }
-    public void disable() {
-      enable = false;
-    }
-    public boolean isEnable() {
-      return enable;
+    Path(String path) {
+      this.path = path;
     }
 
-    public boolean setData(String key, String val, boolean force) {
-      if (data.get(key) != null) {
-        data.replace(key, val);
-        return true;
-      }
-      else {
-        if (force) {
-          data.put(key, val);
-        }
-        return false;
-      }
+    @Override
+    public String toString() {
+      return path;
     }
 
-    public JSONObject getData() {
-      return data;
+    public String val() {
+      return path;
     }
-  }
-
-  private static FunctionData initFunctionData(String name, String defaultData) {
-    if (!playerConfig.getConfig().isBoolean("function." + name + ".enable") ) {
-      playerConfig.set("function." + name + ".enable", Cherry.config.getBoolean("playermeta.function." + name + ".enable"));
-    }
-    if (!playerConfig.getConfig().isString("function." + name + ".data") ) {
-      playerConfig.set("function." + name + ".data", Cherry.config.getString("playermeta.function." + name + ".data"));
-    }
-    JSONParser parser = new JSONParser();
-    JSONObject object = null;
-    try {
-      object = (JSONObject) parser.parse(playerConfig.getConfig().getString("function." + name + ".data"));
-    }
-    catch (Exception e) {
-      try {
-        object = (JSONObject) parser.parse(defaultData);
-      }
-      catch (Exception ex) {
-        ex.printStackTrace();
-      }
-    }
-    boolean bool = playerConfig.getConfig().getBoolean("function." + name + ".enable");
-    FunctionData fd = new FunctionData(bool, object);
-    return fd;
-  }
-
-  public static enum Function {
-    WAND,
-    PORTAL,
-    NICKNAME,
-    NOTETOOL
   }
 
   public static void initPlayerMeta(Player player) {
@@ -124,7 +83,6 @@ public class PlayerMeta {
       PlayerMeta pm = new PlayerMeta(player);
       playerMetas.put(player, pm);
     }
-
   }
 
   public static PlayerMeta getPlayerMeta(Player player) {

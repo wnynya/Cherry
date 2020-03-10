@@ -1,6 +1,6 @@
 package com.wnynya.cherry.event;
 
-import com.wnynya.cherry.amethyst.WebSocketClient;
+import com.wnynya.cherry.terminal.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.BlockCommandSender;

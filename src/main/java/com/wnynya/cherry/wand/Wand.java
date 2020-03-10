@@ -2,8 +2,8 @@ package com.wnynya.cherry.wand;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.amethyst.Config;
-import com.wnynya.cherry.amethyst.Updater;
+import com.wnynya.cherry.Config;
+import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.area.Area;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -13,7 +13,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.io.File;
 import java.util.*;
 
 /*
@@ -447,8 +446,12 @@ public class Wand {
       public void run() {
         if (particleAreaPlay) {
           if (player.isOnline()) {
-            for (Location loc : particleArea) {
-              player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 85, 255), 1));
+            if (PlayerMeta.getPlayerMeta(player).is(PlayerMeta.Path.WAND_ENABLE)) {
+              if (particleArea!= null) {
+                for (Location loc : particleArea) {
+                  player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 85, 255), 1));
+                }
+              }
             }
           }
         }
@@ -540,7 +543,13 @@ public class Wand {
     if (Cherry.debug) { Msg.info("Wand v0.3"); }
 
     Material material;
-    material = Material.SWEET_BERRIES;
+    Material mat = Material.getMaterial(Cherry.config.getString("wand.edit.normal-item:"));
+    if (mat != null) {
+      material = mat;
+    }
+    else {
+      material = Material.SWEET_BERRIES;
+    }
     wandItem_editPositioner = new ItemStack(material);
 
     material = Material.SPECTRAL_ARROW;
