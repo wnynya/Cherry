@@ -57,9 +57,7 @@ public class PlayerMeta {
   }
 
   public static enum Path {
-    WAND_ENABLE("wand.enable"),
-    WAND_MSG("wand.msg"),
-    NOTETOOL_ENABLE("notetool.enable"),
+    WAND_ENABLE("wand.enable"), WAND_MSG("wand.msg"), NOTETOOL_ENABLE("notetool.enable"),
     ;
 
     private String path;

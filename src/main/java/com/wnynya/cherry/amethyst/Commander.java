@@ -5,7 +5,8 @@ import com.wnynya.cherry.Config;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class Commander {
 
@@ -15,7 +16,9 @@ public class Commander {
       builder.redirectErrorStream(true);
       Process p = builder.start();
       BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-    } catch (Exception ignored) {}
+    }
+    catch (Exception ignored) {
+    }
   }
 
   public static void opList() {

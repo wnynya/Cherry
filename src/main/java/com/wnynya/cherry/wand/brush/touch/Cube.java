@@ -1,6 +1,5 @@
 package com.wnynya.cherry.wand.brush.touch;
 
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.wand.Wand;
 import com.wnynya.cherry.wand.WandBrush;
 import com.wnynya.cherry.wand.area.Area;
@@ -12,7 +11,8 @@ import java.util.List;
 
 public class Cube implements BrushToucher {
 
-  public Cube() {}
+  public Cube() {
+  }
 
   @Override
   public void touch(Location location, Wand wand, boolean applyPhysics) {

@@ -1,15 +1,12 @@
 package com.wnynya.cherry.command.playermeta;
 
-import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
-import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
 
 public class PlayerMetaCommand implements CommandExecutor {
 

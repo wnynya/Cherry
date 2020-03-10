@@ -1,6 +1,5 @@
 package com.wnynya.cherry.amethyst;
 
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
 import org.bukkit.*;
 import org.bukkit.block.Block;
@@ -26,9 +25,7 @@ public class NoteTool {
           return;
         }
         if (player.isSneaking()) {
-          if ( event.getItem() == null
-            || event.getItem().getType().equals(Material.AIR)
-            || !event.getItem().getType().isBlock() ) {
+          if (event.getItem() == null || event.getItem().getType().equals(Material.AIR) || !event.getItem().getType().isBlock()) {
           }
           else {
           }
@@ -136,13 +133,7 @@ public class NoteTool {
         if (!pm.is(PlayerMeta.Path.NOTETOOL_ENABLE)) {
           return;
         }
-        if ((player.isSneaking()
-          || (event.getItem() != null && (event.getItem().getType().equals(Material.WOODEN_SWORD)
-            || event.getItem().getType().equals(Material.STONE_SWORD)
-            || event.getItem().getType().equals(Material.IRON_SWORD)
-            || event.getItem().getType().equals(Material.GOLDEN_SWORD)
-            || event.getItem().getType().equals(Material.DIAMOND_SWORD)) ))
-          && player.getGameMode().equals(GameMode.CREATIVE)) {
+        if ((player.isSneaking() || (event.getItem() != null && (event.getItem().getType().equals(Material.WOODEN_SWORD) || event.getItem().getType().equals(Material.STONE_SWORD) || event.getItem().getType().equals(Material.IRON_SWORD) || event.getItem().getType().equals(Material.GOLDEN_SWORD) || event.getItem().getType().equals(Material.DIAMOND_SWORD)))) && player.getGameMode().equals(GameMode.CREATIVE)) {
           event.setCancelled(true);
           Block block = event.getClickedBlock();
           NoteBlock noteBlock = (NoteBlock) block.getBlockData();

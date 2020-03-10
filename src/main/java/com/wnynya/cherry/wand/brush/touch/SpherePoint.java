@@ -10,7 +10,8 @@ import java.util.List;
 
 public class SpherePoint implements BrushToucher {
 
-  public SpherePoint() {}
+  public SpherePoint() {
+  }
 
   @Override
   public void touch(Location location, Wand wand, boolean applyPhysics) {

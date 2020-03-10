@@ -1,12 +1,8 @@
 package com.wnynya.cherry.event;
 
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.portal.PortalEvent;
 import org.bukkit.GameMode;
-import org.bukkit.Statistic;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerToggleFlightEvent;
@@ -19,11 +15,11 @@ public class JumpChk implements Listener {
 
     Msg.info("j");
 
-    if(!event.getPlayer().isFlying() && event.getPlayer().getGameMode() != GameMode.CREATIVE) {
+    if (!event.getPlayer().isFlying() && event.getPlayer().getGameMode() != GameMode.CREATIVE) {
 
       event.setCancelled(true);
 
-      event.getPlayer().setVelocity(event.getPlayer().getVelocity().add(new Vector(0,1,0)));
+      event.getPlayer().setVelocity(event.getPlayer().getVelocity().add(new Vector(0, 1, 0)));
 
       Msg.info(event.getPlayer(), "kump!");
 

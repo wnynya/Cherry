@@ -1,6 +1,5 @@
 package com.wnynya.cherry.event;
 
-import com.wnynya.cherry.amethyst.Item2Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;

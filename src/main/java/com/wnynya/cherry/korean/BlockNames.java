@@ -8,4034 +8,3362 @@ public enum BlockNames implements BlockName {
     public String getName() {
       return "아카시아나무 버튼";
     }
-  },
-  ACACIA_DOOR {
+  }, ACACIA_DOOR {
     @Override
     public String getName() {
       return "아카시아나무 문";
     }
-  },
-  ACACIA_FENCE {
+  }, ACACIA_FENCE {
     @Override
     public String getName() {
       return "아카시아나무 울타리";
     }
-  },
-  ACACIA_FENCE_GATE {
+  }, ACACIA_FENCE_GATE {
     @Override
     public String getName() {
       return "아카시아나무 울타리 문";
     }
-  },
-  ACACIA_LEAVES {
+  }, ACACIA_LEAVES {
     @Override
     public String getName() {
       return "아카시아나무 잎";
     }
-  },
-  ACACIA_LOG {
+  }, ACACIA_LOG {
     @Override
     public String getName() {
       return "아카시아나무 원목";
     }
-  },
-  ACACIA_PLANKS {
+  }, ACACIA_PLANKS {
     @Override
     public String getName() {
       return "아카시아나무 판자";
     }
-  },
-  ACACIA_PRESSURE_PLATE {
+  }, ACACIA_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "아카시아나무 압력판";
     }
-  },
-  ACACIA_SAPLING {
+  }, ACACIA_SAPLING {
     @Override
     public String getName() {
       return "아카시아나무 묘목";
     }
-  },
-  ACACIA_SIGN {
+  }, ACACIA_SIGN {
     @Override
     public String getName() {
       return "아카시아나무 표지판";
     }
-  },
-  ACACIA_SLAB {
+  }, ACACIA_SLAB {
     @Override
     public String getName() {
       return "아카시아나무 반 블록";
     }
-  },
-  ACACIA_STAIRS {
+  }, ACACIA_STAIRS {
     @Override
     public String getName() {
       return "아카시아나무 계단";
     }
-  },
-  ACACIA_TRAPDOOR {
+  }, ACACIA_TRAPDOOR {
     @Override
     public String getName() {
       return "아카시아나무 다락문";
     }
-  },
-  ACACIA_WALL_SIGN {
+  }, ACACIA_WALL_SIGN {
     @Override
     public String getName() {
       return "아카시아나무 벽 표지판";
     }
-  },
-  ACACIA_WOOD {
+  }, ACACIA_WOOD {
     @Override
     public String getName() {
       return "아카시아나무";
     }
-  },
-  ACTIVATOR_RAIL {
+  }, ACTIVATOR_RAIL {
     @Override
     public String getName() {
       return "활성화 레일";
     }
-  },
-  AIR {
+  }, AIR {
     @Override
     public String getName() {
       return "공기";
     }
-  },
-  ALLIUM {
+  }, ALLIUM {
     @Override
     public String getName() {
       return "파꽃";
     }
-  },
-  ANDESITE {
+  }, ANDESITE {
     @Override
     public String getName() {
       return "안산암";
     }
-  },
-  ANDESITE_SLAB {
+  }, ANDESITE_SLAB {
     @Override
     public String getName() {
       return "안산암 반 블록";
     }
-  },
-  ANDESITE_STAIRS {
+  }, ANDESITE_STAIRS {
     @Override
     public String getName() {
       return "안산암 계단";
     }
-  },
-  ANDESITE_WALL {
+  }, ANDESITE_WALL {
     @Override
     public String getName() {
       return "안산암 담장";
     }
-  },
-  ANVIL {
+  }, ANVIL {
     @Override
     public String getName() {
       return "모루";
     }
-  },
-  ATTACHED_MELON_STEM {
+  }, ATTACHED_MELON_STEM {
     @Override
     public String getName() {
       return "수박이 달린 줄기";
     }
-  },
-  ATTACHED_PUMPKIN_STEM {
+  }, ATTACHED_PUMPKIN_STEM {
     @Override
     public String getName() {
       return "호박이 달린 줄기";
     }
-  },
-  AZURE_BLUET {
+  }, AZURE_BLUET {
     @Override
     public String getName() {
       return "선애기별꽃";
     }
-  },
-  BAMBOO {
+  }, BAMBOO {
     @Override
     public String getName() {
       return "대나무";
     }
-  },
-  BAMBOO_SAPLING {
+  }, BAMBOO_SAPLING {
     @Override
     public String getName() {
       return "대나무 묘목";
     }
-  },
-  BANNER {
+  }, BANNER {
     @Override
     public String getName() {
       return "현수막";
     }
-  },
-  BARREL {
+  }, BARREL {
     @Override
     public String getName() {
       return "통";
     }
-  },
-  BARRIER {
+  }, BARRIER {
     @Override
     public String getName() {
       return "방벽";
     }
-  },
-  BEACON {
+  }, BEACON {
     @Override
     public String getName() {
       return "신호기";
     }
-  },
-  BED {
+  }, BED {
     @Override
     public String getName() {
       return "침대";
     }
-  },
-  BEDROCK {
+  }, BEDROCK {
     @Override
     public String getName() {
       return "기반암";
     }
-  },
-  BEE_NEST {
+  }, BEE_NEST {
     @Override
     public String getName() {
       return "벌집";
     }
-  },
-  BEEHIVE {
+  }, BEEHIVE {
     @Override
     public String getName() {
       return "벌통";
     }
-  },
-  BEETROOTS {
+  }, BEETROOTS {
     @Override
     public String getName() {
       return "사탕무";
     }
-  },
-  BELL {
+  }, BELL {
     @Override
     public String getName() {
       return "종";
     }
-  },
-  BIRCH_BUTTON {
+  }, BIRCH_BUTTON {
     @Override
     public String getName() {
       return "자작나무 버튼";
     }
-  },
-  BIRCH_DOOR {
+  }, BIRCH_DOOR {
     @Override
     public String getName() {
       return "자작나무 문";
     }
-  },
-  BIRCH_FENCE {
+  }, BIRCH_FENCE {
     @Override
     public String getName() {
       return "자작나무 울타리";
     }
-  },
-  BIRCH_FENCE_GATE {
+  }, BIRCH_FENCE_GATE {
     @Override
     public String getName() {
       return "자작나무 울타리 문";
     }
-  },
-  BIRCH_LEAVES {
+  }, BIRCH_LEAVES {
     @Override
     public String getName() {
       return "자작나무 잎";
     }
-  },
-  BIRCH_LOG {
+  }, BIRCH_LOG {
     @Override
     public String getName() {
       return "자작나무 원목";
     }
-  },
-  BIRCH_PLANKS {
+  }, BIRCH_PLANKS {
     @Override
     public String getName() {
       return "자작나무 판자";
     }
-  },
-  BIRCH_PRESSURE_PLATE {
+  }, BIRCH_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "자작나무 압력판";
     }
-  },
-  BIRCH_SAPLING {
+  }, BIRCH_SAPLING {
     @Override
     public String getName() {
       return "자작나무 묘목";
     }
-  },
-  BIRCH_SIGN {
+  }, BIRCH_SIGN {
     @Override
     public String getName() {
       return "자작나무 표지판";
     }
-  },
-  BIRCH_SLAB {
+  }, BIRCH_SLAB {
     @Override
     public String getName() {
       return "자작나무 반 블록";
     }
-  },
-  BIRCH_STAIRS {
+  }, BIRCH_STAIRS {
     @Override
     public String getName() {
       return "자작나무 계단";
     }
-  },
-  BIRCH_TRAPDOOR {
+  }, BIRCH_TRAPDOOR {
     @Override
     public String getName() {
       return "자작나무 다락문";
     }
-  },
-  BIRCH_WALL_SIGN {
+  }, BIRCH_WALL_SIGN {
     @Override
     public String getName() {
       return "자작나무 벽 표지판";
     }
-  },
-  BIRCH_WOOD {
+  }, BIRCH_WOOD {
     @Override
     public String getName() {
       return "자작나무";
     }
-  },
-  BLACK_BANNER {
+  }, BLACK_BANNER {
     @Override
     public String getName() {
       return "검은색 현수막";
     }
-  },
-  BLACK_BED {
+  }, BLACK_BED {
     @Override
     public String getName() {
       return "검은색 침대";
     }
-  },
-  BLACK_CARPET {
+  }, BLACK_CARPET {
     @Override
     public String getName() {
       return "검은색 양탄자";
     }
-  },
-  BLACK_CONCRETE {
+  }, BLACK_CONCRETE {
     @Override
     public String getName() {
       return "검은색 콘크리트";
     }
-  },
-  BLACK_CONCRETE_POWDER {
+  }, BLACK_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "검은색 콘크리트 가루";
     }
-  },
-  BLACK_GLAZED_TERRACOTTA {
+  }, BLACK_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "검은색 유광 테라코타";
     }
-  },
-  BLACK_SHULKER_BOX {
+  }, BLACK_SHULKER_BOX {
     @Override
     public String getName() {
       return "검은색 셜커 상자";
     }
-  },
-  BLACK_STAINED_GLASS {
+  }, BLACK_STAINED_GLASS {
     @Override
     public String getName() {
       return "검은색 색유리";
     }
-  },
-  BLACK_STAINED_GLASS_PANE {
+  }, BLACK_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "검은색 색유리 판";
     }
-  },
-  BLACK_TERRACOTTA {
+  }, BLACK_TERRACOTTA {
     @Override
     public String getName() {
       return "검은색 테라코타";
     }
-  },
-  BLACK_WOOL {
+  }, BLACK_WOOL {
     @Override
     public String getName() {
       return "검은색 양털";
     }
-  },
-  BLAST_FURNACE {
+  }, BLAST_FURNACE {
     @Override
     public String getName() {
       return "용광로";
     }
-  },
-  BLUE_BANNER {
+  }, BLUE_BANNER {
     @Override
     public String getName() {
       return "파란색 현수막";
     }
-  },
-  BLUE_BED {
+  }, BLUE_BED {
     @Override
     public String getName() {
       return "파란색 침대";
     }
-  },
-  BLUE_CARPET {
+  }, BLUE_CARPET {
     @Override
     public String getName() {
       return "파란색 양탄자";
     }
-  },
-  BLUE_CONCRETE {
+  }, BLUE_CONCRETE {
     @Override
     public String getName() {
       return "파란색 콘크리트";
     }
-  },
-  BLUE_CONCRETE_POWDER {
+  }, BLUE_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "파란색 콘크리트 가루";
     }
-  },
-  BLUE_GLAZED_TERRACOTTA {
+  }, BLUE_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "파란색 유광 테라코타";
     }
-  },
-  BLUE_ICE {
+  }, BLUE_ICE {
     @Override
     public String getName() {
       return "푸른얼음";
     }
-  },
-  BLUE_ORCHID {
+  }, BLUE_ORCHID {
     @Override
     public String getName() {
       return "파란색 난초";
     }
-  },
-  BLUE_SHULKER_BOX {
+  }, BLUE_SHULKER_BOX {
     @Override
     public String getName() {
       return "파란색 셜커 상자";
     }
-  },
-  BLUE_STAINED_GLASS {
+  }, BLUE_STAINED_GLASS {
     @Override
     public String getName() {
       return "파란색 색유리";
     }
-  },
-  BLUE_STAINED_GLASS_PANE {
+  }, BLUE_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "파란색 색유리 판";
     }
-  },
-  BLUE_TERRACOTTA {
+  }, BLUE_TERRACOTTA {
     @Override
     public String getName() {
       return "파란색 테라코타";
     }
-  },
-  BLUE_WOOL {
+  }, BLUE_WOOL {
     @Override
     public String getName() {
       return "파란색 양털";
     }
-  },
-  BONE_BLOCK {
+  }, BONE_BLOCK {
     @Override
     public String getName() {
       return "뼈 블록";
     }
-  },
-  BOOKSHELF {
+  }, BOOKSHELF {
     @Override
     public String getName() {
       return "책장";
     }
-  },
-  BRAIN_CORAL {
+  }, BRAIN_CORAL {
     @Override
     public String getName() {
       return "뇌 산호";
     }
-  },
-  BRAIN_CORAL_BLOCK {
+  }, BRAIN_CORAL_BLOCK {
     @Override
     public String getName() {
       return "뇌 산호 블록";
     }
-  },
-  BRAIN_CORAL_FAN {
+  }, BRAIN_CORAL_FAN {
     @Override
     public String getName() {
       return "부채형 뇌 산호";
     }
-  },
-  BRAIN_CORAL_WALL_FAN {
+  }, BRAIN_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "부채형 뇌 산호 벽";
     }
-  },
-  BREWING_STAND {
+  }, BREWING_STAND {
     @Override
     public String getName() {
       return "양조기";
     }
-  },
-  BRICK_SLAB {
+  }, BRICK_SLAB {
     @Override
     public String getName() {
       return "벽돌 반 블록";
     }
-  },
-  BRICK_STAIRS {
+  }, BRICK_STAIRS {
     @Override
     public String getName() {
       return "벽돌 계단";
     }
-  },
-  BRICK_WALL {
+  }, BRICK_WALL {
     @Override
     public String getName() {
       return "벽돌 담장";
     }
-  },
-  BRICKS {
+  }, BRICKS {
     @Override
     public String getName() {
       return "벽돌";
     }
-  },
-  BROWN_BANNER {
+  }, BROWN_BANNER {
     @Override
     public String getName() {
       return "갈색 현수막";
     }
-  },
-  BROWN_BED {
+  }, BROWN_BED {
     @Override
     public String getName() {
       return "갈색 침대";
     }
-  },
-  BROWN_CARPET {
+  }, BROWN_CARPET {
     @Override
     public String getName() {
       return "갈색 양탄자";
     }
-  },
-  BROWN_CONCRETE {
+  }, BROWN_CONCRETE {
     @Override
     public String getName() {
       return "갈색 콘크리트";
     }
-  },
-  BROWN_CONCRETE_POWDER {
+  }, BROWN_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "갈색 콘크리트 가루";
     }
-  },
-  BROWN_GLAZED_TERRACOTTA {
+  }, BROWN_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "갈색 유광 테라코타";
     }
-  },
-  BROWN_MUSHROOM {
+  }, BROWN_MUSHROOM {
     @Override
     public String getName() {
       return "갈색 버섯";
     }
-  },
-  BROWN_MUSHROOM_BLOCK {
+  }, BROWN_MUSHROOM_BLOCK {
     @Override
     public String getName() {
       return "갈색 버섯 블록";
     }
-  },
-  BROWN_SHULKER_BOX {
+  }, BROWN_SHULKER_BOX {
     @Override
     public String getName() {
       return "갈색 셜커 상자";
     }
-  },
-  BROWN_STAINED_GLASS {
+  }, BROWN_STAINED_GLASS {
     @Override
     public String getName() {
       return "갈색 색유리";
     }
-  },
-  BROWN_STAINED_GLASS_PANE {
+  }, BROWN_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "갈색 색유리 판";
     }
-  },
-  BROWN_TERRACOTTA {
+  }, BROWN_TERRACOTTA {
     @Override
     public String getName() {
       return "갈색 테라코타";
     }
-  },
-  BROWN_WOOL {
+  }, BROWN_WOOL {
     @Override
     public String getName() {
       return "갈색 양털";
     }
-  },
-  BUBBLE_COLUMN {
+  }, BUBBLE_COLUMN {
     @Override
     public String getName() {
       return "거품 기둥";
     }
-  },
-  BUBBLE_CORAL {
+  }, BUBBLE_CORAL {
     @Override
     public String getName() {
       return "거품 산호";
     }
-  },
-  BUBBLE_CORAL_BLOCK {
+  }, BUBBLE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "거품 산호 블록";
     }
-  },
-  BUBBLE_CORAL_FAN {
+  }, BUBBLE_CORAL_FAN {
     @Override
     public String getName() {
       return "부채형 거품 산호";
     }
-  },
-  BUBBLE_CORAL_WALL_FAN {
+  }, BUBBLE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "부채형 거품 산호 벽";
     }
-  },
-  CACTUS {
+  }, CACTUS {
     @Override
     public String getName() {
       return "선인장";
     }
-  },
-  CAKE {
+  }, CAKE {
     @Override
     public String getName() {
       return "케이크";
     }
-  },
-  CAMPFIRE {
+  }, CAMPFIRE {
     @Override
     public String getName() {
       return "모닥불";
     }
-  },
-  CARROTS {
+  }, CARROTS {
     @Override
     public String getName() {
       return "당근";
     }
-  },
-  CARTOGRAPHY_TABLE {
+  }, CARTOGRAPHY_TABLE {
     @Override
     public String getName() {
       return "지도 제작대";
     }
-  },
-  CARVED_PUMPKIN {
+  }, CARVED_PUMPKIN {
     @Override
     public String getName() {
       return "조각된 호박";
     }
-  },
-  CAULDRON {
+  }, CAULDRON {
     @Override
     public String getName() {
       return "가마솥";
     }
-  },
-  CAVE_AIR {
+  }, CAVE_AIR {
     @Override
     public String getName() {
       return "동굴 공기";
     }
-  },
-  CHAIN_COMMAND_BLOCK {
+  }, CHAIN_COMMAND_BLOCK {
     @Override
     public String getName() {
       return "연쇄형 명령 블록";
     }
-  },
-  CHEST {
+  }, CHEST {
     @Override
     public String getName() {
       return "상자";
     }
-  },
-  CHIPPED_ANVIL {
+  }, CHIPPED_ANVIL {
     @Override
     public String getName() {
       return "금 간 모루";
     }
-  },
-  CHISELED_QUARTZ_BLOCK {
+  }, CHISELED_QUARTZ_BLOCK {
     @Override
     public String getName() {
       return "조각된 석영 블록";
     }
-  },
-  CHISELED_RED_SANDSTONE {
+  }, CHISELED_RED_SANDSTONE {
     @Override
     public String getName() {
       return "조각된 붉은 사암";
     }
-  },
-  CHISELED_SANDSTONE {
+  }, CHISELED_SANDSTONE {
     @Override
     public String getName() {
       return "조각된 사암";
     }
-  },
-  CHISELED_STONE_BRICKS {
+  }, CHISELED_STONE_BRICKS {
     @Override
     public String getName() {
       return "조각된 석재 벽돌";
     }
-  },
-  CHORUS_FLOWER {
+  }, CHORUS_FLOWER {
     @Override
     public String getName() {
       return "후렴화";
     }
-  },
-  CHORUS_PLANT {
+  }, CHORUS_PLANT {
     @Override
     public String getName() {
       return "후렴초";
     }
-  },
-  CLAY {
+  }, CLAY {
     @Override
     public String getName() {
       return "점토";
     }
-  },
-  COAL_BLOCK {
+  }, COAL_BLOCK {
     @Override
     public String getName() {
       return "석탄 블록";
     }
-  },
-  COAL_ORE {
+  }, COAL_ORE {
     @Override
     public String getName() {
       return "석탄 광석";
     }
-  },
-  COARSE_DIRT {
+  }, COARSE_DIRT {
     @Override
     public String getName() {
       return "거친 흙";
     }
-  },
-  COBBLESTONE {
+  }, COBBLESTONE {
     @Override
     public String getName() {
       return "조약돌";
     }
-  },
-  COBBLESTONE_SLAB {
+  }, COBBLESTONE_SLAB {
     @Override
     public String getName() {
       return "조약돌 반 블록";
     }
-  },
-  COBBLESTONE_STAIRS {
+  }, COBBLESTONE_STAIRS {
     @Override
     public String getName() {
       return "조약돌 계단";
     }
-  },
-  COBBLESTONE_WALL {
+  }, COBBLESTONE_WALL {
     @Override
     public String getName() {
       return "조약돌 담장";
     }
-  },
-  COBWEB {
+  }, COBWEB {
     @Override
     public String getName() {
       return "거미줄";
     }
-  },
-  COCOA {
+  }, COCOA {
     @Override
     public String getName() {
       return "코코아";
     }
-  },
-  COMMAND_BLOCK {
+  }, COMMAND_BLOCK {
     @Override
     public String getName() {
       return "명령 블록";
     }
-  },
-  COMPARATOR {
+  }, COMPARATOR {
     @Override
     public String getName() {
       return "레드스톤 비교기";
     }
-  },
-  COMPOSTER {
+  }, COMPOSTER {
     @Override
     public String getName() {
       return "퇴비통";
     }
-  },
-  CONDUIT {
+  }, CONDUIT {
     @Override
     public String getName() {
       return "전달체";
     }
-  },
-  CORNFLOWER {
+  }, CORNFLOWER {
     @Override
     public String getName() {
       return "수레국화";
     }
-  },
-  CRACKED_STONE_BRICKS {
+  }, CRACKED_STONE_BRICKS {
     @Override
     public String getName() {
       return "금 간 석재 벽돌";
     }
-  },
-  CRAFTING_TABLE {
+  }, CRAFTING_TABLE {
     @Override
     public String getName() {
       return "제작대";
     }
-  },
-  CREEPER_HEAD {
+  }, CREEPER_HEAD {
     @Override
     public String getName() {
       return "크리퍼 머리";
     }
-  },
-  CREEPER_WALL_HEAD {
+  }, CREEPER_WALL_HEAD {
     @Override
     public String getName() {
       return "크리퍼 벽 머리";
     }
-  },
-  CUT_RED_SANDSTONE {
+  }, CUT_RED_SANDSTONE {
     @Override
     public String getName() {
       return "깎인 붉은 사암";
     }
-  },
-  CUT_RED_SANDSTONE_SLAB {
+  }, CUT_RED_SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "깎인 붉은 사암 반 블록";
     }
-  },
-  CUT_SANDSTONE {
+  }, CUT_SANDSTONE {
     @Override
     public String getName() {
       return "깎인 사암";
     }
-  },
-  CUT_SANDSTONE_SLAB {
+  }, CUT_SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "깎인 사암 반 블록";
     }
-  },
-  CYAN_BANNER {
+  }, CYAN_BANNER {
     @Override
     public String getName() {
       return "청록색 현수막";
     }
-  },
-  CYAN_BED {
+  }, CYAN_BED {
     @Override
     public String getName() {
       return "청록색 침대";
     }
-  },
-  CYAN_CARPET {
+  }, CYAN_CARPET {
     @Override
     public String getName() {
       return "청록색 양탄자";
     }
-  },
-  CYAN_CONCRETE {
+  }, CYAN_CONCRETE {
     @Override
     public String getName() {
       return "청록색 콘크리트";
     }
-  },
-  CYAN_CONCRETE_POWDER {
+  }, CYAN_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "청록색 콘크리트 가루";
     }
-  },
-  CYAN_GLAZED_TERRACOTTA {
+  }, CYAN_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "청록색 유광 테라코타";
     }
-  },
-  CYAN_SHULKER_BOX {
+  }, CYAN_SHULKER_BOX {
     @Override
     public String getName() {
       return "청록색 셜커 상자";
     }
-  },
-  CYAN_STAINED_GLASS {
+  }, CYAN_STAINED_GLASS {
     @Override
     public String getName() {
       return "청록색 색유리";
     }
-  },
-  CYAN_STAINED_GLASS_PANE {
+  }, CYAN_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "청록색 색유리 판";
     }
-  },
-  CYAN_TERRACOTTA {
+  }, CYAN_TERRACOTTA {
     @Override
     public String getName() {
       return "청록색 테라코타";
     }
-  },
-  CYAN_WOOL {
+  }, CYAN_WOOL {
     @Override
     public String getName() {
       return "청록색 양털";
     }
-  },
-  DAMAGED_ANVIL {
+  }, DAMAGED_ANVIL {
     @Override
     public String getName() {
       return "손상된 모루";
     }
-  },
-  DANDELION {
+  }, DANDELION {
     @Override
     public String getName() {
       return "민들레";
     }
-  },
-  DARK_OAK_BUTTON {
+  }, DARK_OAK_BUTTON {
     @Override
     public String getName() {
       return "짙은 참나무 버튼";
     }
-  },
-  DARK_OAK_DOOR {
+  }, DARK_OAK_DOOR {
     @Override
     public String getName() {
       return "짙은 참나무 문";
     }
-  },
-  DARK_OAK_FENCE {
+  }, DARK_OAK_FENCE {
     @Override
     public String getName() {
       return "짙은 참나무 울타리";
     }
-  },
-  DARK_OAK_FENCE_GATE {
+  }, DARK_OAK_FENCE_GATE {
     @Override
     public String getName() {
       return "짙은 참나무 울타리 문";
     }
-  },
-  DARK_OAK_LEAVES {
+  }, DARK_OAK_LEAVES {
     @Override
     public String getName() {
       return "짙은 참나무 잎";
     }
-  },
-  DARK_OAK_LOG {
+  }, DARK_OAK_LOG {
     @Override
     public String getName() {
       return "짙은 참나무 원목";
     }
-  },
-  DARK_OAK_PLANKS {
+  }, DARK_OAK_PLANKS {
     @Override
     public String getName() {
       return "짙은 참나무 판자";
     }
-  },
-  DARK_OAK_PRESSURE_PLATE {
+  }, DARK_OAK_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "짙은 참나무 압력판";
     }
-  },
-  DARK_OAK_SAPLING {
+  }, DARK_OAK_SAPLING {
     @Override
     public String getName() {
       return "짙은 참나무 묘목";
     }
-  },
-  DARK_OAK_SIGN {
+  }, DARK_OAK_SIGN {
     @Override
     public String getName() {
       return "짙은 참나무 표지판";
     }
-  },
-  DARK_OAK_SLAB {
+  }, DARK_OAK_SLAB {
     @Override
     public String getName() {
       return "짙은 참나무 반 블록";
     }
-  },
-  DARK_OAK_STAIRS {
+  }, DARK_OAK_STAIRS {
     @Override
     public String getName() {
       return "짙은 참나무 계단";
     }
-  },
-  DARK_OAK_TRAPDOOR {
+  }, DARK_OAK_TRAPDOOR {
     @Override
     public String getName() {
       return "짙은 참나무 다락문";
     }
-  },
-  DARK_OAK_WALL_SIGN {
+  }, DARK_OAK_WALL_SIGN {
     @Override
     public String getName() {
       return "짙은 참나무 벽 표지판";
     }
-  },
-  DARK_OAK_WOOD {
+  }, DARK_OAK_WOOD {
     @Override
     public String getName() {
       return "짙은 참나무";
     }
-  },
-  DARK_PRISMARINE {
+  }, DARK_PRISMARINE {
     @Override
     public String getName() {
       return "짙은 프리즈머린";
     }
-  },
-  DARK_PRISMARINE_SLAB {
+  }, DARK_PRISMARINE_SLAB {
     @Override
     public String getName() {
       return "짙은 프리즈머린 반 블록";
     }
-  },
-  DARK_PRISMARINE_STAIRS {
+  }, DARK_PRISMARINE_STAIRS {
     @Override
     public String getName() {
       return "짙은 프리즈머린 계단";
     }
-  },
-  DAYLIGHT_DETECTOR {
+  }, DAYLIGHT_DETECTOR {
     @Override
     public String getName() {
       return "햇빛 감지기";
     }
-  },
-  DEAD_BRAIN_CORAL {
+  }, DEAD_BRAIN_CORAL {
     @Override
     public String getName() {
       return "죽은 뇌 산호";
     }
-  },
-  DEAD_BRAIN_CORAL_BLOCK {
+  }, DEAD_BRAIN_CORAL_BLOCK {
     @Override
     public String getName() {
       return "죽은 뇌 산호 블록";
     }
-  },
-  DEAD_BRAIN_CORAL_FAN {
+  }, DEAD_BRAIN_CORAL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 뇌 산호";
     }
-  },
-  DEAD_BRAIN_CORAL_WALL_FAN {
+  }, DEAD_BRAIN_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 뇌 산호 벽";
     }
-  },
-  DEAD_BUBBLE_CORAL {
+  }, DEAD_BUBBLE_CORAL {
     @Override
     public String getName() {
       return "죽은 거품 산호";
     }
-  },
-  DEAD_BUBBLE_CORAL_BLOCK {
+  }, DEAD_BUBBLE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "죽은 거품 산호 블록";
     }
-  },
-  DEAD_BUBBLE_CORAL_FAN {
+  }, DEAD_BUBBLE_CORAL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 거품 산호";
     }
-  },
-  DEAD_BUBBLE_CORAL_WALL_FAN {
+  }, DEAD_BUBBLE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 거품 산호 벽";
     }
-  },
-  DEAD_BUSH {
+  }, DEAD_BUSH {
     @Override
     public String getName() {
       return "마른 덤불";
     }
-  },
-  DEAD_FIRE_CORAL {
+  }, DEAD_FIRE_CORAL {
     @Override
     public String getName() {
       return "죽은 불 산호";
     }
-  },
-  DEAD_FIRE_CORAL_BLOCK {
+  }, DEAD_FIRE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "죽은 불 산호 블록";
     }
-  },
-  DEAD_FIRE_CORAL_FAN {
+  }, DEAD_FIRE_CORAL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 불 산호";
     }
-  },
-  DEAD_FIRE_CORAL_WALL_FAN {
+  }, DEAD_FIRE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 불 산호 벽";
     }
-  },
-  DEAD_HORN_CORAL {
+  }, DEAD_HORN_CORAL {
     @Override
     public String getName() {
       return "죽은 사방산호";
     }
-  },
-  DEAD_HORN_CORAL_BLOCK {
+  }, DEAD_HORN_CORAL_BLOCK {
     @Override
     public String getName() {
       return "죽은 사방산호 블록";
     }
-  },
-  DEAD_HORN_CORAL_FAN {
+  }, DEAD_HORN_CORAL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 사방산호";
     }
-  },
-  DEAD_HORN_CORAL_WALL_FAN {
+  }, DEAD_HORN_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 사방산호 벽";
     }
-  },
-  DEAD_TUBE_CORAL {
+  }, DEAD_TUBE_CORAL {
     @Override
     public String getName() {
       return "죽은 관 산호";
     }
-  },
-  DEAD_TUBE_CORAL_BLOCK {
+  }, DEAD_TUBE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "죽은 관 산호 블록";
     }
-  },
-  DEAD_TUBE_CORAL_FAN {
+  }, DEAD_TUBE_CORAL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 관 산호";
     }
-  },
-  DEAD_TUBE_CORAL_WALL_FAN {
+  }, DEAD_TUBE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "죽은 부채형 관 산호 벽";
     }
-  },
-  DETECTOR_RAIL {
+  }, DETECTOR_RAIL {
     @Override
     public String getName() {
       return "탐지 레일";
     }
-  },
-  DIAMOND_BLOCK {
+  }, DIAMOND_BLOCK {
     @Override
     public String getName() {
       return "다이아몬드 블록";
     }
-  },
-  DIAMOND_ORE {
+  }, DIAMOND_ORE {
     @Override
     public String getName() {
       return "다이아몬드 원석";
     }
-  },
-  DIORITE {
+  }, DIORITE {
     @Override
     public String getName() {
       return "섬록암";
     }
-  },
-  DIORITE_SLAB {
+  }, DIORITE_SLAB {
     @Override
     public String getName() {
       return "섬록암 반 블록";
     }
-  },
-  DIORITE_STAIRS {
+  }, DIORITE_STAIRS {
     @Override
     public String getName() {
       return "섬록암 계단";
     }
-  },
-  DIORITE_WALL {
+  }, DIORITE_WALL {
     @Override
     public String getName() {
       return "섬록암 담장";
     }
-  },
-  DIRT {
+  }, DIRT {
     @Override
     public String getName() {
       return "흙";
     }
-  },
-  DISPENSER {
+  }, DISPENSER {
     @Override
     public String getName() {
       return "발사기";
     }
-  },
-  DRAGON_EGG {
+  }, DRAGON_EGG {
     @Override
     public String getName() {
       return "드래곤 알";
     }
-  },
-  DRAGON_HEAD {
+  }, DRAGON_HEAD {
     @Override
     public String getName() {
       return "드래곤 머리";
     }
-  },
-  DRAGON_WALL_HEAD {
+  }, DRAGON_WALL_HEAD {
     @Override
     public String getName() {
       return "드래곤 벽 머리";
     }
-  },
-  DRIED_KELP_BLOCK {
+  }, DRIED_KELP_BLOCK {
     @Override
     public String getName() {
       return "말린 켈프 블록";
     }
-  },
-  DROPPER {
+  }, DROPPER {
     @Override
     public String getName() {
       return "공급기";
     }
-  },
-  EMERALD_BLOCK {
+  }, EMERALD_BLOCK {
     @Override
     public String getName() {
       return "에메랄드 블록";
     }
-  },
-  EMERALD_ORE {
+  }, EMERALD_ORE {
     @Override
     public String getName() {
       return "에메랄드 원석";
     }
-  },
-  ENCHANTING_TABLE {
+  }, ENCHANTING_TABLE {
     @Override
     public String getName() {
       return "마법 부여대";
     }
-  },
-  END_GATEWAY {
+  }, END_GATEWAY {
     @Override
     public String getName() {
       return "엔드 관문";
     }
-  },
-  END_PORTAL {
+  }, END_PORTAL {
     @Override
     public String getName() {
       return "엔드 차원문";
     }
-  },
-  END_PORTAL_FRAME {
+  }, END_PORTAL_FRAME {
     @Override
     public String getName() {
       return "엔드 차원문 틀";
     }
-  },
-  END_ROD {
+  }, END_ROD {
     @Override
     public String getName() {
       return "엔드 막대기";
     }
-  },
-  END_STONE {
+  }, END_STONE {
     @Override
     public String getName() {
       return "엔드 돌";
     }
-  },
-  END_STONE_BRICK_SLAB {
+  }, END_STONE_BRICK_SLAB {
     @Override
     public String getName() {
       return "엔드 석재 벽돌 반 블록";
     }
-  },
-  END_STONE_BRICK_STAIRS {
+  }, END_STONE_BRICK_STAIRS {
     @Override
     public String getName() {
       return "엔드 석재 벽돌 계단";
     }
-  },
-  END_STONE_BRICK_WALL {
+  }, END_STONE_BRICK_WALL {
     @Override
     public String getName() {
       return "엔드 석재 벽돌 담장";
     }
-  },
-  END_STONE_BRICKS {
+  }, END_STONE_BRICKS {
     @Override
     public String getName() {
       return "엔드 석재 벽돌";
     }
-  },
-  ENDER_CHEST {
+  }, ENDER_CHEST {
     @Override
     public String getName() {
       return "엔더 상자";
     }
-  },
-  FARMLAND {
+  }, FARMLAND {
     @Override
     public String getName() {
       return "경작지";
     }
-  },
-  FERN {
+  }, FERN {
     @Override
     public String getName() {
       return "고사리";
     }
-  },
-  FIRE {
+  }, FIRE {
     @Override
     public String getName() {
       return "불";
     }
-  },
-  FIRE_CORAL {
+  }, FIRE_CORAL {
     @Override
     public String getName() {
       return "불 산호";
     }
-  },
-  FIRE_CORAL_BLOCK {
+  }, FIRE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "불 산호 블록";
     }
-  },
-  FIRE_CORAL_FAN {
+  }, FIRE_CORAL_FAN {
     @Override
     public String getName() {
       return "부채형 불 산호";
     }
-  },
-  FIRE_CORAL_WALL_FAN {
+  }, FIRE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "부채형 불 산호 벽";
     }
-  },
-  FLETCHING_TABLE {
+  }, FLETCHING_TABLE {
     @Override
     public String getName() {
       return "화살 작업대";
     }
-  },
-  FLOWER_POT {
+  }, FLOWER_POT {
     @Override
     public String getName() {
       return "화분";
     }
-  },
-  FLOWING_LAVA {
+  }, FLOWING_LAVA {
     @Override
     public String getName() {
       return "흐르는 용암";
     }
-  },
-  FLOWING_WATER {
+  }, FLOWING_WATER {
     @Override
     public String getName() {
       return "흐르는 물";
     }
-  },
-  FOUR_TURTLE_EGGS {
+  }, FOUR_TURTLE_EGGS {
     @Override
     public String getName() {
       return "거북 알 네 개";
     }
-  },
-  FROSTED_ICE {
+  }, FROSTED_ICE {
     @Override
     public String getName() {
       return "살얼음";
     }
-  },
-  FURNACE {
+  }, FURNACE {
     @Override
     public String getName() {
       return "화로";
     }
-  },
-  GLASS {
+  }, GLASS {
     @Override
     public String getName() {
       return "유리";
     }
-  },
-  GLASS_PANE {
+  }, GLASS_PANE {
     @Override
     public String getName() {
       return "유리판";
     }
-  },
-  GLOWSTONE {
+  }, GLOWSTONE {
     @Override
     public String getName() {
       return "발광석";
     }
-  },
-  GOLD_BLOCK {
+  }, GOLD_BLOCK {
     @Override
     public String getName() {
       return "황금 블록";
     }
-  },
-  GOLD_ORE {
+  }, GOLD_ORE {
     @Override
     public String getName() {
       return "금광석";
     }
-  },
-  GRANITE {
+  }, GRANITE {
     @Override
     public String getName() {
       return "화강암";
     }
-  },
-  GRANITE_SLAB {
+  }, GRANITE_SLAB {
     @Override
     public String getName() {
       return "화강암 반 블록";
     }
-  },
-  GRANITE_STAIRS {
+  }, GRANITE_STAIRS {
     @Override
     public String getName() {
       return "화강암 계단";
     }
-  },
-  GRANITE_WALL {
+  }, GRANITE_WALL {
     @Override
     public String getName() {
       return "화강암 담장";
     }
-  },
-  GRASS {
+  }, GRASS {
     @Override
     public String getName() {
       return "잔디";
     }
-  },
-  GRASS_BLOCK {
+  }, GRASS_BLOCK {
     @Override
     public String getName() {
       return "잔디 블록";
     }
-  },
-  GRASS_PATH {
+  }, GRASS_PATH {
     @Override
     public String getName() {
       return "잔디 길";
     }
-  },
-  GRAVEL {
+  }, GRAVEL {
     @Override
     public String getName() {
       return "자갈";
     }
-  },
-  GRAY_BANNER {
+  }, GRAY_BANNER {
     @Override
     public String getName() {
       return "회색 현수막";
     }
-  },
-  GRAY_BED {
+  }, GRAY_BED {
     @Override
     public String getName() {
       return "회색 침대";
     }
-  },
-  GRAY_CARPET {
+  }, GRAY_CARPET {
     @Override
     public String getName() {
       return "회색 양탄자";
     }
-  },
-  GRAY_CONCRETE {
+  }, GRAY_CONCRETE {
     @Override
     public String getName() {
       return "회색 콘크리트";
     }
-  },
-  GRAY_CONCRETE_POWDER {
+  }, GRAY_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "회색 콘크리트 가루";
     }
-  },
-  GRAY_GLAZED_TERRACOTTA {
+  }, GRAY_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "회색 유광 테라코타";
     }
-  },
-  GRAY_SHULKER_BOX {
+  }, GRAY_SHULKER_BOX {
     @Override
     public String getName() {
       return "회색 셜커 상자";
     }
-  },
-  GRAY_STAINED_GLASS {
+  }, GRAY_STAINED_GLASS {
     @Override
     public String getName() {
       return "회색 색유리";
     }
-  },
-  GRAY_STAINED_GLASS_PANE {
+  }, GRAY_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "회색 색유리 판";
     }
-  },
-  GRAY_TERRACOTTA {
+  }, GRAY_TERRACOTTA {
     @Override
     public String getName() {
       return "회색 테라코타";
     }
-  },
-  GRAY_WOOL {
+  }, GRAY_WOOL {
     @Override
     public String getName() {
       return "회색 양털";
     }
-  },
-  GREEN_BANNER {
+  }, GREEN_BANNER {
     @Override
     public String getName() {
       return "초록색 현수막";
     }
-  },
-  GREEN_BED {
+  }, GREEN_BED {
     @Override
     public String getName() {
       return "초록색 침대";
     }
-  },
-  GREEN_CARPET {
+  }, GREEN_CARPET {
     @Override
     public String getName() {
       return "초록색 양탄자";
     }
-  },
-  GREEN_CONCRETE {
+  }, GREEN_CONCRETE {
     @Override
     public String getName() {
       return "초록색 콘크리트";
     }
-  },
-  GREEN_CONCRETE_POWDER {
+  }, GREEN_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "초록색 콘크리트 가루";
     }
-  },
-  GREEN_GLAZED_TERRACOTTA {
+  }, GREEN_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "초록색 유광 테라코타";
     }
-  },
-  GREEN_SHULKER_BOX {
+  }, GREEN_SHULKER_BOX {
     @Override
     public String getName() {
       return "초록색 셜커 상자";
     }
-  },
-  GREEN_STAINED_GLASS {
+  }, GREEN_STAINED_GLASS {
     @Override
     public String getName() {
       return "초록색 색유리";
     }
-  },
-  GREEN_STAINED_GLASS_PANE {
+  }, GREEN_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "초록색 색유리 판";
     }
-  },
-  GREEN_TERRACOTTA {
+  }, GREEN_TERRACOTTA {
     @Override
     public String getName() {
       return "초록색 테라코타";
     }
-  },
-  GREEN_WOOL {
+  }, GREEN_WOOL {
     @Override
     public String getName() {
       return "초록색 양털";
     }
-  },
-  GRINDSTONE {
+  }, GRINDSTONE {
     @Override
     public String getName() {
       return "숫돌";
     }
-  },
-  HAY_BLOCK {
+  }, HAY_BLOCK {
     @Override
     public String getName() {
       return "건초 더미";
     }
-  },
-  HEAVY_WEIGHTED_PRESSURE_PLATE {
+  }, HEAVY_WEIGHTED_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "중형 무게 압력판";
     }
-  },
-  HONEY_BLOCK {
+  }, HONEY_BLOCK {
     @Override
     public String getName() {
       return "꿀 블록";
     }
-  },
-  HONEYCOMB_BLOCK {
+  }, HONEYCOMB_BLOCK {
     @Override
     public String getName() {
       return "벌집 조각 블록";
     }
-  },
-  HOPPER {
+  }, HOPPER {
     @Override
     public String getName() {
       return "호퍼";
     }
-  },
-  HORN_CORAL {
+  }, HORN_CORAL {
     @Override
     public String getName() {
       return "사방산호";
     }
-  },
-  HORN_CORAL_BLOCK {
+  }, HORN_CORAL_BLOCK {
     @Override
     public String getName() {
       return "사방산호 블록";
     }
-  },
-  HORN_CORAL_FAN {
+  }, HORN_CORAL_FAN {
     @Override
     public String getName() {
       return "부채형 사방산호";
     }
-  },
-  HORN_CORAL_WALL_FAN {
+  }, HORN_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "부채형 사방산호 벽";
     }
-  },
-  ICE {
+  }, ICE {
     @Override
     public String getName() {
       return "얼음";
     }
-  },
-  INFESTED_CHISELED_STONE_BRICKS {
+  }, INFESTED_CHISELED_STONE_BRICKS {
     @Override
     public String getName() {
       return "벌레 먹은 조각된 석재 벽돌";
     }
-  },
-  INFESTED_COBBLESTONE {
+  }, INFESTED_COBBLESTONE {
     @Override
     public String getName() {
       return "벌레 먹은 조약돌";
     }
-  },
-  INFESTED_CRACKED_STONE_BRICKS {
+  }, INFESTED_CRACKED_STONE_BRICKS {
     @Override
     public String getName() {
       return "벌레 먹은 금 간 석재 벽돌";
     }
-  },
-  INFESTED_MOSSY_STONE_BRICKS {
+  }, INFESTED_MOSSY_STONE_BRICKS {
     @Override
     public String getName() {
       return "벌레 먹은 이끼 낀 석재 벽돌";
     }
-  },
-  INFESTED_STONE {
+  }, INFESTED_STONE {
     @Override
     public String getName() {
       return "벌레 먹은 돌";
     }
-  },
-  INFESTED_STONE_BRICKS {
+  }, INFESTED_STONE_BRICKS {
     @Override
     public String getName() {
       return "벌레 먹은 석재 벽돌";
     }
-  },
-  IRON_BARS {
+  }, IRON_BARS {
     @Override
     public String getName() {
       return "철창";
     }
-  },
-  IRON_BLOCK {
+  }, IRON_BLOCK {
     @Override
     public String getName() {
       return "철 블록";
     }
-  },
-  IRON_DOOR {
+  }, IRON_DOOR {
     @Override
     public String getName() {
       return "철문";
     }
-  },
-  IRON_ORE {
+  }, IRON_ORE {
     @Override
     public String getName() {
       return "철광석";
     }
-  },
-  IRON_TRAPDOOR {
+  }, IRON_TRAPDOOR {
     @Override
     public String getName() {
       return "철 다락문";
     }
-  },
-  JACK_O_LANTERN {
+  }, JACK_O_LANTERN {
     @Override
     public String getName() {
       return "잭오랜턴";
     }
-  },
-  JIGSAW {
+  }, JIGSAW {
     @Override
     public String getName() {
       return "직소 블록";
     }
-  },
-  JUKEBOX {
+  }, JUKEBOX {
     @Override
     public String getName() {
       return "주크박스";
     }
-  },
-  JUNGLE_BUTTON {
+  }, JUNGLE_BUTTON {
     @Override
     public String getName() {
       return "정글 나무 버튼";
     }
-  },
-  JUNGLE_DOOR {
+  }, JUNGLE_DOOR {
     @Override
     public String getName() {
       return "정글 나무 문";
     }
-  },
-  JUNGLE_FENCE {
+  }, JUNGLE_FENCE {
     @Override
     public String getName() {
       return "정글 나무 울타리";
     }
-  },
-  JUNGLE_FENCE_GATE {
+  }, JUNGLE_FENCE_GATE {
     @Override
     public String getName() {
       return "정글 나무 울타리 문";
     }
-  },
-  JUNGLE_LEAVES {
+  }, JUNGLE_LEAVES {
     @Override
     public String getName() {
       return "정글 나무 잎";
     }
-  },
-  JUNGLE_LOG {
+  }, JUNGLE_LOG {
     @Override
     public String getName() {
       return "정글나무 원목";
     }
-  },
-  JUNGLE_PLANKS {
+  }, JUNGLE_PLANKS {
     @Override
     public String getName() {
       return "정글 나무 판자";
     }
-  },
-  JUNGLE_PRESSURE_PLATE {
+  }, JUNGLE_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "정글 나무 압력판";
     }
-  },
-  JUNGLE_SAPLING {
+  }, JUNGLE_SAPLING {
     @Override
     public String getName() {
       return "정글 나무 묘목";
     }
-  },
-  JUNGLE_SIGN {
+  }, JUNGLE_SIGN {
     @Override
     public String getName() {
       return "정글 나무 표지판";
     }
-  },
-  JUNGLE_SLAB {
+  }, JUNGLE_SLAB {
     @Override
     public String getName() {
       return "정글 나무 반 블록";
     }
-  },
-  JUNGLE_STAIRS {
+  }, JUNGLE_STAIRS {
     @Override
     public String getName() {
       return "정글 나무 계단";
     }
-  },
-  JUNGLE_TRAPDOOR {
+  }, JUNGLE_TRAPDOOR {
     @Override
     public String getName() {
       return "정글 나무 다락문";
     }
-  },
-  JUNGLE_WALL_SIGN {
+  }, JUNGLE_WALL_SIGN {
     @Override
     public String getName() {
       return "정글 나무 벽 표지판";
     }
-  },
-  JUNGLE_WOOD {
+  }, JUNGLE_WOOD {
     @Override
     public String getName() {
       return "정글 나무";
     }
-  },
-  KELP {
+  }, KELP {
     @Override
     public String getName() {
       return "켈프";
     }
-  },
-  KELP_PLANT {
+  }, KELP_PLANT {
     @Override
     public String getName() {
       return "켈프 식물";
     }
-  },
-  LADDER {
+  }, LADDER {
     @Override
     public String getName() {
       return "사다리";
     }
-  },
-  LANTERN {
+  }, LANTERN {
     @Override
     public String getName() {
       return "랜턴";
     }
-  },
-  LAPIS_BLOCK {
+  }, LAPIS_BLOCK {
     @Override
     public String getName() {
       return "청금석 블록";
     }
-  },
-  LAPIS_ORE {
+  }, LAPIS_ORE {
     @Override
     public String getName() {
       return "청금석 원석";
     }
-  },
-  LARGE_FERN {
+  }, LARGE_FERN {
     @Override
     public String getName() {
       return "큰 고사리";
     }
-  },
-  LAVA {
+  }, LAVA {
     @Override
     public String getName() {
       return "용암";
     }
-  },
-  LECTERN {
+  }, LECTERN {
     @Override
     public String getName() {
       return "독서대";
     }
-  },
-  LEVER {
+  }, LEVER {
     @Override
     public String getName() {
       return "레버";
     }
-  },
-  LIGHT_BLUE_BANNER {
+  }, LIGHT_BLUE_BANNER {
     @Override
     public String getName() {
       return "하늘색 현수막";
     }
-  },
-  LIGHT_BLUE_BED {
+  }, LIGHT_BLUE_BED {
     @Override
     public String getName() {
       return "하늘색 침대";
     }
-  },
-  LIGHT_BLUE_CARPET {
+  }, LIGHT_BLUE_CARPET {
     @Override
     public String getName() {
       return "하늘색 양탄자";
     }
-  },
-  LIGHT_BLUE_CONCRETE {
+  }, LIGHT_BLUE_CONCRETE {
     @Override
     public String getName() {
       return "하늘색 콘크리트";
     }
-  },
-  LIGHT_BLUE_CONCRETE_POWDER {
+  }, LIGHT_BLUE_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "하늘색 콘크리트 가루";
     }
-  },
-  LIGHT_BLUE_GLAZED_TERRACOTTA {
+  }, LIGHT_BLUE_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "하늘색 유광 테라코타";
     }
-  },
-  LIGHT_BLUE_SHULKER_BOX {
+  }, LIGHT_BLUE_SHULKER_BOX {
     @Override
     public String getName() {
       return "하늘색 셜커 상자";
     }
-  },
-  LIGHT_BLUE_STAINED_GLASS {
+  }, LIGHT_BLUE_STAINED_GLASS {
     @Override
     public String getName() {
       return "하늘색 색유리";
     }
-  },
-  LIGHT_BLUE_STAINED_GLASS_PANE {
+  }, LIGHT_BLUE_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "하늘색 색유리 판";
     }
-  },
-  LIGHT_BLUE_TERRACOTTA {
+  }, LIGHT_BLUE_TERRACOTTA {
     @Override
     public String getName() {
       return "하늘색 테라코타";
     }
-  },
-  LIGHT_BLUE_WOOL {
+  }, LIGHT_BLUE_WOOL {
     @Override
     public String getName() {
       return "하늘색 양털";
     }
-  },
-  LIGHT_GRAY_BANNER {
+  }, LIGHT_GRAY_BANNER {
     @Override
     public String getName() {
       return "회백색 현수막";
     }
-  },
-  LIGHT_GRAY_BED {
+  }, LIGHT_GRAY_BED {
     @Override
     public String getName() {
       return "회백색 침대";
     }
-  },
-  LIGHT_GRAY_CARPET {
+  }, LIGHT_GRAY_CARPET {
     @Override
     public String getName() {
       return "회백색 양탄자";
     }
-  },
-  LIGHT_GRAY_CONCRETE {
+  }, LIGHT_GRAY_CONCRETE {
     @Override
     public String getName() {
       return "회백색 콘크리트";
     }
-  },
-  LIGHT_GRAY_CONCRETE_POWDER {
+  }, LIGHT_GRAY_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "회백색 콘크리트 가루";
     }
-  },
-  LIGHT_GRAY_GLAZED_TERRACOTTA {
+  }, LIGHT_GRAY_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "회백색 유광 테라코타";
     }
-  },
-  LIGHT_GRAY_SHULKER_BOX {
+  }, LIGHT_GRAY_SHULKER_BOX {
     @Override
     public String getName() {
       return "회백색 셜커 상자";
     }
-  },
-  LIGHT_GRAY_STAINED_GLASS {
+  }, LIGHT_GRAY_STAINED_GLASS {
     @Override
     public String getName() {
       return "회백색 색유리";
     }
-  },
-  LIGHT_GRAY_STAINED_GLASS_PANE {
+  }, LIGHT_GRAY_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "회백색 색유리 판";
     }
-  },
-  LIGHT_GRAY_TERRACOTTA {
+  }, LIGHT_GRAY_TERRACOTTA {
     @Override
     public String getName() {
       return "회백색 테라코타";
     }
-  },
-  LIGHT_GRAY_WOOL {
+  }, LIGHT_GRAY_WOOL {
     @Override
     public String getName() {
       return "회백색 양털";
     }
-  },
-  LIGHT_WEIGHTED_PRESSURE_PLATE {
+  }, LIGHT_WEIGHTED_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "경형 무게 압력판";
     }
-  },
-  LILAC {
+  }, LILAC {
     @Override
     public String getName() {
       return "라일락";
     }
-  },
-  LILY_OF_THE_VALLEY {
+  }, LILY_OF_THE_VALLEY {
     @Override
     public String getName() {
       return "은방울꽃";
     }
-  },
-  LILY_PAD {
+  }, LILY_PAD {
     @Override
     public String getName() {
       return "수련잎";
     }
-  },
-  LIME_BANNER {
+  }, LIME_BANNER {
     @Override
     public String getName() {
       return "연두색 현수막";
     }
-  },
-  LIME_BED {
+  }, LIME_BED {
     @Override
     public String getName() {
       return "연두색 침대";
     }
-  },
-  LIME_CARPET {
+  }, LIME_CARPET {
     @Override
     public String getName() {
       return "연두색 양탄자";
     }
-  },
-  LIME_CONCRETE {
+  }, LIME_CONCRETE {
     @Override
     public String getName() {
       return "연두색 콘크리트";
     }
-  },
-  LIME_CONCRETE_POWDER {
+  }, LIME_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "연두색 콘크리트 가루";
     }
-  },
-  LIME_GLAZED_TERRACOTTA {
+  }, LIME_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "연두색 유광 테라코타";
     }
-  },
-  LIME_SHULKER_BOX {
+  }, LIME_SHULKER_BOX {
     @Override
     public String getName() {
       return "연두색 셜커 상자";
     }
-  },
-  LIME_STAINED_GLASS {
+  }, LIME_STAINED_GLASS {
     @Override
     public String getName() {
       return "연두색 색유리";
     }
-  },
-  LIME_STAINED_GLASS_PANE {
+  }, LIME_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "연두색 색유리 판";
     }
-  },
-  LIME_TERRACOTTA {
+  }, LIME_TERRACOTTA {
     @Override
     public String getName() {
       return "연두색 테라코타";
     }
-  },
-  LIME_WOOL {
+  }, LIME_WOOL {
     @Override
     public String getName() {
       return "연두색 양털";
     }
-  },
-  LOOM {
+  }, LOOM {
     @Override
     public String getName() {
       return "베틀";
     }
-  },
-  MAGENTA_BANNER {
+  }, MAGENTA_BANNER {
     @Override
     public String getName() {
       return "자홍색 현수막";
     }
-  },
-  MAGENTA_BED {
+  }, MAGENTA_BED {
     @Override
     public String getName() {
       return "자홍색 침대";
     }
-  },
-  MAGENTA_CARPET {
+  }, MAGENTA_CARPET {
     @Override
     public String getName() {
       return "자홍색 양탄자";
     }
-  },
-  MAGENTA_CONCRETE {
+  }, MAGENTA_CONCRETE {
     @Override
     public String getName() {
       return "자홍색 콘크리트";
     }
-  },
-  MAGENTA_CONCRETE_POWDER {
+  }, MAGENTA_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "자홍색 콘크리트 가루";
     }
-  },
-  MAGENTA_GLAZED_TERRACOTTA {
+  }, MAGENTA_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "자홍색 유광 테라코타";
     }
-  },
-  MAGENTA_SHULKER_BOX {
+  }, MAGENTA_SHULKER_BOX {
     @Override
     public String getName() {
       return "자홍색 셜커 상자";
     }
-  },
-  MAGENTA_STAINED_GLASS {
+  }, MAGENTA_STAINED_GLASS {
     @Override
     public String getName() {
       return "자홍색 색유리";
     }
-  },
-  MAGENTA_STAINED_GLASS_PANE {
+  }, MAGENTA_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "자홍색 색유리 판";
     }
-  },
-  MAGENTA_TERRACOTTA {
+  }, MAGENTA_TERRACOTTA {
     @Override
     public String getName() {
       return "자홍색 테라코타";
     }
-  },
-  MAGENTA_WOOL {
+  }, MAGENTA_WOOL {
     @Override
     public String getName() {
       return "자홍색 양털";
     }
-  },
-  MAGMA_BLOCK {
+  }, MAGMA_BLOCK {
     @Override
     public String getName() {
       return "마그마 블록";
     }
-  },
-  MELON {
+  }, MELON {
     @Override
     public String getName() {
       return "수박";
     }
-  },
-  MELON_STEM {
+  }, MELON_STEM {
     @Override
     public String getName() {
       return "수박 줄기";
     }
-  },
-  MOSSY_COBBLESTONE {
+  }, MOSSY_COBBLESTONE {
     @Override
     public String getName() {
       return "이끼 낀 조약돌";
     }
-  },
-  MOSSY_COBBLESTONE_SLAB {
+  }, MOSSY_COBBLESTONE_SLAB {
     @Override
     public String getName() {
       return "이끼 낀 조약돌 반 블록";
     }
-  },
-  MOSSY_COBBLESTONE_STAIRS {
+  }, MOSSY_COBBLESTONE_STAIRS {
     @Override
     public String getName() {
       return "이끼 낀 조약돌 계단";
     }
-  },
-  MOSSY_COBBLESTONE_WALL {
+  }, MOSSY_COBBLESTONE_WALL {
     @Override
     public String getName() {
       return "이끼 낀 조약돌 담장";
     }
-  },
-  MOSSY_STONE_BRICK_SLAB {
+  }, MOSSY_STONE_BRICK_SLAB {
     @Override
     public String getName() {
       return "이끼 낀 석재 벽돌 반 블록";
     }
-  },
-  MOSSY_STONE_BRICK_STAIRS {
+  }, MOSSY_STONE_BRICK_STAIRS {
     @Override
     public String getName() {
       return "이끼 낀 석재 벽돌 계단";
     }
-  },
-  MOSSY_STONE_BRICK_WALL {
+  }, MOSSY_STONE_BRICK_WALL {
     @Override
     public String getName() {
       return "이끼 낀 석재 벽돌 담장";
     }
-  },
-  MOSSY_STONE_BRICKS {
+  }, MOSSY_STONE_BRICKS {
     @Override
     public String getName() {
       return "이끼 낀 석재 벽돌";
     }
-  },
-  MOVING_PISTON {
+  }, MOVING_PISTON {
     @Override
     public String getName() {
       return "움직이는 피스톤";
     }
-  },
-  MUSHROOM_STEM {
+  }, MUSHROOM_STEM {
     @Override
     public String getName() {
       return "버섯 줄기";
     }
-  },
-  MYCELIUM {
+  }, MYCELIUM {
     @Override
     public String getName() {
       return "균사체";
     }
-  },
-  NETHER_BRICK_FENCE {
+  }, NETHER_BRICK_FENCE {
     @Override
     public String getName() {
       return "네더 벽돌 울타리";
     }
-  },
-  NETHER_BRICK_SLAB {
+  }, NETHER_BRICK_SLAB {
     @Override
     public String getName() {
       return "네더 벽돌 반 블록";
     }
-  },
-  NETHER_BRICK_STAIRS {
+  }, NETHER_BRICK_STAIRS {
     @Override
     public String getName() {
       return "네더 벽돌 계단";
     }
-  },
-  NETHER_BRICK_WALL {
+  }, NETHER_BRICK_WALL {
     @Override
     public String getName() {
       return "네더 벽돌 담장";
     }
-  },
-  NETHER_BRICKS {
+  }, NETHER_BRICKS {
     @Override
     public String getName() {
       return "네더 벽돌";
     }
-  },
-  NETHER_PORTAL {
+  }, NETHER_PORTAL {
     @Override
     public String getName() {
       return "네더 차원문";
     }
-  },
-  NETHER_QUARTZ_ORE {
+  }, NETHER_QUARTZ_ORE {
     @Override
     public String getName() {
       return "네더 석영 원석";
     }
-  },
-  NETHER_WART {
+  }, NETHER_WART {
     @Override
     public String getName() {
       return "네더 사마귀";
     }
-  },
-  NETHER_WART_BLOCK {
+  }, NETHER_WART_BLOCK {
     @Override
     public String getName() {
       return "네더 사마귀 블록";
     }
-  },
-  NETHERRACK {
+  }, NETHERRACK {
     @Override
     public String getName() {
       return "네더랙";
     }
-  },
-  NOTE_BLOCK {
+  }, NOTE_BLOCK {
     @Override
     public String getName() {
       return "소리 블록";
     }
-  },
-  OAK_BUTTON {
+  }, OAK_BUTTON {
     @Override
     public String getName() {
       return "참나무 버튼";
     }
-  },
-  OAK_DOOR {
+  }, OAK_DOOR {
     @Override
     public String getName() {
       return "참나무 문";
     }
-  },
-  OAK_FENCE {
+  }, OAK_FENCE {
     @Override
     public String getName() {
       return "참나무 울타리";
     }
-  },
-  OAK_FENCE_GATE {
+  }, OAK_FENCE_GATE {
     @Override
     public String getName() {
       return "참나무 울타리 문";
     }
-  },
-  OAK_LEAVES {
+  }, OAK_LEAVES {
     @Override
     public String getName() {
       return "참나무 잎";
     }
-  },
-  OAK_LOG {
+  }, OAK_LOG {
     @Override
     public String getName() {
       return "참나무 원목";
     }
-  },
-  OAK_PLANKS {
+  }, OAK_PLANKS {
     @Override
     public String getName() {
       return "참나무 판자";
     }
-  },
-  OAK_PRESSURE_PLATE {
+  }, OAK_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "참나무 압력판";
     }
-  },
-  OAK_SAPLING {
+  }, OAK_SAPLING {
     @Override
     public String getName() {
       return "참나무 묘목";
     }
-  },
-  OAK_SIGN {
+  }, OAK_SIGN {
     @Override
     public String getName() {
       return "참나무 표지판";
     }
-  },
-  OAK_SLAB {
+  }, OAK_SLAB {
     @Override
     public String getName() {
       return "참나무 반 블록";
     }
-  },
-  OAK_STAIRS {
+  }, OAK_STAIRS {
     @Override
     public String getName() {
       return "참나무 계단";
     }
-  },
-  OAK_TRAPDOOR {
+  }, OAK_TRAPDOOR {
     @Override
     public String getName() {
       return "참나무 다락문";
     }
-  },
-  OAK_WALL_SIGN {
+  }, OAK_WALL_SIGN {
     @Override
     public String getName() {
       return "참나무 벽 표지판";
     }
-  },
-  OAK_WOOD {
+  }, OAK_WOOD {
     @Override
     public String getName() {
       return "참나무";
     }
-  },
-  OBSERVER {
+  }, OBSERVER {
     @Override
     public String getName() {
       return "관측기";
     }
-  },
-  OBSIDIAN {
+  }, OBSIDIAN {
     @Override
     public String getName() {
       return "흑요석";
     }
-  },
-  OMINOUS_BANNER {
+  }, OMINOUS_BANNER {
     @Override
     public String getName() {
       return "불길한 현수막";
     }
-  },
-  ORANGE_BANNER {
+  }, ORANGE_BANNER {
     @Override
     public String getName() {
       return "주황색 현수막";
     }
-  },
-  ORANGE_BED {
+  }, ORANGE_BED {
     @Override
     public String getName() {
       return "주황색 침대";
     }
-  },
-  ORANGE_CARPET {
+  }, ORANGE_CARPET {
     @Override
     public String getName() {
       return "주황색 양탄자";
     }
-  },
-  ORANGE_CONCRETE {
+  }, ORANGE_CONCRETE {
     @Override
     public String getName() {
       return "주황색 콘크리트";
     }
-  },
-  ORANGE_CONCRETE_POWDER {
+  }, ORANGE_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "주황색 콘크리트 가루";
     }
-  },
-  ORANGE_GLAZED_TERRACOTTA {
+  }, ORANGE_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "주황색 유광 테라코타";
     }
-  },
-  ORANGE_SHULKER_BOX {
+  }, ORANGE_SHULKER_BOX {
     @Override
     public String getName() {
       return "주황색 셜커 상자";
     }
-  },
-  ORANGE_STAINED_GLASS {
+  }, ORANGE_STAINED_GLASS {
     @Override
     public String getName() {
       return "주황색 색유리";
     }
-  },
-  ORANGE_STAINED_GLASS_PANE {
+  }, ORANGE_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "주황색 색유리 판";
     }
-  },
-  ORANGE_TERRACOTTA {
+  }, ORANGE_TERRACOTTA {
     @Override
     public String getName() {
       return "주황색 테라코타";
     }
-  },
-  ORANGE_TULIP {
+  }, ORANGE_TULIP {
     @Override
     public String getName() {
       return "주황색 튤립";
     }
-  },
-  ORANGE_WOOL {
+  }, ORANGE_WOOL {
     @Override
     public String getName() {
       return "주황색 양털";
     }
-  },
-  OXEYE_DAISY {
+  }, OXEYE_DAISY {
     @Override
     public String getName() {
       return "데이지";
     }
-  },
-  PACKED_ICE {
+  }, PACKED_ICE {
     @Override
     public String getName() {
       return "꽁꽁 언 얼음";
     }
-  },
-  PEONY {
+  }, PEONY {
     @Override
     public String getName() {
       return "모란";
     }
-  },
-  PETRIFIED_OAK_SLAB {
+  }, PETRIFIED_OAK_SLAB {
     @Override
     public String getName() {
       return "규화한 참나무 반 블록";
     }
-  },
-  PINK_BANNER {
+  }, PINK_BANNER {
     @Override
     public String getName() {
       return "분홍색 현수막";
     }
-  },
-  PINK_BED {
+  }, PINK_BED {
     @Override
     public String getName() {
       return "분홍색 침대";
     }
-  },
-  PINK_CARPET {
+  }, PINK_CARPET {
     @Override
     public String getName() {
       return "분홍색 양탄자";
     }
-  },
-  PINK_CONCRETE {
+  }, PINK_CONCRETE {
     @Override
     public String getName() {
       return "분홍색 콘크리트";
     }
-  },
-  PINK_CONCRETE_POWDER {
+  }, PINK_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "분홍색 콘크리트 가루";
     }
-  },
-  PINK_GLAZED_TERRACOTTA {
+  }, PINK_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "분홍색 유광 테라코타";
     }
-  },
-  PINK_SHULKER_BOX {
+  }, PINK_SHULKER_BOX {
     @Override
     public String getName() {
       return "분홍색 셜커 상자";
     }
-  },
-  PINK_STAINED_GLASS {
+  }, PINK_STAINED_GLASS {
     @Override
     public String getName() {
       return "분홍색 색유리";
     }
-  },
-  PINK_STAINED_GLASS_PANE {
+  }, PINK_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "분홍색 색유리 판";
     }
-  },
-  PINK_TERRACOTTA {
+  }, PINK_TERRACOTTA {
     @Override
     public String getName() {
       return "분홍색 테라코타";
     }
-  },
-  PINK_TULIP {
+  }, PINK_TULIP {
     @Override
     public String getName() {
       return "분홍색 튤립";
     }
-  },
-  PINK_WOOL {
+  }, PINK_WOOL {
     @Override
     public String getName() {
       return "분홍색 양털";
     }
-  },
-  PISTON {
+  }, PISTON {
     @Override
     public String getName() {
       return "피스톤";
     }
-  },
-  PISTON_HEAD {
+  }, PISTON_HEAD {
     @Override
     public String getName() {
       return "피스톤 헤드";
     }
-  },
-  PLAYER_HEAD {
+  }, PLAYER_HEAD {
     @Override
     public String getName() {
       return "플레이어 머리";
     }
-  },
-  PLAYER_WALL_HEAD {
+  }, PLAYER_WALL_HEAD {
     @Override
     public String getName() {
       return "플레이어 벽 머리";
     }
-  },
-  PODZOL {
+  }, PODZOL {
     @Override
     public String getName() {
       return "회백토";
     }
-  },
-  POLISHED_ANDESITE {
+  }, POLISHED_ANDESITE {
     @Override
     public String getName() {
       return "윤나는 안산암";
     }
-  },
-  POLISHED_ANDESITE_SLAB {
+  }, POLISHED_ANDESITE_SLAB {
     @Override
     public String getName() {
       return "윤나는 안산암 반 블록";
     }
-  },
-  POLISHED_ANDESITE_STAIRS {
+  }, POLISHED_ANDESITE_STAIRS {
     @Override
     public String getName() {
       return "윤나는 안산암 계단";
     }
-  },
-  POLISHED_DIORITE {
+  }, POLISHED_DIORITE {
     @Override
     public String getName() {
       return "윤나는 섬록암";
     }
-  },
-  POLISHED_DIORITE_SLAB {
+  }, POLISHED_DIORITE_SLAB {
     @Override
     public String getName() {
       return "윤나는 섬록암 반 블록";
     }
-  },
-  POLISHED_DIORITE_STAIRS {
+  }, POLISHED_DIORITE_STAIRS {
     @Override
     public String getName() {
       return "윤나는 섬록암 계단";
     }
-  },
-  POLISHED_GRANITE {
+  }, POLISHED_GRANITE {
     @Override
     public String getName() {
       return "윤나는 화강암";
     }
-  },
-  POLISHED_GRANITE_SLAB {
+  }, POLISHED_GRANITE_SLAB {
     @Override
     public String getName() {
       return "윤나는 화강암 반 블록";
     }
-  },
-  POLISHED_GRANITE_STAIRS {
+  }, POLISHED_GRANITE_STAIRS {
     @Override
     public String getName() {
       return "윤나는 화강암 계단";
     }
-  },
-  POPPY {
+  }, POPPY {
     @Override
     public String getName() {
       return "양귀비";
     }
-  },
-  POTATOES {
+  }, POTATOES {
     @Override
     public String getName() {
       return "감자";
     }
-  },
-  POTTED_ACACIA_SAPLING {
+  }, POTTED_ACACIA_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 아카시아나무 묘목";
     }
-  },
-  POTTED_ALLIUM {
+  }, POTTED_ALLIUM {
     @Override
     public String getName() {
       return "화분에 심은 파꽃";
     }
-  },
-  POTTED_AZURE_BLUET {
+  }, POTTED_AZURE_BLUET {
     @Override
     public String getName() {
       return "화분에 심은 선애기별꽃";
     }
-  },
-  POTTED_BAMBOO {
+  }, POTTED_BAMBOO {
     @Override
     public String getName() {
       return "화분에 심은 대나무";
     }
-  },
-  POTTED_BIRCH_SAPLING {
+  }, POTTED_BIRCH_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 자작나무 묘목";
     }
-  },
-  POTTED_BLUE_ORCHID {
+  }, POTTED_BLUE_ORCHID {
     @Override
     public String getName() {
       return "화분에 심은 파란색 난초";
     }
-  },
-  POTTED_BROWN_MUSHROOM {
+  }, POTTED_BROWN_MUSHROOM {
     @Override
     public String getName() {
       return "화분에 심은 갈색 버섯";
     }
-  },
-  POTTED_CACTUS {
+  }, POTTED_CACTUS {
     @Override
     public String getName() {
       return "화분에 심은 선인장";
     }
-  },
-  POTTED_CORNFLOWER {
+  }, POTTED_CORNFLOWER {
     @Override
     public String getName() {
       return "화분에 심은 수레국화";
     }
-  },
-  POTTED_DANDELION {
+  }, POTTED_DANDELION {
     @Override
     public String getName() {
       return "화분에 심은 민들레";
     }
-  },
-  POTTED_DARK_OAK_SAPLING {
+  }, POTTED_DARK_OAK_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 짙은 참나무 묘목";
     }
-  },
-  POTTED_DEAD_BUSH {
+  }, POTTED_DEAD_BUSH {
     @Override
     public String getName() {
       return "화분에 심은 마른 덤불";
     }
-  },
-  POTTED_FERN {
+  }, POTTED_FERN {
     @Override
     public String getName() {
       return "화분에 심은 고사리";
     }
-  },
-  POTTED_JUNGLE_SAPLING {
+  }, POTTED_JUNGLE_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 정글 나무 묘목";
     }
-  },
-  POTTED_LILY_OF_THE_VALLEY {
+  }, POTTED_LILY_OF_THE_VALLEY {
     @Override
     public String getName() {
       return "화분에 심은 은방울꽃";
     }
-  },
-  POTTED_OAK_SAPLING {
+  }, POTTED_OAK_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 참나무 묘목";
     }
-  },
-  POTTED_ORANGE_TULIP {
+  }, POTTED_ORANGE_TULIP {
     @Override
     public String getName() {
       return "화분에 심은 주황색 튤립";
     }
-  },
-  POTTED_OXEYE_DAISY {
+  }, POTTED_OXEYE_DAISY {
     @Override
     public String getName() {
       return "화분에 심은 데이지";
     }
-  },
-  POTTED_PINK_TULIP {
+  }, POTTED_PINK_TULIP {
     @Override
     public String getName() {
       return "화분에 심은 분홍색 튤립";
     }
-  },
-  POTTED_POPPY {
+  }, POTTED_POPPY {
     @Override
     public String getName() {
       return "화분에 심은 양귀비";
     }
-  },
-  POTTED_RED_MUSHROOM {
+  }, POTTED_RED_MUSHROOM {
     @Override
     public String getName() {
       return "화분에 심은 빨간색 버섯";
     }
-  },
-  POTTED_RED_TULIP {
+  }, POTTED_RED_TULIP {
     @Override
     public String getName() {
       return "화분에 심은 빨간색 튤립";
     }
-  },
-  POTTED_SPRUCE_SAPLING {
+  }, POTTED_SPRUCE_SAPLING {
     @Override
     public String getName() {
       return "화분에 심은 가문비나무 묘목";
     }
-  },
-  POTTED_WHITE_TULIP {
+  }, POTTED_WHITE_TULIP {
     @Override
     public String getName() {
       return "화분에 심은 하얀색 튤립";
     }
-  },
-  POTTED_WITHER_ROSE {
+  }, POTTED_WITHER_ROSE {
     @Override
     public String getName() {
       return "화분에 심은 위더 장미";
     }
-  },
-  POWERED_RAIL {
+  }, POWERED_RAIL {
     @Override
     public String getName() {
       return "전동 레일";
     }
-  },
-  PRISMARINE {
+  }, PRISMARINE {
     @Override
     public String getName() {
       return "프리즈머린";
     }
-  },
-  PRISMARINE_BRICK_SLAB {
+  }, PRISMARINE_BRICK_SLAB {
     @Override
     public String getName() {
       return "프리즈머린 벽돌 반 블록";
     }
-  },
-  PRISMARINE_BRICK_STAIRS {
+  }, PRISMARINE_BRICK_STAIRS {
     @Override
     public String getName() {
       return "프리즈머린 벽돌 계단";
     }
-  },
-  PRISMARINE_BRICKS {
+  }, PRISMARINE_BRICKS {
     @Override
     public String getName() {
       return "프리즈머린 벽돌";
     }
-  },
-  PRISMARINE_SLAB {
+  }, PRISMARINE_SLAB {
     @Override
     public String getName() {
       return "프리즈머린 반 블록";
     }
-  },
-  PRISMARINE_STAIRS {
+  }, PRISMARINE_STAIRS {
     @Override
     public String getName() {
       return "프리즈머린 계단";
     }
-  },
-  PRISMARINE_WALL {
+  }, PRISMARINE_WALL {
     @Override
     public String getName() {
       return "프리즈머린 담장";
     }
-  },
-  PUMPKIN {
+  }, PUMPKIN {
     @Override
     public String getName() {
       return "호박";
     }
-  },
-  PUMPKIN_STEM {
+  }, PUMPKIN_STEM {
     @Override
     public String getName() {
       return "호박 줄기";
     }
-  },
-  PURPLE_BANNER {
+  }, PURPLE_BANNER {
     @Override
     public String getName() {
       return "보라색 현수막";
     }
-  },
-  PURPLE_BED {
+  }, PURPLE_BED {
     @Override
     public String getName() {
       return "보라색 침대";
     }
-  },
-  PURPLE_CARPET {
+  }, PURPLE_CARPET {
     @Override
     public String getName() {
       return "보라색 양탄자";
     }
-  },
-  PURPLE_CONCRETE {
+  }, PURPLE_CONCRETE {
     @Override
     public String getName() {
       return "보라색 콘크리트";
     }
-  },
-  PURPLE_CONCRETE_POWDER {
+  }, PURPLE_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "보라색 콘크리트 가루";
     }
-  },
-  PURPLE_GLAZED_TERRACOTTA {
+  }, PURPLE_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "보라색 유광 테라코타";
     }
-  },
-  PURPLE_SHULKER_BOX {
+  }, PURPLE_SHULKER_BOX {
     @Override
     public String getName() {
       return "보라색 셜커 상자";
     }
-  },
-  PURPLE_STAINED_GLASS {
+  }, PURPLE_STAINED_GLASS {
     @Override
     public String getName() {
       return "보라색 색유리";
     }
-  },
-  PURPLE_STAINED_GLASS_PANE {
+  }, PURPLE_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "보라색 색유리 판";
     }
-  },
-  PURPLE_TERRACOTTA {
+  }, PURPLE_TERRACOTTA {
     @Override
     public String getName() {
       return "보라색 테라코타";
     }
-  },
-  PURPLE_WOOL {
+  }, PURPLE_WOOL {
     @Override
     public String getName() {
       return "보라색 양털";
     }
-  },
-  PURPUR_BLOCK {
+  }, PURPUR_BLOCK {
     @Override
     public String getName() {
       return "퍼퍼 블록";
     }
-  },
-  PURPUR_PILLAR {
+  }, PURPUR_PILLAR {
     @Override
     public String getName() {
       return "퍼퍼 기둥";
     }
-  },
-  PURPUR_SLAB {
+  }, PURPUR_SLAB {
     @Override
     public String getName() {
       return "퍼퍼 반 블록";
     }
-  },
-  PURPUR_STAIRS {
+  }, PURPUR_STAIRS {
     @Override
     public String getName() {
       return "퍼퍼 계단";
     }
-  },
-  QUARTZ_BLOCK {
+  }, QUARTZ_BLOCK {
     @Override
     public String getName() {
       return "석영 블록";
     }
-  },
-  QUARTZ_PILLAR {
+  }, QUARTZ_PILLAR {
     @Override
     public String getName() {
       return "석영 기둥";
     }
-  },
-  QUARTZ_SLAB {
+  }, QUARTZ_SLAB {
     @Override
     public String getName() {
       return "석영 반 블록";
     }
-  },
-  QUARTZ_STAIRS {
+  }, QUARTZ_STAIRS {
     @Override
     public String getName() {
       return "석영 계단";
     }
-  },
-  RAIL {
+  }, RAIL {
     @Override
     public String getName() {
       return "레일";
     }
-  },
-  RED_BANNER {
+  }, RED_BANNER {
     @Override
     public String getName() {
       return "빨간색 현수막";
     }
-  },
-  RED_BED {
+  }, RED_BED {
     @Override
     public String getName() {
       return "빨간색 침대";
     }
-  },
-  RED_CARPET {
+  }, RED_CARPET {
     @Override
     public String getName() {
       return "빨간색 양탄자";
     }
-  },
-  RED_CONCRETE {
+  }, RED_CONCRETE {
     @Override
     public String getName() {
       return "빨간색 콘크리트";
     }
-  },
-  RED_CONCRETE_POWDER {
+  }, RED_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "빨간색 콘크리트 가루";
     }
-  },
-  RED_GLAZED_TERRACOTTA {
+  }, RED_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "빨간색 유광 테라코타";
     }
-  },
-  RED_MUSHROOM {
+  }, RED_MUSHROOM {
     @Override
     public String getName() {
       return "빨간색 버섯";
     }
-  },
-  RED_MUSHROOM_BLOCK {
+  }, RED_MUSHROOM_BLOCK {
     @Override
     public String getName() {
       return "빨간색 버섯 블록";
     }
-  },
-  RED_NETHER_BRICK_SLAB {
+  }, RED_NETHER_BRICK_SLAB {
     @Override
     public String getName() {
       return "붉은 네더 벽돌 반 블록";
     }
-  },
-  RED_NETHER_BRICK_STAIRS {
+  }, RED_NETHER_BRICK_STAIRS {
     @Override
     public String getName() {
       return "붉은 네더 벽돌 계단";
     }
-  },
-  RED_NETHER_BRICK_WALL {
+  }, RED_NETHER_BRICK_WALL {
     @Override
     public String getName() {
       return "붉은 네더 벽돌 담장";
     }
-  },
-  RED_NETHER_BRICKS {
+  }, RED_NETHER_BRICKS {
     @Override
     public String getName() {
       return "붉은 네더 벽돌";
     }
-  },
-  RED_SAND {
+  }, RED_SAND {
     @Override
     public String getName() {
       return "붉은 모래";
     }
-  },
-  RED_SANDSTONE {
+  }, RED_SANDSTONE {
     @Override
     public String getName() {
       return "붉은 사암";
     }
-  },
-  RED_SANDSTONE_SLAB {
+  }, RED_SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "붉은 사암 반 블록";
     }
-  },
-  RED_SANDSTONE_STAIRS {
+  }, RED_SANDSTONE_STAIRS {
     @Override
     public String getName() {
       return "붉은 사암 계단";
     }
-  },
-  RED_SANDSTONE_WALL {
+  }, RED_SANDSTONE_WALL {
     @Override
     public String getName() {
       return "붉은 사암 담장";
     }
-  },
-  RED_SHULKER_BOX {
+  }, RED_SHULKER_BOX {
     @Override
     public String getName() {
       return "빨간색 셜커 상자";
     }
-  },
-  RED_STAINED_GLASS {
+  }, RED_STAINED_GLASS {
     @Override
     public String getName() {
       return "빨간색 색유리";
     }
-  },
-  RED_STAINED_GLASS_PANE {
+  }, RED_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "빨간색 색유리 판";
     }
-  },
-  RED_TERRACOTTA {
+  }, RED_TERRACOTTA {
     @Override
     public String getName() {
       return "빨간색 테라코타";
     }
-  },
-  RED_TULIP {
+  }, RED_TULIP {
     @Override
     public String getName() {
       return "빨간색 튤립";
     }
-  },
-  RED_WOOL {
+  }, RED_WOOL {
     @Override
     public String getName() {
       return "빨간색 양털";
     }
-  },
-  REDSTONE_BLOCK {
+  }, REDSTONE_BLOCK {
     @Override
     public String getName() {
       return "레드스톤 블록";
     }
-  },
-  REDSTONE_LAMP {
+  }, REDSTONE_LAMP {
     @Override
     public String getName() {
       return "레드스톤 조명";
     }
-  },
-  REDSTONE_ORE {
+  }, REDSTONE_ORE {
     @Override
     public String getName() {
       return "레드스톤 광석";
     }
-  },
-  REDSTONE_TORCH {
+  }, REDSTONE_TORCH {
     @Override
     public String getName() {
       return "레드스톤 횃불";
     }
-  },
-  REDSTONE_WALL_TORCH {
+  }, REDSTONE_WALL_TORCH {
     @Override
     public String getName() {
       return "레드스톤 벽 횃불";
     }
-  },
-  REDSTONE_WIRE {
+  }, REDSTONE_WIRE {
     @Override
     public String getName() {
       return "레드스톤 선";
     }
-  },
-  REPEATER {
+  }, REPEATER {
     @Override
     public String getName() {
       return "레드스톤 중계기";
     }
-  },
-  REPEATING_COMMAND_BLOCK {
+  }, REPEATING_COMMAND_BLOCK {
     @Override
     public String getName() {
       return "반복형 명령 블록";
     }
-  },
-  ROSE_BUSH {
+  }, ROSE_BUSH {
     @Override
     public String getName() {
       return "장미 덤불";
     }
-  },
-  SAND {
+  }, SAND {
     @Override
     public String getName() {
       return "모래";
     }
-  },
-  SANDSTONE {
+  }, SANDSTONE {
     @Override
     public String getName() {
       return "사암";
     }
-  },
-  SANDSTONE_SLAB {
+  }, SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "사암 반 블록";
     }
-  },
-  SANDSTONE_STAIRS {
+  }, SANDSTONE_STAIRS {
     @Override
     public String getName() {
       return "사암 계단";
     }
-  },
-  SANDSTONE_WALL {
+  }, SANDSTONE_WALL {
     @Override
     public String getName() {
       return "사암 담장";
     }
-  },
-  SCAFFOLDING {
+  }, SCAFFOLDING {
     @Override
     public String getName() {
       return "비계";
     }
-  },
-  SEA_LANTERN {
+  }, SEA_LANTERN {
     @Override
     public String getName() {
       return "바다 랜턴";
     }
-  },
-  SEA_PICKLE {
+  }, SEA_PICKLE {
     @Override
     public String getName() {
       return "불우렁쉥이";
     }
-  },
-  SEAGRASS {
+  }, SEAGRASS {
     @Override
     public String getName() {
       return "해초";
     }
-  },
-  SHULKER_BOX {
+  }, SHULKER_BOX {
     @Override
     public String getName() {
       return "셜커 상자";
     }
-  },
-  SKELETON_SKULL {
+  }, SKELETON_SKULL {
     @Override
     public String getName() {
       return "스켈레톤 해골";
     }
-  },
-  SKELETON_WALL_SKULL {
+  }, SKELETON_WALL_SKULL {
     @Override
     public String getName() {
       return "스켈레톤 벽 해골";
     }
-  },
-  SLIME_BLOCK {
+  }, SLIME_BLOCK {
     @Override
     public String getName() {
       return "슬라임 블록";
     }
-  },
-  SMITHING_TABLE {
+  }, SMITHING_TABLE {
     @Override
     public String getName() {
       return "대장장이 작업대";
     }
-  },
-  SMOKER {
+  }, SMOKER {
     @Override
     public String getName() {
       return "훈연기";
     }
-  },
-  SMOOTH_QUARTZ {
+  }, SMOOTH_QUARTZ {
     @Override
     public String getName() {
       return "매끄러운 석영";
     }
-  },
-  SMOOTH_QUARTZ_SLAB {
+  }, SMOOTH_QUARTZ_SLAB {
     @Override
     public String getName() {
       return "매끄러운 석영 반 블록";
     }
-  },
-  SMOOTH_QUARTZ_STAIRS {
+  }, SMOOTH_QUARTZ_STAIRS {
     @Override
     public String getName() {
       return "매끄러운 석영 계단";
     }
-  },
-  SMOOTH_RED_SANDSTONE {
+  }, SMOOTH_RED_SANDSTONE {
     @Override
     public String getName() {
       return "매끄러운 붉은 사암";
     }
-  },
-  SMOOTH_RED_SANDSTONE_SLAB {
+  }, SMOOTH_RED_SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "매끄러운 붉은 사암 반 블록";
     }
-  },
-  SMOOTH_RED_SANDSTONE_STAIRS {
+  }, SMOOTH_RED_SANDSTONE_STAIRS {
     @Override
     public String getName() {
       return "매끄러운 붉은 사암 계단";
     }
-  },
-  SMOOTH_SANDSTONE {
+  }, SMOOTH_SANDSTONE {
     @Override
     public String getName() {
       return "매끄러운 사암";
     }
-  },
-  SMOOTH_SANDSTONE_SLAB {
+  }, SMOOTH_SANDSTONE_SLAB {
     @Override
     public String getName() {
       return "매끄러운 사암 반 블록";
     }
-  },
-  SMOOTH_SANDSTONE_STAIRS {
+  }, SMOOTH_SANDSTONE_STAIRS {
     @Override
     public String getName() {
       return "매끄러운 사암 계단";
     }
-  },
-  SMOOTH_STONE {
+  }, SMOOTH_STONE {
     @Override
     public String getName() {
       return "매끄러운 돌";
     }
-  },
-  SMOOTH_STONE_SLAB {
+  }, SMOOTH_STONE_SLAB {
     @Override
     public String getName() {
       return "매끄러운 돌 반 블록";
     }
-  },
-  SNOW {
+  }, SNOW {
     @Override
     public String getName() {
       return "눈";
     }
-  },
-  SNOW_BLOCK {
+  }, SNOW_BLOCK {
     @Override
     public String getName() {
       return "눈 블록";
     }
-  },
-  SOUL_SAND {
+  }, SOUL_SAND {
     @Override
     public String getName() {
       return "영혼 모래";
     }
-  },
-  SPAWNER {
+  }, SPAWNER {
     @Override
     public String getName() {
       return "생성기";
     }
-  },
-  SPONGE {
+  }, SPONGE {
     @Override
     public String getName() {
       return "스펀지";
     }
-  },
-  SPRUCE_BUTTON {
+  }, SPRUCE_BUTTON {
     @Override
     public String getName() {
       return "가문비나무 버튼";
     }
-  },
-  SPRUCE_DOOR {
+  }, SPRUCE_DOOR {
     @Override
     public String getName() {
       return "가문비나무 문";
     }
-  },
-  SPRUCE_FENCE {
+  }, SPRUCE_FENCE {
     @Override
     public String getName() {
       return "가문비나무 울타리";
     }
-  },
-  SPRUCE_FENCE_GATE {
+  }, SPRUCE_FENCE_GATE {
     @Override
     public String getName() {
       return "가문비나무 울타리 문";
     }
-  },
-  SPRUCE_LEAVES {
+  }, SPRUCE_LEAVES {
     @Override
     public String getName() {
       return "가문비나무 잎";
     }
-  },
-  SPRUCE_LOG {
+  }, SPRUCE_LOG {
     @Override
     public String getName() {
       return "가문비나무 원목";
     }
-  },
-  SPRUCE_PLANKS {
+  }, SPRUCE_PLANKS {
     @Override
     public String getName() {
       return "가문비나무 판자";
     }
-  },
-  SPRUCE_PRESSURE_PLATE {
+  }, SPRUCE_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "가문비나무 압력판";
     }
-  },
-  SPRUCE_SAPLING {
+  }, SPRUCE_SAPLING {
     @Override
     public String getName() {
       return "가문비나무 묘목";
     }
-  },
-  SPRUCE_SIGN {
+  }, SPRUCE_SIGN {
     @Override
     public String getName() {
       return "가문비나무 표지판";
     }
-  },
-  SPRUCE_SLAB {
+  }, SPRUCE_SLAB {
     @Override
     public String getName() {
       return "가문비나무 반 블록";
     }
-  },
-  SPRUCE_STAIRS {
+  }, SPRUCE_STAIRS {
     @Override
     public String getName() {
       return "가문비나무 계단";
     }
-  },
-  SPRUCE_TRAPDOOR {
+  }, SPRUCE_TRAPDOOR {
     @Override
     public String getName() {
       return "가문비나무 다락문";
     }
-  },
-  SPRUCE_WALL_SIGN {
+  }, SPRUCE_WALL_SIGN {
     @Override
     public String getName() {
       return "가문비나무 벽 표지판";
     }
-  },
-  SPRUCE_WOOD {
+  }, SPRUCE_WOOD {
     @Override
     public String getName() {
       return "가문비나무";
     }
-  },
-  STICKY_PISTON {
+  }, STICKY_PISTON {
     @Override
     public String getName() {
       return "끈끈이 피스톤";
     }
-  },
-  STONE {
+  }, STONE {
     @Override
     public String getName() {
       return "돌";
     }
-  },
-  STONE_BRICK_SLAB {
+  }, STONE_BRICK_SLAB {
     @Override
     public String getName() {
       return "석재 벽돌 반 블록";
     }
-  },
-  STONE_BRICK_STAIRS {
+  }, STONE_BRICK_STAIRS {
     @Override
     public String getName() {
       return "석재 벽돌 계단";
     }
-  },
-  STONE_BRICK_WALL {
+  }, STONE_BRICK_WALL {
     @Override
     public String getName() {
       return "석재 벽돌 담장";
     }
-  },
-  STONE_BRICKS {
+  }, STONE_BRICKS {
     @Override
     public String getName() {
       return "석재 벽돌";
     }
-  },
-  STONE_BUTTON {
+  }, STONE_BUTTON {
     @Override
     public String getName() {
       return "돌 버튼";
     }
-  },
-  STONE_PRESSURE_PLATE {
+  }, STONE_PRESSURE_PLATE {
     @Override
     public String getName() {
       return "돌 압력판";
     }
-  },
-  STONE_SLAB {
+  }, STONE_SLAB {
     @Override
     public String getName() {
       return "돌 반 블록";
     }
-  },
-  STONE_STAIRS {
+  }, STONE_STAIRS {
     @Override
     public String getName() {
       return "돌 계단";
     }
-  },
-  STONECUTTER {
+  }, STONECUTTER {
     @Override
     public String getName() {
       return "석재 절단기";
     }
-  },
-  STRIPPED_ACACIA_LOG {
+  }, STRIPPED_ACACIA_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 아카시아나무 원목";
     }
-  },
-  STRIPPED_ACACIA_WOOD {
+  }, STRIPPED_ACACIA_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 아카시아나무";
     }
-  },
-  STRIPPED_BIRCH_LOG {
+  }, STRIPPED_BIRCH_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 자작나무 원목";
     }
-  },
-  STRIPPED_BIRCH_WOOD {
+  }, STRIPPED_BIRCH_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 자작나무";
     }
-  },
-  STRIPPED_DARK_OAK_LOG {
+  }, STRIPPED_DARK_OAK_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 짙은 참나무 원목";
     }
-  },
-  STRIPPED_DARK_OAK_WOOD {
+  }, STRIPPED_DARK_OAK_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 짙은 참나무";
     }
-  },
-  STRIPPED_JUNGLE_LOG {
+  }, STRIPPED_JUNGLE_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 정글 나무 원목";
     }
-  },
-  STRIPPED_JUNGLE_WOOD {
+  }, STRIPPED_JUNGLE_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 정글 나무";
     }
-  },
-  STRIPPED_OAK_LOG {
+  }, STRIPPED_OAK_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 참나무 원목";
     }
-  },
-  STRIPPED_OAK_WOOD {
+  }, STRIPPED_OAK_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 참나무";
     }
-  },
-  STRIPPED_SPRUCE_LOG {
+  }, STRIPPED_SPRUCE_LOG {
     @Override
     public String getName() {
       return "껍질 벗긴 가문비나무 원목";
     }
-  },
-  STRIPPED_SPRUCE_WOOD {
+  }, STRIPPED_SPRUCE_WOOD {
     @Override
     public String getName() {
       return "껍질 벗긴 가문비나무";
     }
-  },
-  STRUCTURE_BLOCK {
+  }, STRUCTURE_BLOCK {
     @Override
     public String getName() {
       return "구조물 블록";
     }
-  },
-  STRUCTURE_VOID {
+  }, STRUCTURE_VOID {
     @Override
     public String getName() {
       return "구조물 공허 공간";
     }
-  },
-  SUGAR_CANE {
+  }, SUGAR_CANE {
     @Override
     public String getName() {
       return "사탕수수";
     }
-  },
-  SUNFLOWER {
+  }, SUNFLOWER {
     @Override
     public String getName() {
       return "해바라기";
     }
-  },
-  SWEET_BERRY_BUSH {
+  }, SWEET_BERRY_BUSH {
     @Override
     public String getName() {
       return "달콤한 열매 덤불";
     }
-  },
-  TALL_GRASS {
+  }, TALL_GRASS {
     @Override
     public String getName() {
       return "키 큰 잔디";
     }
-  },
-  TALL_SEAGRASS {
+  }, TALL_SEAGRASS {
     @Override
     public String getName() {
       return "키 큰 해초";
     }
-  },
-  TERRACOTTA {
+  }, TERRACOTTA {
     @Override
     public String getName() {
       return "테라코타";
     }
-  },
-  THREE_TURTLE_EGGS {
+  }, THREE_TURTLE_EGGS {
     @Override
     public String getName() {
       return "거북 알 세 개";
     }
-  },
-  TNT {
+  }, TNT {
     @Override
     public String getName() {
       return "TNT";
     }
-  },
-  TORCH {
+  }, TORCH {
     @Override
     public String getName() {
       return "횃불";
     }
-  },
-  TRAPPED_CHEST {
+  }, TRAPPED_CHEST {
     @Override
     public String getName() {
       return "덫 상자";
     }
-  },
-  TRIPWIRE {
+  }, TRIPWIRE {
     @Override
     public String getName() {
       return "철사 덫";
     }
-  },
-  TRIPWIRE_HOOK {
+  }, TRIPWIRE_HOOK {
     @Override
     public String getName() {
       return "철사 덫 갈고리";
     }
-  },
-  TUBE_CORAL {
+  }, TUBE_CORAL {
     @Override
     public String getName() {
       return "관 산호";
     }
-  },
-  TUBE_CORAL_BLOCK {
+  }, TUBE_CORAL_BLOCK {
     @Override
     public String getName() {
       return "관 산호 블록";
     }
-  },
-  TUBE_CORAL_FAN {
+  }, TUBE_CORAL_FAN {
     @Override
     public String getName() {
       return "부채형 관 산호";
     }
-  },
-  TUBE_CORAL_WALL_FAN {
+  }, TUBE_CORAL_WALL_FAN {
     @Override
     public String getName() {
       return "부채형 관 산호 벽";
     }
-  },
-  TURTLE_EGG {
+  }, TURTLE_EGG {
     @Override
     public String getName() {
       return "거북 알";
     }
-  },
-  TWO_TURTLE_EGGS {
+  }, TWO_TURTLE_EGGS {
     @Override
     public String getName() {
       return "거북 알 두 개";
     }
-  },
-  VINE {
+  }, VINE {
     @Override
     public String getName() {
       return "덩굴";
     }
-  },
-  VOID_AIR {
+  }, VOID_AIR {
     @Override
     public String getName() {
       return "공허 공기";
     }
-  },
-  WALL_BANNER {
+  }, WALL_BANNER {
     @Override
     public String getName() {
       return "벽 현수막";
     }
-  },
-  WALL_TORCH {
+  }, WALL_TORCH {
     @Override
     public String getName() {
       return "벽 횃불";
     }
-  },
-  WATER {
+  }, WATER {
     @Override
     public String getName() {
       return "물";
     }
-  },
-  WET_SPONGE {
+  }, WET_SPONGE {
     @Override
     public String getName() {
       return "젖은 스펀지";
     }
-  },
-  WHEAT {
+  }, WHEAT {
     @Override
     public String getName() {
       return "밀 작물";
     }
-  },
-  WHITE_BANNER {
+  }, WHITE_BANNER {
     @Override
     public String getName() {
       return "하얀색 현수막";
     }
-  },
-  WHITE_BED {
+  }, WHITE_BED {
     @Override
     public String getName() {
       return "하얀색 침대";
     }
-  },
-  WHITE_CARPET {
+  }, WHITE_CARPET {
     @Override
     public String getName() {
       return "하얀색 양탄자";
     }
-  },
-  WHITE_CONCRETE {
+  }, WHITE_CONCRETE {
     @Override
     public String getName() {
       return "하얀색 콘크리트";
     }
-  },
-  WHITE_CONCRETE_POWDER {
+  }, WHITE_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "하얀색 콘크리트 가루";
     }
-  },
-  WHITE_GLAZED_TERRACOTTA {
+  }, WHITE_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "하얀색 유광 테라코타";
     }
-  },
-  WHITE_SHULKER_BOX {
+  }, WHITE_SHULKER_BOX {
     @Override
     public String getName() {
       return "하얀색 셜커 상자";
     }
-  },
-  WHITE_STAINED_GLASS {
+  }, WHITE_STAINED_GLASS {
     @Override
     public String getName() {
       return "하얀색 색유리";
     }
-  },
-  WHITE_STAINED_GLASS_PANE {
+  }, WHITE_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "하얀색 색유리 판";
     }
-  },
-  WHITE_TERRACOTTA {
+  }, WHITE_TERRACOTTA {
     @Override
     public String getName() {
       return "하얀색 테라코타";
     }
-  },
-  WHITE_TULIP {
+  }, WHITE_TULIP {
     @Override
     public String getName() {
       return "하얀색 튤립";
     }
-  },
-  WHITE_WOOL {
+  }, WHITE_WOOL {
     @Override
     public String getName() {
       return "하얀색 양털";
     }
-  },
-  WITHER_ROSE {
+  }, WITHER_ROSE {
     @Override
     public String getName() {
       return "위더 장미";
     }
-  },
-  WITHER_SKELETON_SKULL {
+  }, WITHER_SKELETON_SKULL {
     @Override
     public String getName() {
       return "위더 스켈레톤 해골";
     }
-  },
-  WITHER_SKELETON_WALL_SKULL {
+  }, WITHER_SKELETON_WALL_SKULL {
     @Override
     public String getName() {
       return "위더 스켈레톤 벽 해골";
     }
-  },
-  YELLOW_BANNER {
+  }, YELLOW_BANNER {
     @Override
     public String getName() {
       return "노란색 현수막";
     }
-  },
-  YELLOW_BED {
+  }, YELLOW_BED {
     @Override
     public String getName() {
       return "노란색 침대";
     }
-  },
-  YELLOW_CARPET {
+  }, YELLOW_CARPET {
     @Override
     public String getName() {
       return "노란색 양탄자";
     }
-  },
-  YELLOW_CONCRETE {
+  }, YELLOW_CONCRETE {
     @Override
     public String getName() {
       return "노란색 콘크리트";
     }
-  },
-  YELLOW_CONCRETE_POWDER {
+  }, YELLOW_CONCRETE_POWDER {
     @Override
     public String getName() {
       return "노란색 콘크리트 가루";
     }
-  },
-  YELLOW_GLAZED_TERRACOTTA {
+  }, YELLOW_GLAZED_TERRACOTTA {
     @Override
     public String getName() {
       return "노란색 유광 테라코타";
     }
-  },
-  YELLOW_SHULKER_BOX {
+  }, YELLOW_SHULKER_BOX {
     @Override
     public String getName() {
       return "노란색 셜커 상자";
     }
-  },
-  YELLOW_STAINED_GLASS {
+  }, YELLOW_STAINED_GLASS {
     @Override
     public String getName() {
       return "노란색 색유리";
     }
-  },
-  YELLOW_STAINED_GLASS_PANE {
+  }, YELLOW_STAINED_GLASS_PANE {
     @Override
     public String getName() {
       return "노란색 색유리 판";
     }
-  },
-  YELLOW_TERRACOTTA {
+  }, YELLOW_TERRACOTTA {
     @Override
     public String getName() {
       return "노란색 테라코타";
     }
-  },
-  YELLOW_WOOL {
+  }, YELLOW_WOOL {
     @Override
     public String getName() {
       return "노란색 양털";
     }
-  },
-  ZOMBIE_HEAD {
+  }, ZOMBIE_HEAD {
     @Override
     public String getName() {
       return "좀비 머리";
     }
-  },
-  ZOMBIE_WALL_HEAD {
+  }, ZOMBIE_WALL_HEAD {
     @Override
     public String getName() {
       return "좀비 벽 머리";

@@ -1,6 +1,5 @@
 package com.wnynya.cherry.event;
 
-import com.wnynya.cherry.player.PlayerJoin;
 import com.wnynya.cherry.portal.PortalEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

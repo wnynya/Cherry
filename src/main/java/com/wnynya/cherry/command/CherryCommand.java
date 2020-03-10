@@ -2,6 +2,7 @@ package com.wnynya.cherry.command;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Updater;
 import com.wnynya.cherry.gui.CherryMenu;
 import com.wnynya.cherry.wand.Wand;
@@ -10,17 +11,7 @@ import org.bukkit.command.BlockCommandSender;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-
-import com.wnynya.cherry.Msg;
 import org.bukkit.entity.Player;
-import org.json.simple.JSONObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CherryCommand implements CommandExecutor {
 
@@ -116,9 +107,7 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
       else if (vi.getState().equals(Updater.VersionInfo.State.OUTDATED)) {
-        Msg.info(sender, Msg.Prefix.CHERRY + "플러그인이 최신 버전이 아닙니다. 현재 버전: "
-          + Cherry.getPlugin().getDescription().getVersion()
-          + " | 최신 버전: " + vi.getVersion());
+        Msg.info(sender, Msg.Prefix.CHERRY + "플러그인이 최신 버전이 아닙니다. 현재 버전: " + Cherry.getPlugin().getDescription().getVersion() + " | 최신 버전: " + vi.getVersion());
         Msg.info(sender, Msg.Prefix.CHERRY + "플러그인을 업데이트하려면 /cherry update confirm 명령어를 실행하십시오.");
         return true;
       }

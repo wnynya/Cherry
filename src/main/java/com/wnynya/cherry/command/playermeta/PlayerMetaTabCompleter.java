@@ -86,7 +86,6 @@ public class PlayerMetaTabCompleter implements org.bukkit.command.TabCompleter {
       }
 
 
-
     }
 
     return Collections.emptyList();

@@ -1,6 +1,5 @@
 package com.wnynya.cherry.wand;
 
-import com.wnynya.cherry.Msg;
 import org.bukkit.DyeColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -316,7 +315,9 @@ public class WandBlock {
           b.setCookTime(n, this.cookTime_[n]);
           b.setCookTimeTotal(n, this.cookTimeTotal_[n]);
           b.setItem(n, this.item_[n]);
-        } catch (Exception ignored) { }
+        }
+        catch (Exception ignored) {
+        }
       }
       b.update(true, false);
     }

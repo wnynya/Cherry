@@ -23,6 +23,8 @@
 # {msg}           : 메시지 (채팅 포멧에만 사용됨)
 # {prefix}        : 플레이어 접두사 (Vault 연동)
 # {suffix}        : 플레이어 접미사 (Vault 연동)
+# {fromserver}    : 출발 서버 이름 (번지코드 플러그인 연동)
+# {gotoserver}    : 도착 서버 이름 (번지코드 플러그인 연동)
 # &1-f,r,l,m,n,o,k: 컬러코드 및 텍스트 효과
 
 event:
@@ -115,6 +117,7 @@ event:
       # 콘솔
       console:
         enable: true
+        # {displayname}, {prefix}, {suffix} 사용 불가
         format: "&r{name} &rjoin from {fromserver}"
 
   #===== 플레이어 네트워크 서버 변경 퇴장 시 이벤트
@@ -209,7 +212,7 @@ bungeecord:
 #======================================#
 
 updater:
-  type: "release"
+  type: "dev"
   auto: true
   show-msg: true
 

@@ -25,7 +25,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
 
       if (args.length == 1) {
         List<String> list = new ArrayList<>();
-        list.add("create");
+        list.add("add");
         if (Portal.getPortalNames().size() > 0) {
           list.add("remove");
           list.add("list");

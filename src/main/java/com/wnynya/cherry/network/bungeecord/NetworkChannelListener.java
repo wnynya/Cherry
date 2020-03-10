@@ -2,7 +2,6 @@ package com.wnynya.cherry.network.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerJoin;
 import com.wnynya.cherry.player.PlayerQuit;
 import org.bukkit.Bukkit;

@@ -1,8 +1,8 @@
 package com.wnynya.cherry.wand;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.area.Area;
 import org.bukkit.*;
@@ -51,7 +51,9 @@ public class Wand {
     spawnAreaParticle();
   }
 
-  public UUID getUuid() { return uuid; }
+  public UUID getUuid() {
+    return uuid;
+  }
 
   public boolean setPlayer(Player player) {
     if (this.uuid.equals(player.getUniqueId())) {
@@ -63,7 +65,9 @@ public class Wand {
     }
   }
 
-  public Config getConfig() { return config; }
+  public Config getConfig() {
+    return config;
+  }
 
   public WandEdit getEdit() {
     return edit;
@@ -183,35 +187,20 @@ public class Wand {
       zb = 1;
     }
 
-    this.clipboardWPlayerB = new Location(
-      posP.getWorld(),
-      xb,
-      yb,
-      zb
-    );
+    this.clipboardWPlayerB = new Location(posP.getWorld(), xb, yb, zb);
 
     int disX = (int) Math.abs(posP.getX() - minX);
     int disY = (int) Math.abs(posP.getY() - minY);
     int disZ = (int) Math.abs(posP.getZ() - minZ);
 
-    this.clipboardWPlayer = new Location(
-      posP.getWorld(),
-      disX,
-      disY,
-      disZ
-    );
+    this.clipboardWPlayer = new Location(posP.getWorld(), disX, disY, disZ);
 
     List<WandBlock> wBlocks = new ArrayList<>();
     List<Location> area = Area.CUBE.getArea(pos1, pos2);
     for (Location loc : area) {
       Block block = loc.getBlock();
       WandBlock wBlock = new WandBlock(block);
-      wBlock.setLocation(new Location(
-        loc.getWorld(),
-        (int) loc.getX() - minX,
-        (int) loc.getY() - minY,
-        (int) loc.getZ() - minZ
-      ));
+      wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX() - minX, (int) loc.getY() - minY, (int) loc.getZ() - minZ));
       wBlocks.add(wBlock);
     }
     this.clipboardMemory = wBlocks;
@@ -248,7 +237,9 @@ public class Wand {
       block.setBlockData(wBlock.getBlockData());
       try {
         wBlock.applyBlockState(block);
-      } catch (Exception ignored) { }
+      }
+      catch (Exception ignored) {
+      }
     }
   }
 
@@ -256,11 +247,17 @@ public class Wand {
 
   }
 
-  public List<WandBlock> getClipboardMemory() {return this.clipboardMemory;}
+  public List<WandBlock> getClipboardMemory() {
+    return this.clipboardMemory;
+  }
 
-  public Location getClipboardWPlayer() {return this.clipboardWPlayer;}
+  public Location getClipboardWPlayer() {
+    return this.clipboardWPlayer;
+  }
 
-  public Location getClipboardWPlayerB() {return this.clipboardWPlayerB;}
+  public Location getClipboardWPlayerB() {
+    return this.clipboardWPlayerB;
+  }
 
   // 에리어 채우기 / 비우기
   public void fill(BlockData blockData, List<Location> area, boolean applyPhysics) {
@@ -277,6 +274,7 @@ public class Wand {
       block.setBlockData(blockData, applyPhysics);
     }
   }
+
   public void fill(Material material, List<Location> area, boolean applyPhysics, String data) {
     if (material == null || !material.isBlock() || area == null || area.isEmpty()) {
       return;
@@ -285,6 +283,7 @@ public class Wand {
     BlockData blockData = Bukkit.createBlockData(material, data);
     fill(blockData, area, applyPhysics);
   }
+
   public void fill(Material material, List<Location> area, boolean applyPhysics) {
     fill(material, area, applyPhysics, "[]");
   }
@@ -362,12 +361,7 @@ public class Wand {
     for (Location loc : locArea) {
       Block block = loc.getBlock();
       WandBlock wBlock = new WandBlock(block);
-      wBlock.setLocation(new Location(
-        loc.getWorld(),
-        (int) loc.getX(),
-        (int) loc.getY(),
-        (int) loc.getZ()
-      ));
+      wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX(), (int) loc.getY(), (int) loc.getZ()));
       area.add(wBlock);
     }
     World world = pos1.getWorld();
@@ -416,7 +410,7 @@ public class Wand {
     World world = area.get(0).getWorld();
 
     List<WandBlock> scannedBlocks = new ArrayList<>();
-      
+
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
 
@@ -447,7 +441,7 @@ public class Wand {
         if (particleAreaPlay) {
           if (player.isOnline()) {
             if (PlayerMeta.getPlayerMeta(player).is(PlayerMeta.Path.WAND_ENABLE)) {
-              if (particleArea!= null) {
+              if (particleArea != null) {
                 for (Location loc : particleArea) {
                   player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 85, 255), 1));
                 }
@@ -501,10 +495,12 @@ public class Wand {
       case EDIT_POSITIONER: {
         ItemStack item = wandItem_editPositioner;
         ItemMeta im = item.getItemMeta();
-        im.setDisplayName(Msg.n2s("&d체리 완드"));
+        im.setDisplayName(Msg.n2s("&6&l체리 완드"));
         List<String> lore = new ArrayList<String>();
         lore.add(Msg.n2s(""));
-        lore.add(Msg.n2s("&7오른쪽 / 왼쪽 클릭으로 포지션을 지정할 수 있습니다."));
+        lore.add(Msg.n2s("&7블록을 &9&o오른쪽 / 왼쪽 클릭&7하여 &a포지션을 지정&7할 수 있습니다."));
+        lore.add(Msg.n2s(""));
+        lore.add(Msg.n2s("&7허공을 &9&o오른쪽 / 왼쪽 클릭&7하여 &c포지션을 지정 해제&7할 수 있습니다."));
         im.setLore(lore);
         item.setItemMeta(im);
         return item;
@@ -525,22 +521,23 @@ public class Wand {
 
   public enum ItemType {
 
-    EDIT_POSITIONER,
-    BRUSH_NORMAL,
-    BRUSH_APPLYPHYSICS;
+    EDIT_POSITIONER, BRUSH_NORMAL, BRUSH_APPLYPHYSICS;
 
   }
-
 
 
   // 로드
   public static void load() {
     if (!Cherry.config.getBoolean("function.wand")) {
-      if (Cherry.debug) { Msg.info("Wand Disabled"); }
+      if (Cherry.debug) {
+        Msg.info("Wand Disabled");
+      }
       return;
     }
 
-    if (Cherry.debug) { Msg.info("Wand v0.3"); }
+    if (Cherry.debug) {
+      Msg.info("Wand v0.3");
+    }
 
     Material material;
     Material mat = Material.getMaterial(Cherry.config.getString("wand.edit.normal-item:"));
@@ -564,6 +561,8 @@ public class Wand {
 
   }
 
-  public static void init() { load(); }
+  public static void init() {
+    load();
+  }
 
 }

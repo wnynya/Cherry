@@ -4,7 +4,6 @@ import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.korean.BlockNames;
-import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.Wand;
 import com.wnynya.cherry.wand.WandBlock;
 import com.wnynya.cherry.wand.area.Area;
@@ -17,10 +16,8 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -89,8 +86,7 @@ public class WandCommand implements CommandExecutor {
       boolean silent = false;
       if (args.length >= 2) {
         for (String str : args) {
-          if (str.equalsIgnoreCase("-player:::console")
-            || str.equalsIgnoreCase("-p:::console")) {
+          if (str.equalsIgnoreCase("-player:::console") || str.equalsIgnoreCase("-p:::console")) {
             if (sender.hasPermission("cherry.wand.undo.another")) {
               wand = Wand.getWand(Cherry.getUUID());
             }
@@ -99,8 +95,7 @@ public class WandCommand implements CommandExecutor {
               return true;
             }
           }
-          if (Pattern.compile("-player:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()
-            || Pattern.compile("-p:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
+          if (Pattern.compile("-player:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches() || Pattern.compile("-p:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
             if (sender.hasPermission("cherry.wand.undo.another")) {
               Player thisPlayer = Bukkit.getPlayer(str.replaceAll("-player:", "").replaceAll("-p:", ""));
               if (thisPlayer == null) {
@@ -114,8 +109,7 @@ public class WandCommand implements CommandExecutor {
               return true;
             }
           }
-          if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()
-            || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
+          if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches() || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
             if (sender.hasPermission("cherry.wand.undo.another")) {
               UUID uuidTemp = UUID.fromString(str.replaceAll("-uuid:", "").replaceAll("-u:", ""));
               Player thisPlayer = (Player) Bukkit.getOfflinePlayer(uuidTemp);
@@ -145,10 +139,14 @@ public class WandCommand implements CommandExecutor {
 
       for (int i = 0; i < n; i++) {
         if (wand.undo()) {
-          if (!silent) { Msg.info(sender, Msg.Prefix.WAND + "이전으로 되돌렸습니다."); }
+          if (!silent) {
+            Msg.info(sender, Msg.Prefix.WAND + "이전으로 되돌렸습니다.");
+          }
         }
         else {
-          if (!silent) { Msg.warn(sender, Msg.Prefix.WAND + "이전으로 되돌릴 수 없습니다."); }
+          if (!silent) {
+            Msg.warn(sender, Msg.Prefix.WAND + "이전으로 되돌릴 수 없습니다.");
+          }
           return true;
         }
       }
@@ -169,8 +167,7 @@ public class WandCommand implements CommandExecutor {
       boolean silent = false;
       if (args.length >= 2) {
         for (String str : args) {
-          if (str.equalsIgnoreCase("-player:::console")
-            || str.equalsIgnoreCase("-p:::console")) {
+          if (str.equalsIgnoreCase("-player:::console") || str.equalsIgnoreCase("-p:::console")) {
             if (sender.hasPermission("cherry.wand.redo.another")) {
               wand = Wand.getWand(Cherry.getUUID());
             }
@@ -179,8 +176,7 @@ public class WandCommand implements CommandExecutor {
               return true;
             }
           }
-          if (Pattern.compile("-player:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()
-            || Pattern.compile("-p:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
+          if (Pattern.compile("-player:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches() || Pattern.compile("-p:([a-zA-Z0-9_]{3,20})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
             if (sender.hasPermission("cherry.wand.redo.another")) {
               Player thisPlayer = Bukkit.getPlayer(str.replaceAll("-player:", "").replaceAll("-p:", ""));
               if (thisPlayer == null) {
@@ -194,8 +190,7 @@ public class WandCommand implements CommandExecutor {
               return true;
             }
           }
-          if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()
-            || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
+          if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches() || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})", Pattern.CASE_INSENSITIVE).matcher(str).matches()) {
             if (sender.hasPermission("cherry.wand.redo.another")) {
               UUID uuidTemp = UUID.fromString(str.replaceAll("-uuid:", "").replaceAll("-u:", ""));
               Player thisPlayer = (Player) Bukkit.getOfflinePlayer(uuidTemp);
@@ -225,10 +220,14 @@ public class WandCommand implements CommandExecutor {
 
       for (int i = 0; i < n; i++) {
         if (wand.redo()) {
-          if (!silent) { Msg.info(sender, Msg.Prefix.WAND + "되돌리기를 취소하였습니다."); }
+          if (!silent) {
+            Msg.info(sender, Msg.Prefix.WAND + "되돌리기를 취소하였습니다.");
+          }
         }
         else {
-          if (!silent) { Msg.warn(sender, Msg.Prefix.WAND + "되돌리기를 취소할 수 없습니다."); }
+          if (!silent) {
+            Msg.warn(sender, Msg.Prefix.WAND + "되돌리기를 취소할 수 없습니다.");
+          }
           return true;
         }
       }
@@ -299,13 +298,16 @@ public class WandCommand implements CommandExecutor {
       wand.getEdit().setPosition(1, loc);
 
       if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-        if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" +
-          "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)")); }
+        if (!silent) {
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+        }
         wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)));
         wand.enableParticleArea();
       }
       else {
-        if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)")); }
+        if (!silent) {
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+        }
         wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(1)));
         wand.enableParticleArea();
       }
@@ -377,13 +379,16 @@ public class WandCommand implements CommandExecutor {
       wand.getEdit().setPosition(2, loc);
 
       if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-        if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" +
-          "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)")); }
+        if (!silent) {
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+        }
         wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)));
         wand.enableParticleArea();
       }
       else {
-        if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)")); }
+        if (!silent) {
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+        }
         wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(2), wand.getEdit().getPosition(2)));
         wand.enableParticleArea();
       }
@@ -416,12 +421,7 @@ public class WandCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -431,12 +431,7 @@ public class WandCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -479,12 +474,7 @@ public class WandCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -494,12 +484,7 @@ public class WandCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -539,12 +524,7 @@ public class WandCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -554,12 +534,7 @@ public class WandCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -668,7 +643,7 @@ public class WandCommand implements CommandExecutor {
       else {
         Vector vector = player.getLocation().getDirection();
 
-        double maxd = Tool.Math.max(new double[] {Math.abs(vector.getX()), Math.abs(vector.getY()), Math.abs(vector.getZ())});
+        double maxd = Tool.Math.max(new double[]{Math.abs(vector.getX()), Math.abs(vector.getY()), Math.abs(vector.getZ())});
 
         if (maxd == Math.abs(vector.getX())) {
           if (vector.getX() > 0) {
@@ -701,8 +676,6 @@ public class WandCommand implements CommandExecutor {
       }
 
 
-
-
       int minX = (int) Math.min(pos1.getX(), pos2.getX());
       int minY = (int) Math.min(pos1.getY(), pos2.getY());
       int minZ = (int) Math.min(pos1.getZ(), pos2.getZ());
@@ -715,12 +688,7 @@ public class WandCommand implements CommandExecutor {
       for (Location loc : locArea) {
         Block block = loc.getBlock();
         WandBlock wBlock = new WandBlock(block);
-        wBlock.setLocation(new Location(
-          loc.getWorld(),
-          (int) loc.getX(),
-          (int) loc.getY(),
-          (int) loc.getZ()
-        ));
+        wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX(), (int) loc.getY(), (int) loc.getZ()));
         area.add(wBlock);
       }
       World world = pos1.getWorld();
@@ -842,8 +810,7 @@ public class WandCommand implements CommandExecutor {
 
       String blockNameOriginal = BlockNames.valueOf(originalBlockData.getMaterial().toString()).getName();
       String blockNameReplace = BlockNames.valueOf(blockDataReplace.getMaterial().toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") +
-        " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") + " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
       return true;
     }
 
@@ -934,9 +901,13 @@ public class WandCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다.")); }
+      if (!silent) {
+        Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      }
       if (!data.equals("[]")) {
-        if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("BlockData: " + data)); }
+        if (!silent) {
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("BlockData: " + data));
+        }
       }
 
       wand.fill(blockData, area, applyPhysics);
@@ -1133,7 +1104,9 @@ public class WandCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다.")); }
+      if (!silent) {
+        Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      }
 
       wand.fill(material, area, applyPhysics);
       return true;
@@ -1201,7 +1174,9 @@ public class WandCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      if (!silent) { Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다.")); }
+      if (!silent) {
+        Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      }
 
       wand.fill(material, area, applyPhysics);
       return true;

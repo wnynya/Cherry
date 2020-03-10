@@ -212,10 +212,7 @@ public class WebSocketClient {
   }
 
   public enum Status {
-    ONLINE,
-    OFFLINE,
-    RELOAD,
-    UPDATE
+    ONLINE, OFFLINE, RELOAD, UPDATE
   }
 
   public static void receive(String msgString) {
@@ -253,15 +250,16 @@ public class WebSocketClient {
         String id = data.get("id").toString();
         Bukkit.getServer().getConsoleSender().sendMessage(com.wnynya.cherry.Msg.n2s("[WEB]: " + id + ": " + command));
         try {
-          Bukkit.getScheduler().callSyncMethod( Cherry.getPlugin(), new Callable<Boolean>() {
+          Bukkit.getScheduler().callSyncMethod(Cherry.getPlugin(), new Callable<Boolean>() {
             @Override
             public Boolean call() {
-              Bukkit.dispatchCommand( Bukkit.getConsoleSender(), command.substring(1));
+              Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.substring(1));
               return true;
             }
-          } ).get();
+          }).get();
         }
-        catch (Exception ignored) { }
+        catch (Exception ignored) {
+        }
         Message.webCommand(command);
         break;
       }
@@ -274,24 +272,20 @@ public class WebSocketClient {
     try {
       CountDownLatch latch = new CountDownLatch(1);
 
-      WebSocket wsc = HttpClient
-        .newHttpClient()
-        .newWebSocketBuilder()
-        .connectTimeout(Duration.ofSeconds(10))
-        .subprotocols("cwt-server")
-        .buildAsync(uri, new WebSocketConnection(latch))
-        .join();
+      WebSocket wsc = HttpClient.newHttpClient().newWebSocketBuilder().connectTimeout(Duration.ofSeconds(10)).subprotocols("cwt-server").buildAsync(uri, new WebSocketConnection(latch)).join();
 
       ws = wsc;
 
       Message.init();
 
       latch.await();
-    } catch (Exception e) {
+    }
+    catch (Exception e) {
     }
   }
 
   private static Timer dataTimer;
+
   public static void startDataLoop() {
     dataTimer = new Timer();
     dataTimer.schedule(new TimerTask() {
@@ -302,6 +296,7 @@ public class WebSocketClient {
       }
     }, 0, 1 * 1000);
   }
+
   public static void cancelDataLoop() {
     if (dataTimer != null) {
       dataTimer.cancel();
@@ -309,6 +304,7 @@ public class WebSocketClient {
   }
 
   private static Timer connectTimer;
+
   public static void startConnectLoop() {
     connectTimer = new Timer();
     connectTimer.schedule(new TimerTask() {
@@ -319,6 +315,7 @@ public class WebSocketClient {
       }
     }, 0, 10 * 1000);
   }
+
   public static void cancelConnectLoop() {
     if (connectTimer != null) {
       connectTimer.cancel();
@@ -326,14 +323,10 @@ public class WebSocketClient {
   }
 
   public static void init() throws Exception {
-    if (!Cherry.config.isString("websocket.host") ||
-      Cherry.config.getString("websocket.host") == null ||
-      Cherry.config.getString("websocket.host").replaceAll(" ", "").equals("")) {
+    if (!Cherry.config.isString("websocket.host") || Cherry.config.getString("websocket.host") == null || Cherry.config.getString("websocket.host").replaceAll(" ", "").equals("")) {
       throw new Exception("URL이 설정되지 않았습니다.");
     }
-    if (!Cherry.config.isString("websocket.name") ||
-      Cherry.config.getString("websocket.name") == null ||
-      Cherry.config.getString("websocket.name").replaceAll(" ", "").equals("")) {
+    if (!Cherry.config.isString("websocket.name") || Cherry.config.getString("websocket.name") == null || Cherry.config.getString("websocket.name").replaceAll(" ", "").equals("")) {
       throw new Exception("서버 이름이 설정되지 않았습니다.");
     }
     try {

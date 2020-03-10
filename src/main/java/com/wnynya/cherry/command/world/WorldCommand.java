@@ -3,8 +3,6 @@ package com.wnynya.cherry.command.world;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.world.CherryWorld;
 import org.bukkit.Bukkit;
-import org.bukkit.World;
-import org.bukkit.WorldCreator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -95,7 +93,7 @@ public class WorldCommand implements CommandExecutor {
       List<String> worlds = (List<String>) CherryWorld.getWorldConfig().getConfig().getList("worlds");
       Msg.info(sender, Msg.Prefix.INFO + "콘피그에 설정된 월드 목록:");
       for (String worldName : worlds) {
-        Msg.info(sender,Msg.Prefix.INFO +  worldName);
+        Msg.info(sender, Msg.Prefix.INFO + worldName);
       }
       Msg.info(sender, Msg.Prefix.INFO + "서버에 로드된 월드 목록:");
       for (String worldName : worlds) {

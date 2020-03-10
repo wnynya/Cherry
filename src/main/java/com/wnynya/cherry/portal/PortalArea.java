@@ -38,14 +38,8 @@ public class PortalArea {
     this.type = type;
   }
 
-  public enum Type{
-    GATE_AIR,
-    GATE_NETHER,
-    GATE_ENDER,
-    GATE_ENDER_LEGACY,
-    GATE_WATER,
-    SIGN,
-    TEMP
+  public enum Type {
+    GATE_AIR, GATE_NETHER, GATE_ENDER, GATE_ENDER_LEGACY, GATE_WATER, SIGN, TEMP
   }
 
 }

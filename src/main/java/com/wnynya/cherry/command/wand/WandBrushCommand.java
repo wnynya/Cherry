@@ -9,7 +9,6 @@ public class WandBrushCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
 
-
     return true;
   }
 

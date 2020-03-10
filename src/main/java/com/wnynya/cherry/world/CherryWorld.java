@@ -30,16 +30,20 @@ public class CherryWorld {
       }
 
       File originWorld_level_dat = new File(originWorldDir + "/level.dat");
-      File originWorld_level_dat_old = new File(originWorldDir+ "/level.dat_old");
-      File originWorld_region = new File(originWorldDir+ "/region");
+      File originWorld_level_dat_old = new File(originWorldDir + "/level.dat_old");
+      File originWorld_region = new File(originWorldDir + "/region");
 
-      File instantWorldDir = new File( Cherry.serverDir + "/" + worldName);
-      if (!instantWorldDir.exists()) { instantWorldDir.mkdir(); }
+      File instantWorldDir = new File(Cherry.serverDir + "/" + worldName);
+      if (!instantWorldDir.exists()) {
+        instantWorldDir.mkdir();
+      }
 
       File instantWorld_level_dat = new File(instantWorldDir + "/level.dat");
       File instantWorld_level_dat_old = new File(instantWorldDir + "/level.dat_old");
       File instantWorld_region = new File(instantWorldDir + "/region");
-      if (!instantWorld_region.exists()) { instantWorld_region.mkdir(); }
+      if (!instantWorld_region.exists()) {
+        instantWorld_region.mkdir();
+      }
 
       Files.copy(originWorld_level_dat.toPath(), instantWorld_level_dat.toPath(), StandardCopyOption.REPLACE_EXISTING);
       Files.copy(originWorld_level_dat_old.toPath(), instantWorld_level_dat_old.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -57,7 +61,7 @@ public class CherryWorld {
 
       Bukkit.getServer().unloadWorld(worldName, false);
 
-      File instantWorldDir = new File( Cherry.serverDir + "/" + worldName);
+      File instantWorldDir = new File(Cherry.serverDir + "/" + worldName);
       if (!instantWorldDir.exists()) {
         throw new Exception("월드를 찾을 수 없습니다.");
       }

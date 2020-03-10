@@ -40,12 +40,7 @@ public class Wall {
     List<Location> listT = new ArrayList<>();
     for (int i = 0; i <= zxMax; i++) {
 
-      Location loc = new Location(
-        pos1.getWorld(),
-        (int) startPos.getX(),
-        (int) minY,
-        (int) startPos.getZ()
-      );
+      Location loc = new Location(pos1.getWorld(), (int) startPos.getX(), (int) minY, (int) startPos.getZ());
       startPos.add(step);
       listT.add(loc);
     }
@@ -53,12 +48,7 @@ public class Wall {
     List<Location> list = new ArrayList<>();
     for (int y = (int) minY; y <= (int) maxY; y++) {
       for (Location locc : listT) {
-        Location loc = new Location(
-          locc.getWorld(),
-          locc.getX(),
-          y,
-          locc.getZ()
-        );
+        Location loc = new Location(locc.getWorld(), locc.getX(), y, locc.getZ());
         list.add(loc);
       }
     }

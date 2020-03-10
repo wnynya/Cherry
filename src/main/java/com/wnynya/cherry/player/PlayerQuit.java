@@ -50,8 +50,7 @@ public class PlayerQuit {
 
     }
 
-    if (Cherry.config.getBoolean("event.quit.websocket") &&
-      Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected ) {
+    if (Cherry.config.getBoolean("event.quit.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected) {
       WebSocketClient.Message.quit(player);
     }
 

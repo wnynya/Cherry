@@ -3,8 +3,8 @@ package com.wnynya.cherry.portal;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -13,7 +13,10 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Cherry Portal
@@ -71,7 +74,6 @@ public class Portal {
   }
 
 
-
   public void use(Player player) {
 
     if (!player.hasPermission("cherry.portal.use." + this.name)) {
@@ -123,7 +125,6 @@ public class Portal {
   }
 
 
-
   public String getName() {
     return name;
   }
@@ -138,7 +139,6 @@ public class Portal {
   }
 
 
-
   public void setEnable(boolean bool) {
     this.enable = bool;
     portalData.set(this.name + ".enable", this.enable);
@@ -147,7 +147,6 @@ public class Portal {
   public boolean isEnable() {
     return this.enable;
   }
-
 
 
   public void setProtocol(PortalProtocol protocol) {
@@ -206,7 +205,6 @@ public class Portal {
   }
 
 
-
   public void setGotoLocation(Location loc) {
     this.gotoLocation = loc;
     portalData.set(this.name + ".goto.location", this.gotoLocation);
@@ -216,7 +214,6 @@ public class Portal {
     this.gotoServer = server;
     portalData.set(this.name + ".goto.server", this.gotoServer);
   }
-
 
 
   public void setPortalArea(PortalArea portalArea) {
@@ -323,9 +320,6 @@ public class Portal {
       portalData.set(this.name + ".areas." + data.getKey() + ".location", data.getValue().getArea());
     }
   }
-
-
-
 
 
   /**

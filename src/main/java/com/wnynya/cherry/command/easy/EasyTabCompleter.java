@@ -4,7 +4,6 @@ import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.command.TabCompleter;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;

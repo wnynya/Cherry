@@ -52,9 +52,7 @@ public class Cylinder {
 
     List<Location> tempList = new ArrayList<>();
 
-    int[][] array = new int[][] {
-      {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
-    };
+    int[][] array = new int[][]{{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
 
     for (int x = (int) minX; x <= maxX; x++) {
       for (int z = (int) minZ; z <= maxZ; z++) {
@@ -63,8 +61,7 @@ public class Cylinder {
           if (x >= pos.getX() && z >= pos.getZ()) {
             Location locX = new Location(pos.getWorld(), x + 1, minY, z);
             Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-            if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r)
-              && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
+            if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r) && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
               continue;
             }
           }
@@ -72,32 +69,28 @@ public class Cylinder {
         if (x >= pos.getX() && z >= pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x + 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r)
-            && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
+          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r) && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
             continue;
           }
         }
         if (x >= pos.getX() && z < pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x + 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z - 1);
-          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r)
-            && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
+          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r) && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
             continue;
           }
         }
         if (x < pos.getX() && z >= pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x - 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r)
-            && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
+          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r) && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
             continue;
           }
         }
         if (x < pos.getX() && z < pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x - 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z - 1);
-          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r)
-            && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
+          if ((r - 1 < (int) Math.round(pos.distance(locX)) && (int) Math.round(pos.distance(locX)) <= r) && (r - 1 < (int) Math.round(pos.distance(locZ)) && (int) Math.round(pos.distance(locZ)) <= r)) {
             continue;
           }
         }
@@ -163,9 +156,7 @@ public class Cylinder {
 
     List<Location> tempList = new ArrayList<>();
 
-    int[][] array = new int[][] {
-      {1, 1}, {-1, 1}, {1, -1}, {-1, -1}
-    };
+    int[][] array = new int[][]{{1, 1}, {-1, 1}, {1, -1}, {-1, -1}};
 
     for (int x = (int) minX; x <= maxX; x++) {
       for (int z = (int) minZ; z <= maxZ; z++) {
@@ -174,8 +165,7 @@ public class Cylinder {
           if (x >= pos.getX() && z >= pos.getZ()) {
             Location locX = new Location(pos.getWorld(), x + 1, minY, z);
             Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-            if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r)
-              && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
+            if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r) && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
               continue;
             }
           }
@@ -183,32 +173,28 @@ public class Cylinder {
         if (x >= pos.getX() && z >= pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x + 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r)
-            && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
+          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r) && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
             continue;
           }
         }
         if (x >= pos.getX() && z < pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x + 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z - 1);
-          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r)
-            && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
+          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r) && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
             continue;
           }
         }
         if (x < pos.getX() && z >= pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x - 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z + 1);
-          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r)
-            && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
+          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r) && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
             continue;
           }
         }
         if (x < pos.getX() && z < pos.getZ()) {
           Location locX = new Location(pos.getWorld(), x - 1, minY, z);
           Location locZ = new Location(pos.getWorld(), x, minY, z - 1);
-          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r)
-            && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
+          if ((r - 1 < pos.distance(locX) && pos.distance(locX) <= r) && (r - 1 < pos.distance(locZ) && pos.distance(locZ) <= r)) {
             continue;
           }
         }

@@ -12,13 +12,11 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
-import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -46,7 +44,7 @@ public class WandEditCommand implements CommandExecutor {
     }
 
     // 포지션 설정
-    if(args[0].equalsIgnoreCase("pos1")) {
+    if (args[0].equalsIgnoreCase("pos1")) {
       if (!sender.hasPermission("cherry.wand.edit.pos")) {
         Msg.error(sender, Msg.NO_PERMISSION);
         return true;
@@ -92,8 +90,7 @@ public class WandEditCommand implements CommandExecutor {
       }
       if (wand.getEdit().setPosition(1, loc)) {
         if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " +
-            "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
         }
         else {
           Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
@@ -148,8 +145,7 @@ public class WandEditCommand implements CommandExecutor {
       }
       if (wand.getEdit().setPosition(2, loc)) {
         if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " +
-            "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
         }
         else {
           Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
@@ -184,12 +180,7 @@ public class WandEditCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -199,12 +190,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -247,12 +233,7 @@ public class WandEditCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -262,12 +243,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -307,12 +283,7 @@ public class WandEditCommand implements CommandExecutor {
       Location loc;
       if (args.length == 4) {
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3])) {
-          loc = new Location (
-            player.getLocation().getWorld(),
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(player.getLocation().getWorld(), Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -322,12 +293,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length == 5) {
         World world = Bukkit.getWorld(args[4]);
         if (Tool.Check.isInteger(args[1]) && Tool.Check.isInteger(args[2]) && Tool.Check.isInteger(args[3]) && world != null) {
-          loc = new Location (
-            world,
-            Integer.parseInt(args[1]),
-            Integer.parseInt(args[2]),
-            Integer.parseInt(args[3])
-          );
+          loc = new Location(world, Integer.parseInt(args[1]), Integer.parseInt(args[2]), Integer.parseInt(args[3]));
         }
         else {
           Msg.error("올바른 좌표가 아닙니다.");
@@ -340,10 +306,10 @@ public class WandEditCommand implements CommandExecutor {
 
       List<WandBlock> wBlocks = wand.getClipboardMemory();
       List<Location> area = new ArrayList<>();
-      
+
       Location cpb = wand.getClipboardWPlayerB();
       Location cp = wand.getClipboardWPlayer();
-      
+
       for (WandBlock wBlock : wBlocks) {
         Location bLoc = wBlock.getLocation();
         int x, y, z;
@@ -436,7 +402,7 @@ public class WandEditCommand implements CommandExecutor {
       else {
         Vector vector = player.getLocation().getDirection();
 
-        double maxd = Tool.Math.max(new double[] {Math.abs(vector.getX()), Math.abs(vector.getY()), Math.abs(vector.getZ())});
+        double maxd = Tool.Math.max(new double[]{Math.abs(vector.getX()), Math.abs(vector.getY()), Math.abs(vector.getZ())});
 
         if (maxd == Math.abs(vector.getX())) {
           if (vector.getX() > 0) {
@@ -469,8 +435,6 @@ public class WandEditCommand implements CommandExecutor {
       }
 
 
-
-
       int minX = (int) Math.min(pos1.getX(), pos2.getX());
       int minY = (int) Math.min(pos1.getY(), pos2.getY());
       int minZ = (int) Math.min(pos1.getZ(), pos2.getZ());
@@ -483,12 +447,7 @@ public class WandEditCommand implements CommandExecutor {
       for (Location loc : locArea) {
         Block block = loc.getBlock();
         WandBlock wBlock = new WandBlock(block);
-        wBlock.setLocation(new Location(
-          loc.getWorld(),
-          (int) loc.getX(),
-          (int) loc.getY(),
-          (int) loc.getZ()
-        ));
+        wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX(), (int) loc.getY(), (int) loc.getZ()));
         area.add(wBlock);
       }
       World world = pos1.getWorld();
@@ -591,7 +550,7 @@ public class WandEditCommand implements CommandExecutor {
       for (Location pos : area) {
         Block block = world.getBlockAt(pos);
         if (blockDataOriginal.getAsString().equals("[]")) {
-          if (!block.getType().equals(blockDataOriginal .getMaterial())) {
+          if (!block.getType().equals(blockDataOriginal.getMaterial())) {
             continue;
           }
         }
@@ -610,8 +569,7 @@ public class WandEditCommand implements CommandExecutor {
 
       String blockNameOriginal = BlockNames.valueOf(blockDataOriginal.getMaterial().toString()).getName();
       String blockNameReplace = BlockNames.valueOf(blockDataReplace.getMaterial().toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") +
-        " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") + " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
       return true;
     }
 

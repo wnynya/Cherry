@@ -6,7 +6,8 @@ import org.bukkit.Location;
 
 public class Blend implements BrushToucher {
 
-  public Blend() {}
+  public Blend() {
+  }
 
   @Override
   public void touch(Location location, Wand wand, boolean applyPhysics) {

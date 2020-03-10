@@ -1,24 +1,24 @@
 package com.wnynya.cherry.wand.brush;
 
 import com.wnynya.cherry.wand.Wand;
-import com.wnynya.cherry.wand.brush.touch.*;
+import com.wnynya.cherry.wand.brush.touch.Cube;
+import com.wnynya.cherry.wand.brush.touch.SpherePoint;
+import com.wnynya.cherry.wand.brush.touch.SphereRound;
 import org.bukkit.Location;
 
-public enum Brush implements BrushToucher{
+public enum Brush implements BrushToucher {
 
   CUBE {
     @Override
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new Cube().touch(location, wand, applyPhysics);
     }
-  },
-  BALL_POINT {
+  }, BALL_POINT {
     @Override
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new SpherePoint().touch(location, wand, applyPhysics);
     }
-  },
-  BALL_ROUND {
+  }, BALL_ROUND {
     @Override
     public void touch(Location location, Wand wand, boolean applyPhysics) {
       new SphereRound().touch(location, wand, applyPhysics);

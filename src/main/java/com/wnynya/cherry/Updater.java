@@ -5,10 +5,12 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
 import java.io.*;
-import java.net.*;
+import java.net.URL;
+import java.net.URLConnection;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Updater {
 
@@ -36,7 +38,7 @@ public class Updater {
 
       bufferedReader.close();
 
-      JSONObject data  = (JSONObject) new JSONParser().parse(String.valueOf(content));
+      JSONObject data = (JSONObject) new JSONParser().parse(String.valueOf(content));
 
       String latestVersion = data.get("latest").toString();
 

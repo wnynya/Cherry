@@ -1,8 +1,8 @@
 package com.wnynya.cherry.player;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.amethyst.CucumberySupport;
 import com.wnynya.cherry.network.terminal.WebSocketClient;
 import com.wnynya.cherry.portal.PortalEvent;
@@ -51,7 +51,7 @@ public class PlayerJoin {
       if (Cherry.config.getBoolean("event.join.setMessage.playerChat.enable")) {
         event.setJoinMessage(null);
         String format = Cherry.config.getString("event.join.setMessage.playerChat.format");
-        Msg.allP(Msg.playerFormatter(event.getPlayer(), format));
+        Msg.allPwO(Msg.playerFormatter(event.getPlayer(), format), player);
       }
 
       // 입장 메시지 (플레이어 액션바)
@@ -71,8 +71,7 @@ public class PlayerJoin {
       Msg.info(Msg.playerFormatter(event.getPlayer(), format));
     }
 
-    if (Cherry.config.getBoolean("event.join.websocket") &&
-      Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected ) {
+    if (Cherry.config.getBoolean("event.join.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected) {
       WebSocketClient.Message.join(player);
     }
 

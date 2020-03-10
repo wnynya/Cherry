@@ -4,7 +4,6 @@ import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.command.TabCompleter;
 import com.wnynya.cherry.player.PlayerState;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -34,29 +33,58 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
 
       if (args.length == 1) {
         List<String> list = new ArrayList<>();
-        if (sender.hasPermission("cherry.wand.get")) { list.add("get"); }
-        if (sender.hasPermission("cherry.wand.undo")) { list.add("undo"); }
-        if (sender.hasPermission("cherry.wand.redo")) { list.add("redo"); }
-        if (sender.hasPermission("cherry.wand.stack")) { list.add("stack"); }
-        if (sender.hasPermission("cherry.wand.pos")) { list.add("pos1"); }
-        if (sender.hasPermission("cherry.wand.pos")) { list.add("pos2"); }
-        if (sender.hasPermission("cherry.wand.copy")) { list.add("copy"); }
-        if (sender.hasPermission("cherry.wand.paste")) { list.add("paste"); }
-        if (sender.hasPermission("cherry.wand.cut")) { list.add("cut"); }
-        if (sender.hasPermission("cherry.wand.replace")) { list.add("replace"); }
-        if (sender.hasPermission("cherry.wand.cube")) { list.add("cube"); }
-        if (sender.hasPermission("cherry.wand.cyl")) { list.add("cyl"); }
-        if (sender.hasPermission("cherry.wand.sphere")) { list.add("sphere"); }
-        if (sender.hasPermission("cherry.wand.wall")) { list.add("wall"); }
-        if (sender.hasPermission("cherry.wand.cmdscan")) { list.add("cmdscan"); }
+        if (sender.hasPermission("cherry.wand.get")) {
+          list.add("get");
+        }
+        if (sender.hasPermission("cherry.wand.undo")) {
+          list.add("undo");
+        }
+        if (sender.hasPermission("cherry.wand.redo")) {
+          list.add("redo");
+        }
+        if (sender.hasPermission("cherry.wand.stack")) {
+          list.add("stack");
+        }
+        if (sender.hasPermission("cherry.wand.pos")) {
+          list.add("pos1");
+        }
+        if (sender.hasPermission("cherry.wand.pos")) {
+          list.add("pos2");
+        }
+        if (sender.hasPermission("cherry.wand.copy")) {
+          list.add("copy");
+        }
+        if (sender.hasPermission("cherry.wand.paste")) {
+          list.add("paste");
+        }
+        if (sender.hasPermission("cherry.wand.cut")) {
+          list.add("cut");
+        }
+        if (sender.hasPermission("cherry.wand.replace")) {
+          list.add("replace");
+        }
+        if (sender.hasPermission("cherry.wand.cube")) {
+          list.add("cube");
+        }
+        if (sender.hasPermission("cherry.wand.cyl")) {
+          list.add("cyl");
+        }
+        if (sender.hasPermission("cherry.wand.sphere")) {
+          list.add("sphere");
+        }
+        if (sender.hasPermission("cherry.wand.wall")) {
+          list.add("wall");
+        }
+        if (sender.hasPermission("cherry.wand.cmdscan")) {
+          list.add("cmdscan");
+        }
         return TabCompleter.autoComplete(list, args[args.length - 1]);
       }
 
       // pos1, pos2
       if (args.length > 1 && args[0].equalsIgnoreCase("pos1") || args[0].equalsIgnoreCase("pos2")) {
 
-        if ( (!sender.hasPermission("cherry.wand.pos") && args[0].equalsIgnoreCase("pos1"))
-          || (!sender.hasPermission("cherry.wand.pos") && args[0].equalsIgnoreCase("pos2")) ) {
+        if ((!sender.hasPermission("cherry.wand.pos") && args[0].equalsIgnoreCase("pos1")) || (!sender.hasPermission("cherry.wand.pos") && args[0].equalsIgnoreCase("pos2"))) {
           return Collections.emptyList();
         }
 
@@ -144,8 +172,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
       // undo, redo [options...]
       if (args.length > 1 && args[0].equalsIgnoreCase("undo") || args[0].equalsIgnoreCase("redo")) {
 
-        if ( (!sender.hasPermission("cherry.wand.undo") && args[0].equalsIgnoreCase("undo"))
-          || (!sender.hasPermission("cherry.wand.redo") && args[0].equalsIgnoreCase("redo")) ) {
+        if ((!sender.hasPermission("cherry.wand.undo") && args[0].equalsIgnoreCase("undo")) || (!sender.hasPermission("cherry.wand.redo") && args[0].equalsIgnoreCase("redo"))) {
           return Collections.emptyList();
         }
 
@@ -165,8 +192,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
           for (String arg : args) {
             if (n >= 1) {
 
-              if (Pattern.compile("-player:([a-zA-Z0-9_:]{3,20})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches()
-                || Pattern.compile("-p:([a-zA-Z0-9_:]{3,20})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches() ) {
+              if (Pattern.compile("-player:([a-zA-Z0-9_:]{3,20})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches() || Pattern.compile("-p:([a-zA-Z0-9_:]{3,20})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches()) {
 
                 if (!sender.hasPermission("cherry.wand.undo.another")) {
                   return Collections.emptyList();
@@ -192,8 +218,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
                 list.remove("-p:");
                 list.remove("-u:");
               }
-              if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches()
-                || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches() ) {
+              if (Pattern.compile("-uuid:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches() || Pattern.compile("-u:([0-9]{8}-[0-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{12})?", Pattern.CASE_INSENSITIVE).matcher(arg).matches()) {
 
                 if (!sender.hasPermission("cherry.wand.undo.another")) {
                   return Collections.emptyList();
@@ -277,8 +302,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
                 list.remove("-applyPhysics");
                 list.remove("-ap");
               }
-              if (Pattern.compile("-data:\\[([^\\]]*)\\]").matcher(arg).matches()
-                || Pattern.compile("-data:\\[([^\\]]*)").matcher(arg).matches() ) {
+              if (Pattern.compile("-data:\\[([^\\]]*)\\]").matcher(arg).matches() || Pattern.compile("-data:\\[([^\\]]*)").matcher(arg).matches()) {
                 list.remove("-data:[");
               }
               if (Pattern.compile("-data:\\[([^\\]]*)").matcher(arg).matches() && n == args.length - 1) {

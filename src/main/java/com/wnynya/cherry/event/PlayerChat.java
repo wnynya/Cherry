@@ -14,8 +14,7 @@ public class PlayerChat implements Listener {
     if (Cherry.config.getBoolean("event.chat.setFormat.enable")) {
       event.setFormat(Msg.chatFormatter(event));
     }
-    if (Cherry.config.getBoolean("event.chat.websocket") &&
-      Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected ) {
+    if (Cherry.config.getBoolean("event.chat.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected) {
       WebSocketClient.Message.chat(event.getPlayer(), event.getMessage());
     }
   }

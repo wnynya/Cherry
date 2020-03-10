@@ -48,7 +48,8 @@ public class Sphere {
 
     for (int x = (int) minX; x <= maxX; x++) {
       for (int y = (int) minY; y <= maxY; y++) {
-        z:for (int z = (int) minZ; z <= maxZ; z++) {
+        z:
+        for (int z = (int) minZ; z <= maxZ; z++) {
           Location loc = new Location(pos1.getWorld(), x, y, z); // 테스트할 위치
           int[] array = new int[3];
           if (x >= pos.getX()) {

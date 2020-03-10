@@ -21,7 +21,10 @@ import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class CherryMenu {
 
@@ -108,17 +111,11 @@ public class CherryMenu {
         PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
 
         // 체리 완드
-        setBoolBtn(inv, 10, pm.is(PlayerMeta.Path.WAND_ENABLE),
-          new ItemStack(new ItemStack(Material.SWEET_BERRIES)), "체리 완드",
-          Arrays.asList("&f체리 완드의 포지셔너 사용 여부를 설정합니다"),
-          new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 10, pm.is(PlayerMeta.Path.WAND_ENABLE), new ItemStack(new ItemStack(Material.SWEET_BERRIES)), "체리 완드", Arrays.asList("&f체리 완드의 포지셔너 사용 여부를 설정합니다"), new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
 
 
         // 노트 툴즈
-        setBoolBtn(inv, 11, pm.is(PlayerMeta.Path.NOTETOOL_ENABLE),
-          new ItemStack(new ItemStack(Material.NOTE_BLOCK)), "노트 툴즈",
-          Arrays.asList("&f노트 툴즈의 사용 여부를 설정합니다"),
-          new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 11, pm.is(PlayerMeta.Path.NOTETOOL_ENABLE), new ItemStack(new ItemStack(Material.NOTE_BLOCK)), "노트 툴즈", Arrays.asList("&f노트 툴즈의 사용 여부를 설정합니다"), new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
 
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&f메인 메뉴로 돌어가기", new ArrayList<>()));
         //inv.setItem(38, setMeta(Skull.get(Skull.URL.PREVIOUS_PAGE), "&d&l이전 페이지로", new ArrayList<>()));
@@ -267,16 +264,10 @@ public class CherryMenu {
         YamlConfiguration cConfig = me.jho5245.cucumbery.util.CustomConfig.getPlayerConfig(player).getConfig();
 
         // 공중에서-폭죽-발사
-        setBoolBtn(inv, 10, cConfig.getBoolean("공중에서-폭죽-발사"),
-          new ItemStack(Skull.get(Skull.URL.FIREWORK_ROCKET.getValue())), "공중에서 폭죽 발사",
-          Arrays.asList("&f공중에서 &o아이템 사용 키&r&f로 폭죽을 바로 발사할지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 10, cConfig.getBoolean("공중에서-폭죽-발사"), new ItemStack(Skull.get(Skull.URL.FIREWORK_ROCKET.getValue())), "공중에서 폭죽 발사", Arrays.asList("&f공중에서 &o아이템 사용 키&r&f로 폭죽을 바로 발사할지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 서버-리소스팩-사용
-        setBoolBtn(inv, 11, cConfig.getBoolean("서버-리소스팩-사용"),
-          new ItemStack(Skull.get(Skull.URL.GRASS_BLOCK.getValue())), "서버 리소스팩 사용",
-          Arrays.asList("&f서버 리소스팩을 사용할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 11, cConfig.getBoolean("서버-리소스팩-사용"), new ItemStack(Skull.get(Skull.URL.GRASS_BLOCK.getValue())), "서버 리소스팩 사용", Arrays.asList("&f서버 리소스팩을 사용할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&2큐컴버리 메뉴로 돌어가기", new ArrayList<>()));
 
@@ -346,55 +337,28 @@ public class CherryMenu {
         YamlConfiguration cConfig = me.jho5245.cucumbery.util.CustomConfig.getPlayerConfig(player).getConfig();
 
         // 입장-소리-들음
-        setBoolBtn(inv, 1, cConfig.getBoolean("입장-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "서버 입장 알림음",
-          Arrays.asList("&f서버 입장 알림음 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
+        setBoolBtn(inv, 1, cConfig.getBoolean("입장-소리-들음"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "서버 입장 알림음", Arrays.asList("&f서버 입장 알림음 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 퇴장-소리-들음
-        setBoolBtn(inv, 2, cConfig.getBoolean("퇴장-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "서버 퇴장 알림음",
-          Arrays.asList("&f서버 퇴장 알림음 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
+        setBoolBtn(inv, 2, cConfig.getBoolean("퇴장-소리-들음"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "서버 퇴장 알림음", Arrays.asList("&f서버 퇴장 알림음 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
 
         // 채팅-소리-들음
-        setBoolBtn(inv, 3, cConfig.getBoolean("채팅-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 알림음",
-          Arrays.asList("&f채팅시 알림음 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 3, cConfig.getBoolean("채팅-소리-들음"), new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 알림음", Arrays.asList("&f채팅시 알림음 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 명령어-입력-소리-들음
-        setBoolBtn(inv, 4, cConfig.getBoolean("명령어-입력-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "명령어 입력시 소리",
-          Arrays.asList("&f명령어 입력시 소리 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 4, cConfig.getBoolean("명령어-입력-소리-들음"), new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "명령어 입력시 소리", Arrays.asList("&f명령어 입력시 소리 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 손에-든-아이템-바꾸는-소리-들음
-        setBoolBtn(inv, 5, cConfig.getBoolean("손에-든-아이템-바꾸는-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.SWAP.getValue())), "손에 든 아이템 바꾸는 소리",
-          Arrays.asList("&f단축바에서 손에 든 아이템 바꾸는 소리 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 5, cConfig.getBoolean("손에-든-아이템-바꾸는-소리-들음"), new ItemStack(Skull.get(Skull.URL.SWAP.getValue())), "손에 든 아이템 바꾸는 소리", Arrays.asList("&f단축바에서 손에 든 아이템 바꾸는 소리 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 컨테이너-열고-닫는-소리-들음
-        setBoolBtn(inv, 6, cConfig.getBoolean("컨테이너-열고-닫는-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.CHEST.getValue())), "컨테이너 여닫는 소리",
-          Arrays.asList("&f컨테이너 여닫는 소리 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 6, cConfig.getBoolean("컨테이너-열고-닫는-소리-들음"), new ItemStack(Skull.get(Skull.URL.CHEST.getValue())), "컨테이너 여닫는 소리", Arrays.asList("&f컨테이너 여닫는 소리 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 아이템-버리는-소리-들음
-        setBoolBtn(inv, 7, cConfig.getBoolean("아이템-버리는-소리-들음"),
-          new ItemStack(Skull.get(Skull.URL.DROPPER.getValue())), "아이템 버리는 소리",
-          Arrays.asList("&f아이템 버리는 소리 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 7, cConfig.getBoolean("아이템-버리는-소리-들음"), new ItemStack(Skull.get(Skull.URL.DROPPER.getValue())), "아이템 버리는 소리", Arrays.asList("&f아이템 버리는 소리 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 서버-라디오-들음
-        setBoolBtn(inv, 28, cConfig.getBoolean("서버-라디오-들음"),
-          new ItemStack(Skull.get(Skull.URL.RADIO.getValue())), "서버 라디오",
-          Arrays.asList("&f서버 라디오 청취 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
-
+        setBoolBtn(inv, 28, cConfig.getBoolean("서버-라디오-들음"), new ItemStack(Skull.get(Skull.URL.RADIO.getValue())), "서버 라디오", Arrays.asList("&f서버 라디오 청취 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
 
         inv.setItem(45, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&2큐컴버리 메뉴로 돌어가기", new ArrayList<>()));
@@ -544,53 +508,25 @@ public class CherryMenu {
         YamlConfiguration cConfig = me.jho5245.cucumbery.util.CustomConfig.getPlayerConfig(player).getConfig();
 
         // 아이템-주울때-액션바-띄움
-        setBoolBtn(inv, 10, cConfig.getBoolean("아이템-주울때-액션바-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_I.getValue())), "아이템 획득 시 액션바",
-          Arrays.asList("&f아이템을 주울 때 액션바 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_I.getValue())));
+        setBoolBtn(inv, 10, cConfig.getBoolean("아이템-주울때-액션바-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_I.getValue())), "아이템 획득 시 액션바", Arrays.asList("&f아이템을 주울 때 액션바 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_I.getValue())));
 
         // 아이템-버릴때-액션바-띄움
-        setBoolBtn(inv, 11, cConfig.getBoolean("아이템-버릴때-액션바-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_I.getValue())), "아이템 버릴 시 액션바",
-          Arrays.asList("&f아이템을 버릴 때 액션바 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_I.getValue())));
+        setBoolBtn(inv, 11, cConfig.getBoolean("아이템-버릴때-액션바-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_I.getValue())), "아이템 버릴 시 액션바", Arrays.asList("&f아이템을 버릴 때 액션바 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_I.getValue())));
 
         // 공격할-때-액션바-띄움
-        setBoolBtn(inv, 12, cConfig.getBoolean("공격할-때-액션바-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_D.getValue())), "대미지 가할 때 액션바",
-          Arrays.asList("&f대미지를 가할 때 액션바를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_D.getValue())));
+        setBoolBtn(inv, 12, cConfig.getBoolean("공격할-때-액션바-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_D.getValue())), "대미지 가할 때 액션바", Arrays.asList("&f대미지를 가할 때 액션바를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_D.getValue())));
 
         // PVP할-때-액션바-띄움
-        setBoolBtn(inv, 13, cConfig.getBoolean("PVP할-때-액션바-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_P.getValue())), "PvP시 액션바",
-          Arrays.asList("&fPvP를 할 때 액션바를 띄울 지 설정합니다", "&f&대미지 가할 때 액션바&r&f 기능이 꺼져 있다면 활성화되지 않습니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_P.getValue())));
+        setBoolBtn(inv, 13, cConfig.getBoolean("PVP할-때-액션바-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_P.getValue())), "PvP시 액션바", Arrays.asList("&fPvP를 할 때 액션바를 띄울 지 설정합니다", "&f&대미지 가할 때 액션바&r&f 기능이 꺼져 있다면 활성화되지 않습니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_P.getValue())));
 
         // 입장-타이틀-띄움
-        setBoolBtn(inv, 14, cConfig.getBoolean("입장-타이틀-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_E.getValue())), "서버 입장 시 타이틀",
-          Arrays.asList("&f서버에 입창할 때 타이틀 메시지를 표시할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_E.getValue())));
+        setBoolBtn(inv, 14, cConfig.getBoolean("입장-타이틀-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_E.getValue())), "서버 입장 시 타이틀", Arrays.asList("&f서버에 입창할 때 타이틀 메시지를 표시할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_E.getValue())));
 
         // 아이템-설명-기능-사용
-        setBoolBtn(inv, 15, cConfig.getBoolean("아이템-설명-기능-사용"),
-          new ItemStack(Skull.get(SkullBank.LIME_T.getValue())), "아이템 설명",
-          Arrays.asList("&f아이템에 대한 정보를 함께 표시할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_T.getValue())));
+        setBoolBtn(inv, 15, cConfig.getBoolean("아이템-설명-기능-사용"), new ItemStack(Skull.get(SkullBank.LIME_T.getValue())), "아이템 설명", Arrays.asList("&f아이템에 대한 정보를 함께 표시할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_T.getValue())));
 
         // 아이템-파괴-타이틀-띄움
-        setBoolBtn(inv, 16, cConfig.getBoolean("아이템-파괴-타이틀-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_B.getValue())), "아이템 파괴 시 타이틀",
-          Arrays.asList("&f아이템이 파괴될 때 타이틀이 뜰 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_B.getValue())));
+        setBoolBtn(inv, 16, cConfig.getBoolean("아이템-파괴-타이틀-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_B.getValue())), "아이템 파괴 시 타이틀", Arrays.asList("&f아이템이 파괴될 때 타이틀이 뜰 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_B.getValue())));
 
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&2큐컴버리 메뉴로 돌어가기", new ArrayList<>()));
 
@@ -723,34 +659,19 @@ public class CherryMenu {
         YamlConfiguration cConfig = me.jho5245.cucumbery.util.CustomConfig.getPlayerConfig(player).getConfig();
 
         // 픽블록으로-소리-블록-음높이-복사
-        setBoolBtn(inv, 10, cConfig.getBoolean("픽블록으로-소리-블록-음높이-복사"),
-          new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 음높이 복사",
-          Arrays.asList("&f&o픽블록 키&r&f를 사용하여", "&f소리 블록의 음높이 값을 복사할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 10, cConfig.getBoolean("픽블록으로-소리-블록-음높이-복사"), new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 음높이 복사", Arrays.asList("&f&o픽블록 키&r&f를 사용하여", "&f소리 블록의 음높이 값을 복사할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 픽블록으로-소리-블록-악기-복사
-        setBoolBtn(inv, 11, cConfig.getBoolean("픽블록으로-소리-블록-악기-복사"),
-          new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 악기 복사",
-          Arrays.asList("&f&o픽블록 키&r&f를 사용하여", "&f소리 블록의 악기 값을 복사할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 11, cConfig.getBoolean("픽블록으로-소리-블록-악기-복사"), new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 악기 복사", Arrays.asList("&f&o픽블록 키&r&f를 사용하여", "&f소리 블록의 악기 값을 복사할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 웅크리기-상태에서만-소리-블록-값-복사
-        setBoolBtn(inv, 12, cConfig.getBoolean("웅크리기-상태에서만-소리-블록-값-복사"),
-          new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "웅크리기 상태에서만 소리 블록 값 복사",
-          Arrays.asList("&f&o웅크리기 &r&f상태에서만", "&f소리 블록 값을 복사할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 12, cConfig.getBoolean("웅크리기-상태에서만-소리-블록-값-복사"), new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "웅크리기 상태에서만 소리 블록 값 복사", Arrays.asList("&f&o웅크리기 &r&f상태에서만", "&f소리 블록 값을 복사할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 크리에이티브-모드에서-소리-블록-시프트-우클릭으로-음높이-낮춤
-        setBoolBtn(inv, 13, cConfig.getBoolean("크리에이티브-모드에서-소리-블록-시프트-우클릭으로-음높이-낮춤"),
-          new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "웅크리기 + 아이템 사용 키로 소리 블록 음높이 낮춤",
-          Arrays.asList("&f&o웅크리기 + 아이템 사용 키&r&f로", "&f소리 블록 음높이 낮출 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 13, cConfig.getBoolean("크리에이티브-모드에서-소리-블록-시프트-우클릭으로-음높이-낮춤"), new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "웅크리기 + 아이템 사용 키로 소리 블록 음높이 낮춤", Arrays.asList("&f&o웅크리기 + 아이템 사용 키&r&f로", "&f소리 블록 음높이 낮출 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 크리에이티브-모드에서-소리-블록-클릭으로-소리-재생
-        setBoolBtn(inv, 14, cConfig.getBoolean("크리에이티브-모드에서-소리-블록-클릭으로-소리-재생"),
-          new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 클릭으로 재생",
-          Arrays.asList("&f크리에이티브 모드에서 &o공격 / 파괴 키&r&f로", "&f소리 블록을 재생할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 14, cConfig.getBoolean("크리에이티브-모드에서-소리-블록-클릭으로-소리-재생"), new ItemStack(Skull.get(Skull.URL.NOTE_BLOCK.getValue())), "소리 블록 클릭으로 재생", Arrays.asList("&f크리에이티브 모드에서 &o공격 / 파괴 키&r&f로", "&f소리 블록을 재생할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&2큐컴버리 메뉴로 돌어가기", new ArrayList<>()));
 
@@ -831,97 +752,46 @@ public class CherryMenu {
         YamlConfiguration cConfig = me.jho5245.cucumbery.util.CustomConfig.getPlayerConfig(player).getConfig();
 
         // 입장-소리-재생
-        setBoolBtn(inv, 1, cConfig.getBoolean("입장-소리-재생"),
-          new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 소리 재생",
-          Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
+        setBoolBtn(inv, 1, cConfig.getBoolean("입장-소리-재생"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 소리 재생", Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 입장-소리-무조건-재생
-        setBoolBtn(inv, 2, cConfig.getBoolean("입장-소리-무조건-재생"),
-          new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 소리 무조건 재생",
-          Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
+        setBoolBtn(inv, 2, cConfig.getBoolean("입장-소리-무조건-재생"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 소리 무조건 재생", Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 퇴장-소리-재생
-        setBoolBtn(inv, 3, cConfig.getBoolean("퇴장-소리-재생"),
-          new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 소리 재생",
-          Arrays.asList("&f서버 퇴장 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
+        setBoolBtn(inv, 3, cConfig.getBoolean("퇴장-소리-재생"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 소리 재생", Arrays.asList("&f서버 퇴장 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
 
         // 퇴장-소리-무조건-재생
-        setBoolBtn(inv, 4, cConfig.getBoolean("퇴장-소리-무조건-재생"),
-          new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 소리 무조건 재생",
-          Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
+        setBoolBtn(inv, 4, cConfig.getBoolean("퇴장-소리-무조건-재생"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 소리 무조건 재생", Arrays.asList("&f서버 입장 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
 
         // 채팅-소리-재생
-        setBoolBtn(inv, 5, cConfig.getBoolean("채팅-소리-재생"),
-          new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 소리 재생",
-          Arrays.asList("&f채팅 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 5, cConfig.getBoolean("채팅-소리-재생"), new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 소리 재생", Arrays.asList("&f채팅 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 채팅-소리-무조건-재생
-        setBoolBtn(inv, 6, cConfig.getBoolean("채팅-소리-무조건-재생"),
-          new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 소리 무조건 재생",
-          Arrays.asList("&f채팅 알림음 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 6, cConfig.getBoolean("채팅-소리-무조건-재생"), new ItemStack(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue())), "채팅 소리 무조건 재생", Arrays.asList("&f채팅 알림음 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // PVP-할-때-상대방에게-액션바-띄우지-않음
-        setBoolBtn(inv, 7, cConfig.getBoolean("PVP-할-때-상대방에게-액션바-띄우지-않음"),
-          new ItemStack(Skull.get(Skull.URL.LIME_D.getValue())), "PvP 할 때 상대방의 액션바 메시지",
-          Arrays.asList("&f아이템 버리는 소리 재생 여부를 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_D.getValue())));
+        setBoolBtn(inv, 7, cConfig.getBoolean("PVP-할-때-상대방에게-액션바-띄우지-않음"), new ItemStack(Skull.get(Skull.URL.LIME_D.getValue())), "PvP 할 때 상대방의 액션바 메시지", Arrays.asList("&f아이템 버리는 소리 재생 여부를 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_D.getValue())));
 
         // 입장-메시지-띄움
-        setBoolBtn(inv, 28, cConfig.getBoolean("입장-메시지-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 띄움",
-          Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
+        setBoolBtn(inv, 28, cConfig.getBoolean("입장-메시지-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 띄움", Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 입장-메시지-무조건-띄움
-        setBoolBtn(inv, 29, cConfig.getBoolean("입장-메시지-무조건-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 무조건 띄움",
-          Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 29, cConfig.getBoolean("입장-메시지-무조건-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 무조건 띄움", Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 퇴장-메시지-띄움
-        setBoolBtn(inv, 30, cConfig.getBoolean("퇴장-메시지-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 메시지 띄움",
-          Arrays.asList("&f서버 퇴장 알림 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
+        setBoolBtn(inv, 30, cConfig.getBoolean("퇴장-메시지-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 메시지 띄움", Arrays.asList("&f서버 퇴장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
 
         // 퇴장-메시지-무조건-띄움
-        setBoolBtn(inv, 31, cConfig.getBoolean("퇴장-메시지-무조건-띄움"),
-          new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 메시지 무조건 띄움",
-          Arrays.asList("&f서버 퇴장 알림 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE),
-          new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
+        setBoolBtn(inv, 31, cConfig.getBoolean("퇴장-메시지-무조건-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 메시지 무조건 띄움", Arrays.asList("&f서버 퇴장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));
 
         // 빠른-명령-블록-사용
-        setBoolBtn(inv, 32, cConfig.getBoolean("빠른-명령-블록-사용"),
-          new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "빠른 명령 블록 실행",
-          Arrays.asList("&f명령 블록을 &o아이템 사용 키&r&f를 통해 바로 실행할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 32, cConfig.getBoolean("빠른-명령-블록-사용"), new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "빠른 명령 블록 실행", Arrays.asList("&f명령 블록을 &o아이템 사용 키&r&f를 통해 바로 실행할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 플러그인-개발-디버그-메시지-띄움
-        setBoolBtn(inv, 33, cConfig.getBoolean("플러그인-개발-디버그-메시지-띄움"),
-          new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "플러그인 디버그 메시지",
-          Arrays.asList("&f플러그인 개발용 디버그 메시지를 띄울 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 33, cConfig.getBoolean("플러그인-개발-디버그-메시지-띄움"), new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "플러그인 디버그 메시지", Arrays.asList("&f플러그인 개발용 디버그 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
         // 플러그인-대량-디버그-메시지-간소화
-        setBoolBtn(inv, 34, cConfig.getBoolean("플러그인-대량-디버그-메시지-간소화"),
-          new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "플러그인 디버그 메시지 간소화",
-          Arrays.asList("&f플러그인의 대량 디버그 메시지를 간소화 할 지 설정합니다"),
-          new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
-
+        setBoolBtn(inv, 34, cConfig.getBoolean("플러그인-대량-디버그-메시지-간소화"), new ItemStack(Skull.get(Skull.URL.COMMAND_BLOCK.getValue())), "플러그인 디버그 메시지 간소화", Arrays.asList("&f플러그인의 대량 디버그 메시지를 간소화 할 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
 
 
         inv.setItem(45, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&2큐컴버리 메뉴로 돌어가기", new ArrayList<>()));
@@ -1084,6 +954,7 @@ public class CherryMenu {
     i.setItem(s, title);
     i.setItem(s + 9, btn);
   }
+
   public static void setBoolBtn(Inventory i, int s, Boolean b, ItemStack titleItem, String itemName, List<String> titleLore, ItemStack btnTrue, ItemStack btnFalse, ItemStack titleItemFalse) {
     ItemStack title = null;
     ItemStack btn = null;

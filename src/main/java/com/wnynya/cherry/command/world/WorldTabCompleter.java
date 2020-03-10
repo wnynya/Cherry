@@ -75,7 +75,7 @@ public class WorldTabCompleter implements org.bukkit.command.TabCompleter {
   }
 
   public static List<String> autoComplete(List<String> list, String arg) {
-    if (!arg.equalsIgnoreCase(""))  {
+    if (!arg.equalsIgnoreCase("")) {
       List<String> listA = new ArrayList<>();
       for (String value : list) {
         if (value.toLowerCase().startsWith(arg.toLowerCase())) {

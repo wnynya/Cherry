@@ -1,17 +1,23 @@
 package com.wnynya.cherry;
 
-import com.wnynya.cherry.amethyst.*;
-import com.wnynya.cherry.command.*;
-import com.wnynya.cherry.command.easy.*;
-import com.wnynya.cherry.command.playermeta.*;
-import com.wnynya.cherry.command.portal.*;
-import com.wnynya.cherry.command.wand.*;
+import com.wnynya.cherry.amethyst.CucumberySupport;
+import com.wnynya.cherry.command.CherryCommand;
+import com.wnynya.cherry.command.MenuCommand;
+import com.wnynya.cherry.command.TabCompleter;
+import com.wnynya.cherry.command.easy.EasyTabCompleter;
+import com.wnynya.cherry.command.easy.Gm;
+import com.wnynya.cherry.command.easy.Rlc;
+import com.wnynya.cherry.command.playermeta.PlayerMetaCommand;
+import com.wnynya.cherry.command.playermeta.PlayerMetaTabCompleter;
+import com.wnynya.cherry.command.portal.PortalCommand;
+import com.wnynya.cherry.command.portal.PortalTabCompleter;
+import com.wnynya.cherry.command.wand.WandCommand;
+import com.wnynya.cherry.command.wand.WandTabCompleter;
 import com.wnynya.cherry.event.*;
-
 import com.wnynya.cherry.network.bungeecord.NetworkChannelListener;
+import com.wnynya.cherry.network.terminal.WebSocketClient;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
-import com.wnynya.cherry.network.terminal.WebSocketClient;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
@@ -33,11 +39,17 @@ import java.util.*;
 public class Cherry extends JavaPlugin {
 
   public static Cherry plugin = null;
+
   public static Cherry getPlugin() {
     return plugin;
   }
+
   public static FileConfiguration config;
-  public static UUID getUUID() { return UUID.fromString("00000000-0000-0000-0000-000000000000"); }
+
+  public static UUID getUUID() {
+    return UUID.fromString("00000000-0000-0000-0000-000000000000");
+  }
+
   public static String fileName = "";
   public static File serverDir;
   public static WebSocketClient.Status status;
@@ -111,7 +123,9 @@ public class Cherry extends JavaPlugin {
     registerCommand("gm", new Gm(), new EasyTabCompleter());
     registerCommand("rlc", new Rlc(), new EasyTabCompleter());
 
-    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Enabled"); }
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Enabled");
+    }
 
     // Updater
     Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
@@ -121,7 +135,9 @@ public class Cherry extends JavaPlugin {
   @Override
   public void onDisable() {
     WebSocketClient.disable();
-    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled"); }
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled");
+    }
   }
 
   private void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
@@ -138,7 +154,6 @@ public class Cherry extends JavaPlugin {
   }
 
 
-
   // config.yml
   private boolean initConfig() {
     config = this.getConfig();
@@ -146,20 +161,20 @@ public class Cherry extends JavaPlugin {
     this.saveDefaultConfig();
 
     debug = config.getBoolean("debug");
-    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Debug Enabled"); }
-    if (Cherry.debug) { Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Config Loaded"); }
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Debug Enabled");
+    }
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Config Loaded");
+    }
 
     String configVersion = "1.2.4";
     String currentVersion = config.getString("config.version");
 
     // Config version check
     if (!currentVersion.equals(configVersion)) {
-      Bukkit.getServer().getConsoleSender().sendMessage(
-        "§c[Cherry] Cannot enable plugin properly!");
-      Bukkit.getServer().getConsoleSender().sendMessage(
-        "§c\t콘피그 버전이 다릅니다. [ 현재:"
-        + currentVersion + ", 최신:" + configVersion + " ] "
-        + "콘피그 파일을 삭제 후 리로드하여 재설정하거나, 콘피크 파일을 적절하게 수정하십시오.");
+      Bukkit.getServer().getConsoleSender().sendMessage("§c[Cherry] Cannot enable plugin properly!");
+      Bukkit.getServer().getConsoleSender().sendMessage("§c\t콘피그 버전이 다릅니다. [ 현재:" + currentVersion + ", 최신:" + configVersion + " ] " + "콘피그 파일을 삭제 후 리로드하여 재설정하거나, 콘피크 파일을 적절하게 수정하십시오.");
       return false;
     }
 
@@ -190,7 +205,9 @@ public class Cherry extends JavaPlugin {
         listenersField.setAccessible(true);
         listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
       }
-      catch (Exception e) { reloadlisteners = false; }
+      catch (Exception e) {
+        reloadlisteners = false;
+      }
       Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
       commandMapField.setAccessible(true);
       commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
@@ -198,19 +215,30 @@ public class Cherry extends JavaPlugin {
       knownCommandsField.setAccessible(true);
       commands = (Map<String, org.bukkit.command.Command>) knownCommandsField.get(commandMap);
     }
-    catch (Exception e) { e.printStackTrace(); }
+    catch (Exception e) {
+      e.printStackTrace();
+    }
     pluginManager.disablePlugin(plugin);
-    if (plugins != null && plugins.contains(plugin)) { plugins.remove(plugin); }
-    if (names != null && names.containsKey(name)) { names.remove(name); }
+    if (plugins != null && plugins.contains(plugin)) {
+      plugins.remove(plugin);
+    }
+    if (names != null && names.containsKey(name)) {
+      names.remove(name);
+    }
     if (listeners != null && reloadlisteners) {
-      for (SortedSet<RegisteredListener> set : listeners.values()) { set.removeIf(value -> value.getPlugin() == plugin); }
+      for (SortedSet<RegisteredListener> set : listeners.values()) {
+        set.removeIf(value -> value.getPlugin() == plugin);
+      }
     }
     if (commandMap != null) {
       for (Iterator<Map.Entry<String, org.bukkit.command.Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
         Map.Entry<String, org.bukkit.command.Command> entry = it.next();
         if (entry.getValue() instanceof PluginCommand) {
           PluginCommand c = (PluginCommand) entry.getValue();
-          if (c.getPlugin() == plugin) { c.unregister(commandMap); it.remove(); }
+          if (c.getPlugin() == plugin) {
+            c.unregister(commandMap);
+            it.remove();
+          }
         }
       }
     }
@@ -224,9 +252,15 @@ public class Cherry extends JavaPlugin {
         pluginInitField.setAccessible(true);
         pluginInitField.set(cl, null);
       }
-      catch (Exception e) { e.printStackTrace(); }
-      try { ((URLClassLoader) cl).close(); }
-      catch (Exception e) { e.printStackTrace(); }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
+      try {
+        ((URLClassLoader) cl).close();
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     System.gc();
   }
@@ -260,7 +294,8 @@ public class Cherry extends JavaPlugin {
       plugin = Bukkit.getPluginManager().loadPlugin(file);
     }
     catch (Exception e) {
-      e.printStackTrace(); return;
+      e.printStackTrace();
+      return;
     }
     if (plugin == null) {
       return;

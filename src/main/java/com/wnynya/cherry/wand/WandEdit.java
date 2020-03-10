@@ -3,7 +3,6 @@ package com.wnynya.cherry.wand;
 import org.bukkit.Location;
 
 import java.util.HashMap;
-import java.util.List;
 
 public class WandEdit {
 
