@@ -5,18 +5,18 @@ import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Cherry Portal
@@ -31,98 +31,218 @@ public class Portal {
   private String name;
   private String displayName;
   private PortalProtocol protocol;
-  private Location gotoLocation = null;
-  private String gotoServer = null;
-  private boolean enable = false;
+  private boolean enable;
+
   private HashMap<String, PortalArea> areas = new HashMap<>();
 
+  private HashMap<String, Object[]> msg = new HashMap<>();
+
+  private Location gotoLocation;
+  private String gotoServer;
+  private CmdExecutor cmdExecutor;
+  private String cmdMsg;
+
+  private Path path;
+
   private Portal(String name) {
+
     this.name = name;
-    if (!portalData.getConfig().isString(this.name + ".name")) {
-      portalData.set(this.name + ".name", this.name);
+    this.path = new Path(this.name);
+
+    // name
+    if (!portalData.getConfig().isString(path.NAME)) {
+      portalData.set(path.NAME, this.name);
     }
-    this.displayName = name;
-    if (!portalData.getConfig().isString(this.name + ".displayName")) {
-      portalData.set(this.name + ".displayName", this.name);
+
+    // displayname
+    if (!portalData.getConfig().isString(path.DISPLAY_NAME)) {
+      portalData.set(path.DISPLAY_NAME, this.name);
     }
-    this.protocol = Protocol.SERVER;
-    if (!portalData.getConfig().isString(this.name + ".protocol")) {
-      portalData.set(this.name + ".protocol", this.protocol.toString());
+    this.displayName = portalData.getString(path.DISPLAY_NAME);
+
+    // protocol
+    if (!portalData.getConfig().isString(path.PROTOCOL)) {
+      portalData.set(path.PROTOCOL, Protocol.SERVER.toString());
     }
-    if (!portalData.getConfig().isBoolean(this.name + ".enable")) {
-      portalData.set(this.name + ".enable", this.enable);
+    this.protocol = Protocol.getProtocol(portalData.getString(path.PROTOCOL));
+    if (this.protocol == null) {
+      this.protocol = Protocol.SERVER;
+      portalData.set(path.PROTOCOL, this.protocol.toString());
     }
-    if (!portalData.getConfig().isLocation(this.name + ".goto.location")) {
-      portalData.set(this.name + ".goto.location", "");
+
+    // enable
+    if (!portalData.getConfig().isBoolean(path.ENABLE)) {
+      portalData.set(path.ENABLE, false);
     }
-    if (!portalData.getConfig().isString(this.name + ".goto.server")) {
-      portalData.set(this.name + ".goto.server", "");
+    this.enable = portalData.getConfig().getBoolean(path.ENABLE);
+
+    // data
+    if (!portalData.getConfig().isConfigurationSection(path.DATA_RUN_GOTO)) {
+      portalData.set(path.DATA_RUN_GOTO, "");
     }
-    if (!portalData.getConfig().isBoolean(this.name + ".msg.enter.enable")) {
-      portalData.set(this.name + ".msg.enter.enable", true);
+    if (!portalData.getConfig().isConfigurationSection(path.DATA_RUN_CMD)) {
+      portalData.set(path.DATA_RUN_CMD, "");
     }
-    if (!portalData.getConfig().isBoolean(this.name + ".msg.permissionError.enable")) {
-      portalData.set(this.name + ".msg.permissionError.enable", true);
+
+    this.gotoLocation = portalData.getConfig().getLocation(path.DATA_RUN_GOTO_LOCATION);
+    this.gotoServer = portalData.getString(path.DATA_RUN_GOTO_SERVER);
+    if (!portalData.getConfig().isString(path.DATA_RUN_CMD_EXECUTOR)) {
+      portalData.set(path.DATA_RUN_CMD_EXECUTOR, CmdExecutor.PLAYER.toString());
     }
-    if (!portalData.getConfig().isBoolean(this.name + ".msg.disabledError.enable")) {
-      portalData.set(this.name + ".msg.disabledError.enable", true);
+    CmdExecutor ce = CmdExecutor.getCmdExecutor(portalData.getString(path.DATA_RUN_CMD_EXECUTOR));
+    if (ce == null) {
+      this.cmdExecutor = CmdExecutor.PLAYER;
     }
-    if (!portalData.getConfig().isBoolean(this.name + ".msg.destError.enable")) {
-      portalData.set(this.name + ".msg.destError.enable", false);
+    else {
+      this.cmdExecutor = ce;
     }
+    this.cmdMsg = portalData.getString(path.DATA_RUN_CMD_MSG);
+
+    // msg
+    if (!portalData.getConfig().isBoolean(path.DATA_MSG_USE_ENABLE)) {
+      portalData.set(path.DATA_MSG_USE_ENABLE, true);
+    }
+    if (!portalData.getConfig().isString(path.DATA_MSG_USE_FORMAT)) {
+      portalData.set(path.DATA_MSG_USE_FORMAT, "{displayname}&r 포탈을 사용하였습니다.");
+    }
+    if (!portalData.getConfig().isBoolean(path.DATA_MSG_ERROR_PERM_ENABLE)) {
+      portalData.set(path.DATA_MSG_ERROR_PERM_ENABLE, true);
+    }
+    if (!portalData.getConfig().isString(path.DATA_MSG_ERROR_PERM_FORMAT)) {
+      portalData.set(path.DATA_MSG_ERROR_PERM_FORMAT, "{displayname}&c 포탈을 사용할 권한이 없습니다.");
+    }
+    if (!portalData.getConfig().isBoolean(path.DATA_MSG_ERROR_DISABLED_ENABLE)) {
+      portalData.set(path.DATA_MSG_ERROR_DISABLED_ENABLE, true);
+    }
+    if (!portalData.getConfig().isString(path.DATA_MSG_ERROR_DISABLED_FORMAT)) {
+      portalData.set(path.DATA_MSG_ERROR_DISABLED_FORMAT, "&c비활성화된 포탈입니다.");
+    }
+    if (!portalData.getConfig().isBoolean(path.DATA_MSG_ERROR_SETTING_ENABLE)) {
+      portalData.set(path.DATA_MSG_ERROR_SETTING_ENABLE, true);
+    }
+    if (!portalData.getConfig().isString(path.DATA_MSG_ERROR_SETTING_FORMAT)) {
+      portalData.set(path.DATA_MSG_ERROR_SETTING_FORMAT, "{displayname}&c 포탈의 최소 요구 설정이 완료되지 않았습니다.");
+    }
+
+    msg.put("use", new Object[] {portalData.getBoolean(path.DATA_MSG_USE_ENABLE), portalData.getString(path.DATA_MSG_USE_FORMAT)});
+    msg.put("error-perm", new Object[] {portalData.getBoolean(path.DATA_MSG_ERROR_PERM_ENABLE), portalData.getString(path.DATA_MSG_ERROR_PERM_FORMAT)});
+    msg.put("error-disabled", new Object[] {portalData.getBoolean(path.DATA_MSG_ERROR_DISABLED_ENABLE), portalData.getString(path.DATA_MSG_ERROR_DISABLED_FORMAT)});
+    msg.put("error-setting", new Object[] {portalData.getBoolean(path.DATA_MSG_ERROR_SETTING_ENABLE), portalData.getString(path.DATA_MSG_ERROR_SETTING_FORMAT)});
+
     portals.put(name, this);
   }
 
+  private static class Path{
+    private Path(String name) {
+      NAME = name + ".name";
+      DISPLAY_NAME = name + ".displayname";
+      PROTOCOL = name + ".protocol";
+      ENABLE = name + ".enable";
+      DATA_RUN_GOTO = name + ".data.run.goto";
+      DATA_RUN_GOTO_LOCATION = DATA_RUN_GOTO + ".location";
+      DATA_RUN_GOTO_SERVER = DATA_RUN_GOTO + ".server";
+      DATA_RUN_CMD = name + ".data.run.cmd";
+      DATA_RUN_CMD_EXECUTOR = DATA_RUN_CMD + ".executor";
+      DATA_RUN_CMD_MSG = DATA_RUN_CMD + ".msg";
+      DATA_MSG = name + ".data.msg";
+      DATA_MSG_USE_ENABLE = DATA_MSG + ".use.enable";
+      DATA_MSG_USE_FORMAT = DATA_MSG + ".use.format";
+      DATA_MSG_ERROR_PERM_ENABLE = DATA_MSG + ".error-perm.enable";
+      DATA_MSG_ERROR_PERM_FORMAT = DATA_MSG + ".error-perm.format";
+      DATA_MSG_ERROR_DISABLED_ENABLE = DATA_MSG + ".error-disabled.enable";
+      DATA_MSG_ERROR_DISABLED_FORMAT = DATA_MSG + ".error-disabled.format";
+      DATA_MSG_ERROR_SETTING_ENABLE = DATA_MSG + ".error-setting.enable";
+      DATA_MSG_ERROR_SETTING_FORMAT = DATA_MSG + ".error-setting.format";
+    }
 
+    public String NAME, DISPLAY_NAME, PROTOCOL, ENABLE;
+    public String DATA_RUN_GOTO;
+    public String DATA_RUN_GOTO_LOCATION;
+    public String DATA_RUN_GOTO_SERVER;
+    public String DATA_RUN_CMD;
+    public String DATA_RUN_CMD_EXECUTOR;
+    public String DATA_RUN_CMD_MSG;
+    public String DATA_MSG;
+    public String DATA_MSG_USE_ENABLE;
+    public String DATA_MSG_USE_FORMAT;
+    public String DATA_MSG_ERROR_PERM_ENABLE;
+    public String DATA_MSG_ERROR_PERM_FORMAT;
+    public String DATA_MSG_ERROR_DISABLED_ENABLE;
+    public String DATA_MSG_ERROR_DISABLED_FORMAT;
+    public String DATA_MSG_ERROR_SETTING_ENABLE;
+    public String DATA_MSG_ERROR_SETTING_FORMAT;
+  }
+
+  private String msgFormatter(String msg) {
+    msg = msg.replace("{name}", this.name);
+    msg = msg.replace("{displayname}", this.displayName);
+    msg = Msg.n2s(msg);
+    return msg;
+  }
+
+  /**
+   * 포탈을 사용합니다.
+   *
+   * @param player 포탈을 사용할 플레이어
+   */
   public void use(Player player) {
 
+    // 권한 확인
     if (!player.hasPermission("cherry.portal.use." + this.name)) {
-      if (portalData.getConfig().getBoolean(this.name + ".msg.permissionError.enable")) {
-        Msg.error(player, "포탈을 사용할 권한이 없습니다");
+      if ((boolean) this.msg.get("error-perm")[0]) {
+        Msg.error(player, msgFormatter( (String) this.msg.get("error-perm")[1]) );
       }
       return;
     }
 
+    // 활성화 여부 확인
     if (!this.enable) {
-      if (portalData.getConfig().getBoolean(this.name + ".msg.disabledError.enable")) {
-        Msg.error(player, "비활성화된 포탈입니다");
+      if ((boolean) this.msg.get("error-disabled")[0]) {
+        Msg.error(player, msgFormatter( (String) this.msg.get("error-disabled")[1]) );
       }
       return;
     }
 
     if (this.protocol.equals(Protocol.SERVER)) {
-
       if (this.gotoLocation == null) {
-        Msg.error(player, "목적지가 설정되지 않은 포탈입니다");
+        if ((boolean) this.msg.get("error-setting")[0]) {
+          Msg.error(player, msgFormatter( (String) this.msg.get("error-setting")[1]) );
+        }
         return;
       }
 
       this.protocol.use(player, this.gotoLocation);
-
-      if (portalData.getConfig().getBoolean(this.name + ".msg.enter.enable")) {
-        Msg.info(player, Msg.Prefix.PORTAL + getDisplayName() + "포탈을 사용하였습니다");
-      }
-
-      Portal.setLastUsedTime(player);
     }
 
     else if (this.protocol.equals(Protocol.BUNGEECORD)) {
-
       if (this.gotoServer == null) {
-        Msg.error(player, "목적지가 설정되지 않은 포탈입니다");
+        if ((boolean) this.msg.get("error-setting")[0]) {
+          Msg.error(player, msgFormatter( (String) this.msg.get("error-setting")[1]) );
+        }
         return;
       }
 
       this.protocol.use(player, this.gotoServer);
-
-      if (portalData.getConfig().getBoolean(this.name + ".msg.enter.enable")) {
-        Msg.info(player, Msg.Prefix.PORTAL + getDisplayName() + "포탈을 사용하였습니다");
-      }
-
-      Portal.setLastUsedTime(player);
     }
 
+    else if (this.protocol.equals(Protocol.COMMAND)) {
+      if (this.cmdExecutor == null || this.cmdMsg == null) {
+        if ((boolean) this.msg.get("error-setting")[0]) {
+          Msg.error(player, msgFormatter( (String) this.msg.get("error-setting")[1]) );
+        }
+        return;
+      }
+
+      this.protocol.use(player, this.cmdExecutor, this.cmdMsg);
+    }
+
+    if ((boolean) msg.get("use")[0]) {
+      Msg.info(player, msgFormatter( (String) msg.get("use")[1]) );
+    }
+
+    Portal.setLastUsedTime(player);
   }
+
 
 
   public String getName() {
@@ -131,17 +251,18 @@ public class Portal {
 
   public void setDisplayName(String displayName) {
     this.displayName = displayName;
-    portalData.set(this.name + ".displayName", this.displayName);
+    portalData.set(path.DISPLAY_NAME, this.displayName);
   }
 
   public String getDisplayName() {
-    return Msg.n2s("&b" + this.displayName + "&r");
+    return Msg.n2s(this.displayName + "&r");
   }
+
 
 
   public void setEnable(boolean bool) {
     this.enable = bool;
-    portalData.set(this.name + ".enable", this.enable);
+    portalData.set(path.ENABLE, this.enable);
   }
 
   public boolean isEnable() {
@@ -149,9 +270,14 @@ public class Portal {
   }
 
 
+
   public void setProtocol(PortalProtocol protocol) {
     this.protocol = protocol;
-    portalData.set(this.name + ".protocol", this.protocol.toString());
+    portalData.set(path.PROTOCOL, this.protocol.toString());
+  }
+
+  public PortalProtocol getProtocol() {
+    return this.protocol;
   }
 
   public enum Protocol implements PortalProtocol {
@@ -168,6 +294,10 @@ public class Portal {
 
       @Override
       public void use(Player player, String server) {
+      }
+
+      @Override
+      public void use(Player player, CmdExecutor executor, String msg) {
       }
     },
 
@@ -186,7 +316,33 @@ public class Portal {
         out.writeUTF(server);
         player.sendPluginMessage(Cherry.plugin, "BungeeCord", out.toByteArray());
       }
-    };
+
+      @Override
+      public void use(Player player, CmdExecutor executor, String msg) {
+      }
+    },
+
+    COMMAND {
+      @Override
+      public void use(Player player, Location loc) {
+      }
+
+      @Override
+      public void use(Player player, String server) {
+      }
+
+      @Override
+      public void use(Player player, CmdExecutor executor, String msg) {
+        if (executor.equals(CmdExecutor.PLAYER)) {
+          Bukkit.dispatchCommand(player, msg);
+        }
+        else if (executor.equals(CmdExecutor.CONSOLE)) {
+          Bukkit.dispatchCommand(Bukkit.getConsoleSender(), msg);
+        }
+      }
+    },
+
+    ;
 
     /**
      * 문자열에 해당하는 포탈 이동 프로토콜을 반환합니다.
@@ -200,6 +356,9 @@ public class Portal {
       if (str.equalsIgnoreCase("bungeecord")) {
         return BUNGEECORD;
       }
+      if (str.equalsIgnoreCase("command")) {
+        return COMMAND;
+      }
       return null;
     }
   }
@@ -207,16 +366,60 @@ public class Portal {
 
   public void setGotoLocation(Location loc) {
     this.gotoLocation = loc;
-    portalData.set(this.name + ".goto.location", this.gotoLocation);
+    portalData.set(path.DATA_RUN_GOTO_LOCATION, this.gotoLocation);
   }
 
   public void setGotoServer(String server) {
     this.gotoServer = server;
-    portalData.set(this.name + ".goto.server", this.gotoServer);
+    portalData.set(path.DATA_RUN_GOTO_SERVER, this.gotoServer);
+  }
+
+  public void setCmdExecutor(CmdExecutor executor) {
+    this.cmdExecutor = executor;
+    portalData.set(path.DATA_RUN_CMD_EXECUTOR, this.cmdExecutor.toString());
+  }
+
+  public void setCmdMsg(String msg) {
+    this.cmdMsg = msg;
+    portalData.set(path.DATA_RUN_CMD_MSG, this.cmdMsg);
+  }
+
+  public Location getGotoLocation() {
+    return gotoLocation;
+  }
+
+  public String getGotoServer() {
+    return gotoServer;
   }
 
 
-  public void setPortalArea(PortalArea portalArea) {
+
+  public void addGatePortalArea(String areaName, List<Location> area, BlockData fill) {
+    PortalArea pa = new PortalArea(this, areaName, area, PortalArea.Type.GATE, fill);
+    addPortalArea(pa);
+  }
+
+  public void addSignPortalArea(String areaName, Block block) {
+    String[] lines = new String[] {"", "", "", ""};
+    if (this.protocol.equals(Protocol.SERVER)) {
+      lines = new String[] {"&5[Portal]", "{displayname}", "{enabletoggle:&aEnabled:&cDisabled}", ""};
+    }
+    else if (this.protocol.equals(Protocol.BUNGEECORD)) {
+      lines = new String[] {"", "{displayname}", "{servertoggle:&aOnline {cp}/{mp}:&cOffline}", "{enabletoggle::&4Disabled}"};
+    }
+    else if (this.protocol.equals(Protocol.COMMAND)) {
+      lines = new String[] {"&9[Cmd]", "{displayname}", "", ""};
+    }
+    addSignPortalArea(areaName, block.getLocation(), block.getBlockData(), lines);
+  }
+
+  public void addSignPortalArea(String areaName, Location loc, BlockData fill, String[] lines) {
+    PortalArea pa = new PortalArea(this, areaName, Collections.singletonList(loc), PortalArea.Type.SIGN, fill);
+    pa.setLines(lines);
+    addPortalArea(pa);
+  }
+
+  private void addPortalArea(PortalArea portalArea) {
     if (areas.containsKey(portalArea.getName())) {
       areas.replace(portalArea.getName(), portalArea);
     }
@@ -238,12 +441,27 @@ public class Portal {
     return null;
   }
 
-  public List<String> getPortalAreaNames() {
-    List<String> list = new ArrayList<>();
-    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
-      list.add(data.getValue().getName());
+  public PortalArea getPortalArea(Location location) {
+    for (Map.Entry<String, PortalArea> data : this.areas.entrySet()) {
+      PortalArea portalArea = data.getValue();
+      List<Location> area = portalArea.getArea();
+      if (area == null || area.isEmpty() || location == null) {
+        return null;
+      }
+      for (Location loc : area) {
+        if (loc == null) {
+          return null;
+        }
+        if (loc.equals(location)) {
+          return portalArea;
+        }
+      }
     }
-    return list;
+    return null;
+  }
+
+  public HashMap<String, PortalArea> getPortalAreas() {
+    return areas;
   }
 
   public boolean isPortalArea(Location location) {
@@ -265,62 +483,59 @@ public class Portal {
     return false;
   }
 
-  public void fillPortalArea(PortalArea portalArea) {
-    List<Location> area = portalArea.getArea();
-    Wand wand = Wand.getWand(Cherry.getUUID());
-    BlockData rBlockData = null;
-    if (portalArea.getType().equals(PortalArea.Type.GATE_AIR)) {
-      rBlockData = Bukkit.createBlockData(Material.AIR, "[]");
-    }
-    if (portalArea.getType().equals(PortalArea.Type.GATE_WATER)) {
-      rBlockData = Bukkit.createBlockData(Material.WATER, "[]");
-    }
-    if (portalArea.getType().equals(PortalArea.Type.GATE_ENDER)) {
-      rBlockData = Bukkit.createBlockData(Material.END_GATEWAY, "[]");
-    }
-    if (portalArea.getType().equals(PortalArea.Type.GATE_ENDER_LEGACY)) {
-      if (portalArea.getAxis().equals("y")) {
-        rBlockData = Bukkit.createBlockData(Material.END_PORTAL, "[]");
-      }
-    }
-    if (portalArea.getType().equals(PortalArea.Type.GATE_NETHER)) {
-      if (portalArea.getAxis().equals("x")) {
-        rBlockData = Bukkit.createBlockData(Material.NETHER_PORTAL, "[axis=x]");
-      }
-      else if (portalArea.getAxis().equals("z")) {
-        rBlockData = Bukkit.createBlockData(Material.NETHER_PORTAL, "[axis=z]");
-      }
-      else {
-        rBlockData = Bukkit.createBlockData(Material.AIR, "[]");
-      }
-    }
-    if (rBlockData != null) {
-      wand.replace(Bukkit.createBlockData(Material.AIR, "[]"), rBlockData, area, false);
-      wand.replace(Bukkit.createBlockData(Material.WATER, "[]"), rBlockData, area, false);
-      wand.replace(Bukkit.createBlockData(Material.END_GATEWAY, "[]"), rBlockData, area, false);
-      wand.replace(Bukkit.createBlockData(Material.END_PORTAL, "[]"), rBlockData, area, false);
-      wand.replace(Bukkit.createBlockData(Material.NETHER_PORTAL, "[]"), rBlockData, area, false);
-    }
-
-  }
-
-  public void fillPortalAreas() {
+  public List<String> getPortalAreaNames() {
+    List<String> list = new ArrayList<>();
     for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
-      PortalArea portalArea = data.getValue();
-      if (portalArea.getType().equals(PortalArea.Type.GATE_AIR) || portalArea.getType().equals(PortalArea.Type.GATE_NETHER) || portalArea.getType().equals(PortalArea.Type.GATE_ENDER) || portalArea.getType().equals(PortalArea.Type.GATE_WATER)) {
-        fillPortalArea(portalArea);
+      list.add(data.getValue().getName());
+    }
+    return list;
+  }
+
+
+
+  private void saveAreas() {
+    portalData.set(this.name + ".areas", null);
+    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
+      PortalArea pa = data.getValue();
+      portalData.set(this.name + ".areas." + pa.getName() + ".type", pa.getType().toString());
+      portalData.set(this.name + ".areas." + pa.getName() + ".fill.material", pa.getFill().getMaterial().toString());
+      portalData.set(this.name + ".areas." + pa.getName() + ".fill.data", pa.getFill().getAsString(true));
+      if (pa.getType().equals(PortalArea.Type.SIGN)) {
+        portalData.set(this.name + ".areas." + pa.getName() + ".fill.lines", pa.getLines());
+      }
+      portalData.set(this.name + ".areas." + pa.getName() + ".location", pa.getArea());
+    }
+  }
+
+  public void renewAreas() {
+    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
+      PortalArea pa = data.getValue();
+      pa.fill();
+      if (pa.getType().equals(PortalArea.Type.SIGN)) {
+        pa.setLines(pa.getLines());
       }
     }
   }
 
-  public void saveAreas() {
-    for (Map.Entry<String, PortalArea> data : areas.entrySet()) {
-      portalData.set(this.name + ".areas." + data.getKey() + ".type", data.getValue().getType().toString());
-      portalData.set(this.name + ".areas." + data.getKey() + ".axis", data.getValue().getAxis());
-      portalData.set(this.name + ".areas." + data.getKey() + ".location", data.getValue().getArea());
+
+
+  public static enum CmdExecutor {
+    CONSOLE, PLAYER,;
+
+    public static CmdExecutor getCmdExecutor(String c) {
+      switch (c.toLowerCase()) {
+        case "console": {
+          return CONSOLE;
+        }
+        case "player": {
+          return PLAYER;
+        }
+        default: {
+          return null;
+        }
+      }
     }
   }
-
 
   /**
    * 새로운 포탈을 생성합니다.
@@ -350,12 +565,13 @@ public class Portal {
    *
    * @param location 확인할 좌표
    */
-  public static Portal getPortal(Location location) {
+  public static Object[] getPortal(Location location) {
     Location loc = new Location(location.getWorld(), (int) location.getX(), (int) location.getY(), (int) location.getZ());
     for (Map.Entry<String, Portal> data : portals.entrySet()) {
       Portal portal = data.getValue();
-      if (portal.isPortalArea(loc)) {
-        return portal;
+      PortalArea pa = portal.getPortalArea(loc);
+      if (pa != null) {
+        return new Object[] {portal, pa};
       }
     }
     return null;
@@ -391,6 +607,39 @@ public class Portal {
       list.add(data.getValue().getName());
     }
     return list;
+  }
+
+  public static void updateBungeeSigns() {
+    for(Map.Entry<String, Portal> data : portals.entrySet()) {
+      Portal p = data.getValue();
+      if (p.getProtocol().equals(Protocol.BUNGEECORD)) {
+        for(Map.Entry<String, PortalArea> data2 : p.getPortalAreas().entrySet()) {
+          PortalArea pa = data2.getValue();
+          if (pa.getType().equals(PortalArea.Type.SIGN)) {
+            pa.fill();
+            pa.setLines(pa.getLines());
+          }
+        }
+      }
+    }
+  }
+
+  public static void updateBungeeSigns(String server) {
+    for(Map.Entry<String, Portal> data : portals.entrySet()) {
+      Portal p = data.getValue();
+      if (p.getProtocol().equals(Protocol.BUNGEECORD)) {
+        String gotoServer = p.getGotoServer();
+        if (gotoServer != null) {
+          for (Map.Entry<String, PortalArea> data2 : p.getPortalAreas().entrySet()) {
+            PortalArea pa = data2.getValue();
+            if (pa.getType().equals(PortalArea.Type.SIGN)) {
+              pa.fill();
+              pa.setLines(pa.getLines());
+            }
+          }
+        }
+      }
+    }
   }
 
 
@@ -430,61 +679,70 @@ public class Portal {
   }
 
 
-  /**
-   * 포탈의 이동 프로토콜
-   */
-
 
   // 데이터 및 설정 로드
   public static void load() {
-    if (Cherry.debug) {
-      Msg.info("Portal : v0.3");
-    }
+    if (Cherry.debug) { Msg.info("Portal : v0.4"); }
 
-    for (String key : portalData.getConfig().getConfigurationSection("").getKeys(false)) {
-
-      createPortal(key);
-      Portal portal = getPortal(key);
-      if (portal == null) {
-        return;
-      }
+    for (String name : portalData.getConfig().getConfigurationSection("").getKeys(false)) {
 
       if (Cherry.debug) {
-        Msg.info("  load : " + key);
+        Msg.info("  load : " + name);
       }
+
+      Portal portal;
+
+      if (portals.containsKey(name)) {
+        portal = portals.get(name);
+      }
+      else {
+        portal = new Portal(name);
+      }
+
+      String portalName = portal.getName();
 
       FileConfiguration data = portalData.getConfig();
 
-      if (data.isString(key + ".displayName")) {
-        portal.setDisplayName(data.getString(key + ".displayName"));
-      }
-      if (data.isBoolean(key + ".enable")) {
-        portal.setEnable(data.getBoolean(key + ".enable"));
-      }
-      if (data.isString(key + ".protocol")) {
-        portal.setProtocol(Protocol.getProtocol(data.getString(key + ".protocol")));
-      }
-      if (data.isLocation(key + ".goto.location")) {
-        portal.setGotoLocation(data.getLocation(key + ".goto.location"));
-      }
-      if (data.isString(key + ".goto.server")) {
-        portal.setGotoServer(data.getString(key + ".goto.server"));
-      }
-      if (data.isConfigurationSection(key + ".areas") && data.getConfigurationSection(key + ".areas") != null) {
-        for (String areaKey : portalData.getConfig().getConfigurationSection(key + ".areas").getKeys(false)) {
-          if (areaKey == null) {
-            break;
+      ConfigurationSection areas = data.getConfigurationSection(portalName + ".areas");
+
+      if (areas != null) {
+        for (String areaName : areas.getKeys(false)) {
+
+          if (areaName == null) {
+            continue;
           }
-          if (data.isString(key + ".areas." + areaKey + ".type") && data.isList(key + ".areas." + areaKey + ".location")) {
-            String areaName = areaKey;
-            if (Cherry.debug) {
-              Msg.info("    " + areaName);
+
+          String typeStr = data.getString(portalName + ".areas." + areaName + ".type");
+          List<?> locList = data.getList(portalName + ".areas." + areaName + ".location");
+          String matStr = data.getString(portalName + ".areas." + areaName + ".fill.material");
+          String dataStr = data.getString(portalName + ".areas." + areaName + ".fill.data");
+
+          if (typeStr == null || locList == null || matStr == null || dataStr == null) {
+            continue;
+          }
+
+          if (Cherry.debug) {
+            Msg.info("    " + areaName);
+          }
+
+          List<Location> area = (List<Location>) locList;
+          Material material = Material.getMaterial(dataStr);
+          BlockData fill = Bukkit.createBlockData(material, dataStr);
+          PortalArea.Type type = PortalArea.Type.valueOf(typeStr);
+
+          if (type.equals(PortalArea.Type.GATE)) {
+            portal.addGatePortalArea(areaName, area, fill);
+          }
+          else if (type.equals(PortalArea.Type.SIGN)) {
+            List<?> lines = data.getList(portalName + ".areas." + areaName + ".fill.lines");
+            if (lines == null) { continue; }
+            String[] linesStr = new String[] {"", "", "", ""};
+            for (int n = 0; n < lines.size(); n++) {
+              linesStr[n] = String.valueOf(lines.get(n));
             }
-            List<Location> list = (List<Location>) data.getList(key + ".areas." + areaKey + ".location");
-            PortalArea.Type type = PortalArea.Type.valueOf(data.getString(key + ".areas." + areaKey + ".type"));
-            String axis = data.getString(key + ".areas." + areaKey + ".axis");
-            portal.setPortalArea(new PortalArea(areaName, list, type, axis));
+            portal.addSignPortalArea(areaName, area.get(0), fill, linesStr);
           }
+
         }
       }
 

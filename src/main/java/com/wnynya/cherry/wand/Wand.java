@@ -312,8 +312,6 @@ public class Wand {
   public void replace(BlockData originalBlockData, BlockData replaceBlockData, List<Location> area, boolean applyPhysics) {
     World world = area.get(0).getWorld();
 
-    Msg.info("replace called");
-
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
       if (originalBlockData.getAsString().equals("[]") || originalBlockData.getAsString().equals("")) {

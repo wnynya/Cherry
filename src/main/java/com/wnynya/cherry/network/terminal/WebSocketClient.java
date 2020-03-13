@@ -1,6 +1,7 @@
 package com.wnynya.cherry.network.terminal;
 
 import com.wnynya.cherry.Cherry;
+import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.Tool;
 import org.apache.logging.log4j.LogManager;
 import org.bukkit.Bukkit;
@@ -21,6 +22,8 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class WebSocketClient {
 
@@ -268,57 +271,91 @@ public class WebSocketClient {
 
   }
 
+  private static ExecutorService connectExecutorService = Executors.newFixedThreadPool(1);
   public static void connect() {
     try {
       CountDownLatch latch = new CountDownLatch(1);
 
-      WebSocket wsc = HttpClient.newHttpClient().newWebSocketBuilder().connectTimeout(Duration.ofSeconds(10)).subprotocols("cwt-server").buildAsync(uri, new WebSocketConnection(latch)).join();
-
-      ws = wsc;
+      ws = HttpClient.newHttpClient().newWebSocketBuilder().connectTimeout(Duration.ofSeconds(10)).subprotocols("cwt-server").buildAsync(uri, new WebSocketConnection(latch)).join();
 
       Message.init();
 
       latch.await();
     }
     catch (Exception e) {
+      Msg.info("Websocket Connect Failed.");
     }
-  }
-
-  private static Timer dataTimer;
-
-  public static void startDataLoop() {
-    dataTimer = new Timer();
-    dataTimer.schedule(new TimerTask() {
+    /*connectExecutorService.submit(new Runnable() {
+      @Override
       public void run() {
-        if (WebSocketClient.isConnected) {
-          Message.serverData();
+        try {
+          CountDownLatch latch = new CountDownLatch(1);
+
+          ws = HttpClient.newHttpClient().newWebSocketBuilder().connectTimeout(Duration.ofSeconds(10)).subprotocols("cwt-server").buildAsync(uri, new WebSocketConnection(latch)).join();
+
+          Message.init();
+
+          latch.await();
+        }
+        catch (Exception e) {
+          Msg.info("connect failed");
         }
       }
-    }, 0, 1 * 1000);
+    });
+    connectExecutorService.shutdown();*/
+  }
+
+  private static ExecutorService dataExecutorService = Executors.newFixedThreadPool(1);
+  private static Timer dataTimer;
+  public static void startDataLoop() {
+    dataExecutorService.submit(new Runnable() {
+      @Override
+      public void run() {
+        dataTimer = new Timer();
+        dataTimer.schedule(new TimerTask() {
+          public void run() {
+            if (WebSocketClient.isConnected) {
+              Message.serverData();
+            }
+          }
+        }, 0, 1000);
+      }
+    });
   }
 
   public static void cancelDataLoop() {
     if (dataTimer != null) {
       dataTimer.cancel();
     }
+    if (dataExecutorService != null) {
+      dataExecutorService.shutdown();
+    }
   }
 
+  private static ExecutorService connectorExecutorService = Executors.newFixedThreadPool(1);
   private static Timer connectTimer;
-
   public static void startConnectLoop() {
-    connectTimer = new Timer();
-    connectTimer.schedule(new TimerTask() {
+    connectorExecutorService.submit(new Runnable() {
+      @Override
       public void run() {
-        if (!WebSocketClient.isConnected) {
-          connect();
-        }
+        connectTimer = new Timer();
+        connectTimer.schedule(new TimerTask() {
+          public void run() {
+            if (!WebSocketClient.isConnected) {
+              connect();
+            }
+          }
+        }, 0, 10 * 1000);
       }
-    }, 0, 10 * 1000);
+    });
   }
 
   public static void cancelConnectLoop() {
     if (connectTimer != null) {
       connectTimer.cancel();
+    }
+    if (connectorExecutorService != null) {
+      connectorExecutorService.shutdown();
     }
   }
 

@@ -329,7 +329,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
         if (player == null || !player.hasPermission("cherry.wand.cyl")) {
           return Collections.emptyList();
         }
-        // 설치 가능한 블럭 목록
+        // 설치 가능한 블록 목록
         if (args.length == 2) {
           return TabCompleter.autoComplete(Tool.List.materialBlocks(), args[args.length - 1]);
         }
@@ -396,7 +396,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
         if (player == null || !player.hasPermission("cherry.wand.sphere")) {
           return Collections.emptyList();
         }
-        // 설치 가능한 블럭 목록
+        // 설치 가능한 블록 목록
         if (args.length == 2) {
           return TabCompleter.autoComplete(Tool.List.materialBlocks(), args[args.length - 1]);
         }
@@ -447,7 +447,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
         if (player == null || !player.hasPermission("cherry.wand.wall")) {
           return Collections.emptyList();
         }
-        // 설치 가능한 블럭 목록
+        // 설치 가능한 블록 목록
         if (args.length == 2) {
           return TabCompleter.autoComplete(Tool.List.materialBlocks(), args[args.length - 1]);
         }

@@ -118,6 +118,14 @@ public class Config implements Listener {
     return false;
   }
 
+  public String getString(String path) {
+    return this.getConfig().getString(path);
+  }
+
+  public boolean getBoolean(String path) {
+    return this.getConfig().getBoolean(path);
+  }
+
   public static boolean exist(String configName) {
     File configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + configName + ".yml");
     return configFile.exists();

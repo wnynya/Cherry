@@ -24,17 +24,16 @@ public class PlayerJoin {
 
     Player player = event.getPlayer();
 
-    PlayerMeta.initPlayerMeta(player);
+    // First Join
+    if (Config.exist("player/" + player.getUniqueId().toString())) {
 
-    // 플레이어 입장시 스폰으로 이동
-    if (Cherry.config.getBoolean("event.join.moveToSpawn.enable")) {
-      if (Config.exist("cherry")) {
-        Location loc = new Config("cherry", false).getConfig().getLocation("spawn.location");
-        if (loc != null) {
-          player.teleport(loc);
-        }
+      if (CucumberySupport.exist()) {
+        CucumberySupport.playerFirstJoin(player);
       }
+
     }
+
+    PlayerMeta.initPlayerMeta(player);
 
     // 탭리스트 이름 변경
     if (Cherry.config.getBoolean("event.join.setTabList.enable")) {
@@ -85,8 +84,6 @@ public class PlayerJoin {
     }
 
     PortalEvent.playerJoin(event);
-
-    CucumberySupport.playerFirstJoin(player);
 
   }
 

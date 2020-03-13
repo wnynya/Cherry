@@ -114,7 +114,7 @@ public class WorldCommand implements CommandExecutor {
         player = (Player) sender;
       }
       else {
-        Msg.error(sender, Msg.Player.ONLY);
+        Msg.error(sender, Msg.PlayerMSg.ONLY);
         return true;
       }
 

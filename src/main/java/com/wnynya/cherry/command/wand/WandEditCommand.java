@@ -70,7 +70,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.Player.ONLY);
+            Msg.error(sender, Msg.PlayerMSg.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -83,7 +83,7 @@ public class WandEditCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.Player.ONLY);
+          Msg.error(sender, Msg.PlayerMSg.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
@@ -125,7 +125,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.Player.ONLY);
+            Msg.error(sender, Msg.PlayerMSg.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -138,7 +138,7 @@ public class WandEditCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.Player.ONLY);
+          Msg.error(sender, Msg.PlayerMSg.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
@@ -349,7 +349,7 @@ public class WandEditCommand implements CommandExecutor {
       }
 
       if (player == null) {
-        Msg.error(sender, Msg.Player.ONLY);
+        Msg.error(sender, Msg.PlayerMSg.ONLY);
         return true;
       }
 

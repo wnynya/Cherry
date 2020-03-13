@@ -61,7 +61,7 @@ public class WandCommand implements CommandExecutor {
         return true;
       }
       if (player == null) {
-        Msg.error(sender, Msg.Player.ONLY);
+        Msg.error(sender, Msg.PlayerMSg.ONLY);
         return true;
       }
       if (args.length >= 2 && args[1].equalsIgnoreCase("edit")) {
@@ -262,7 +262,7 @@ public class WandCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.Player.ONLY);
+            Msg.error(sender, Msg.PlayerMSg.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -281,7 +281,7 @@ public class WandCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.Player.ONLY);
+          Msg.error(sender, Msg.PlayerMSg.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
@@ -343,7 +343,7 @@ public class WandCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.Player.ONLY);
+            Msg.error(sender, Msg.PlayerMSg.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -362,7 +362,7 @@ public class WandCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.Player.ONLY);
+          Msg.error(sender, Msg.PlayerMSg.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
@@ -590,7 +590,7 @@ public class WandCommand implements CommandExecutor {
       }
 
       if (player == null) {
-        Msg.error(sender, Msg.Player.ONLY);
+        Msg.error(sender, Msg.PlayerMSg.ONLY);
         return true;
       }
 

@@ -9,4 +9,5 @@ public interface PortalProtocol {
 
   public void use(Player player, String server);
 
+  public void use(Player player, Portal.CmdExecutor executor, String msg);
 }

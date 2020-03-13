@@ -16,7 +16,7 @@ public class Gm implements CommandExecutor {
     }
 
     if (!(sender instanceof Player)) {
-      Msg.error(sender, Msg.Player.ONLY);
+      Msg.error(sender, Msg.PlayerMSg.ONLY);
       return true;
     }
     Player player = (Player) sender;

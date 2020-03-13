@@ -181,6 +181,7 @@ portal:
 
 websocket:
   enable: false
+  # ws://
   host: ""
   name: ""
   auth: ""

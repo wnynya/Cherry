@@ -4,6 +4,7 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.player.PlayerJoin;
 import com.wnynya.cherry.player.PlayerQuit;
+import com.wnynya.cherry.portal.Portal;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.messaging.PluginMessageListener;
@@ -56,6 +57,32 @@ public class NetworkChannelListener implements PluginMessageListener {
         Player player = Bukkit.getPlayer(playerName);
         if (player != null) {
           PlayerQuit.switchS(player, serverFrom, serverGoto);
+        }
+        break;
+      }
+
+      case "ServerData": {
+        String serverName = in.readUTF();
+        ServerData s = ServerData.getServerData(serverName);
+        String isOnline = in.readUTF();
+        boolean b = Boolean.valueOf(isOnline);
+        if (b) {
+          String cps = in.readUTF();
+          String mps = in.readUTF();
+          int cp = Integer.parseInt(cps);
+          int mp = Integer.parseInt(mps);
+          s.setOnline(b);
+          s.setCurrentPlayers(cp);
+          s.setMaxPlayers(mp);
+          Portal.updateBungeeSigns(serverName);
+        }
+        else {
+          if (s.isOnline() != b) {
+            s.setOnline(b);
+            s.setCurrentPlayers(0);
+            s.setMaxPlayers(0);
+            Portal.updateBungeeSigns(serverName);
+          }
         }
         break;
       }

@@ -418,7 +418,7 @@ public class Msg {
     static final String SUFFIX_PLACEHOLDER = "{suffix}";
   }
 
-  public static class Player {
+  public static class PlayerMSg {
     public static String ONLY;
   }
 
@@ -428,10 +428,6 @@ public class Msg {
 
   public static class Prefix {
     public static String INFO, WARN, ERROR, CHERRY, WAND, PORTAL;
-  }
-
-  public static class Portal {
-    public static String CANNOT_FIND = " 포탈을 찾을 수 없습니다.";
   }
 
   public static String NO_PERMISSION, NO_ARGS, NO_PLAYER, UNKNOWN;
@@ -444,14 +440,14 @@ public class Msg {
     Prefix.ERROR = Msg.n2s("§c");
 
     Prefix.CHERRY = Msg.n2s("§5§l[Cherry]:§r ");
-    Prefix.WAND = Msg.n2s("§6§l[Wand]:§r ");
-    Prefix.PORTAL = Msg.n2s("§b§l[Portal]:§r ");
+    Prefix.WAND = Msg.n2s("§6§l[W]:§r ");
+    Prefix.PORTAL = Msg.n2s("§b§l[P]:§r ");
 
     Console.INFO = Msg.n2s("§r");
     Console.WARN = Msg.n2s("§e");
     Console.ERROR = Msg.n2s("§c");
 
-    Player.ONLY = "§7플레이어만 사용 가능한 명령어입니다.";
+    PlayerMSg.ONLY = "§7플레이어만 사용 가능한 명령어입니다.";
 
     NO_PERMISSION = "§7명령어의 사용 권한이 없습니다.";
     NO_ARGS = "§7명령어의 구성 요소가 부족합니다.";

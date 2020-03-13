@@ -1,76 +1,129 @@
 package com.wnynya.cherry.portal;
 
+import com.wnynya.cherry.Msg;
 import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 public class PortalEvent {
 
-  private static List<Player> onJoinPortal = new ArrayList<>();
+  private static HashMap<Player, Portal> portalInner = new HashMap<>();
 
   public static void playerMove(PlayerMoveEvent event) {
 
     Player player = event.getPlayer();
 
-    Long time = System.currentTimeMillis();
-    Long lastTime = Portal.getLastUsedTime(player);
-    if (lastTime == null) {
-      lastTime = 0L;
-    }
-    if (time - lastTime <= 2000) {
-      return;
-    }
-
     Location loc = player.getLocation().getBlock().getLocation();
-    Material material = loc.getBlock().getType();
 
-    Portal portal = Portal.getPortal(loc);
-    if (portal == null) {
-      if (onJoinPortal.contains(player)) {
-        onJoinPortal.remove(player);
+    Object[] pd = Portal.getPortal(loc);
+
+    if (pd == null) {
+      portalInner.remove(player);
+      return;
+    }
+
+    Portal portal = (Portal) pd[0];
+
+    PortalArea pa = (PortalArea) pd[1];
+
+    if (pa.getType().equals(PortalArea.Type.GATE)) {
+      if (portalInner.containsKey(player) && portalInner.get(player).getName().equals(portal.getName())) {
+        return;
       }
-      return;
+
+      portal.use(player);
+
+      if (portalInner.containsKey(player)) {
+        portalInner.replace(player, portal);
+      }
+      else {
+        portalInner.put(player, portal);
+      }
     }
 
-    if (onJoinPortal.contains(player)) {
-      return;
-    }
+  }
 
-    portal.use(player);
+  public static void playerInteract(PlayerInteractEvent event) {
 
-    if (material.equals(Material.AIR) || material.equals(Material.NETHER_PORTAL) || material.equals(Material.END_GATEWAY) || material.equals(Material.END_PORTAL) || material.equals(Material.WATER)) {
+    if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+      Player player = event.getPlayer();
+
+      Block block = event.getClickedBlock();
+      if (block == null) {
+        return;
+      }
+
+      Location loc = block.getLocation();
+
+      Object[] pd = Portal.getPortal(loc);
+
+      if (pd == null) {
+        return;
+      }
+
+      Portal portal = (Portal) pd[0];
+
+      PortalArea pa = (PortalArea) pd[1];
+
+      if (portal.isEnable()) {
+        event.setCancelled(true);
+      }
+      else if (event.getAction().equals(Action.LEFT_CLICK_BLOCK)) {
+        return;
+      }
+
+      if (pa.getType().equals(PortalArea.Type.SIGN)) {
+        portal.use(player);
+      }
     }
 
   }
 
   public static void playerJoin(PlayerJoinEvent event) {
+
     Player player = event.getPlayer();
 
     Location loc = player.getLocation().getBlock().getLocation();
 
-    Portal portal = Portal.getPortal(loc);
+    Object[] pd = Portal.getPortal(loc);
+
+    if (pd == null) {
+      return;
+    }
+
+    Portal portal = (Portal) pd[0];
+
     if (portal == null) {
       return;
     }
 
-    if (!onJoinPortal.contains(player)) {
-      onJoinPortal.add(player);
+    if (!portalInner.containsKey(player)) {
+      portalInner.put(player, portal);
     }
 
   }
 
   public static void playerPortal(PlayerPortalEvent event) {
+
     Player player = event.getPlayer();
 
     Location loc = player.getLocation().getBlock().getLocation();
 
-    Portal portal = Portal.getPortal(loc);
+    Object[] pd = Portal.getPortal(loc);
+
+    if (pd == null) {
+      return;
+    }
+
+    Portal portal = (Portal) pd[0];
+
     if (portal != null) {
       event.setCancelled(true);
     }

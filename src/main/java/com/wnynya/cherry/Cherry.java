@@ -21,20 +21,14 @@ import com.wnynya.cherry.portal.Portal;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.SimpleCommandMap;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
-import org.bukkit.plugin.RegisteredListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.lang.reflect.Field;
-import java.net.URLClassLoader;
-import java.util.*;
+import java.util.Map;
+import java.util.UUID;
 
 public class Cherry extends JavaPlugin {
 
@@ -50,7 +44,7 @@ public class Cherry extends JavaPlugin {
     return UUID.fromString("00000000-0000-0000-0000-000000000000");
   }
 
-  public static String fileName = "";
+  public static File file;
   public static File serverDir;
   public static WebSocketClient.Status status;
 
@@ -64,10 +58,11 @@ public class Cherry extends JavaPlugin {
     initConfig();
 
     Msg.enable();
+
     WebSocketClient.enable();
 
     serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
-    fileName = this.getFile().getName();
+    file = this.getFile();
 
     // 기본 명령어
     registerCommand("cherry", new CherryCommand(), new TabCompleter());
@@ -82,7 +77,6 @@ public class Cherry extends JavaPlugin {
     registerCommand("wand", new WandCommand(), new WandTabCompleter());
 
     // Portal
-    Portal.init();
     registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
 
     // World
@@ -127,13 +121,28 @@ public class Cherry extends JavaPlugin {
       Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Enabled");
     }
 
+    //Portal.init();
+
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+      public void run() {
+        Portal.init();
+      }
+    }, 10L);
+
     // Updater
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), Updater::init, 100L);
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+      public void run() {
+        if (Cherry.config.getBoolean("updater.auto")) {
+          Updater.enable();
+        }
+      }
+    }, 100L);
 
   }
 
   @Override
   public void onDisable() {
+    Updater.disable();
     WebSocketClient.disable();
     if (Cherry.debug) {
       Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled");
@@ -179,129 +188,6 @@ public class Cherry extends JavaPlugin {
     }
 
     return true;
-  }
-
-  // Unload Cherry
-  public static void unload() {
-    Plugin plugin = Cherry.getPlugin();
-    String name = plugin.getName();
-    PluginManager pluginManager = Bukkit.getPluginManager();
-    SimpleCommandMap commandMap = null;
-    List<Plugin> plugins = null;
-    Map<String, Plugin> names = null;
-    Map<String, org.bukkit.command.Command> commands = null;
-    Map<Event, SortedSet<RegisteredListener>> listeners = null;
-    boolean reloadlisteners = true;
-    pluginManager.disablePlugin(plugin);
-    try {
-      Field pluginsField = Bukkit.getPluginManager().getClass().getDeclaredField("plugins");
-      pluginsField.setAccessible(true);
-      plugins = (List<Plugin>) pluginsField.get(pluginManager);
-      Field lookupNamesField = Bukkit.getPluginManager().getClass().getDeclaredField("lookupNames");
-      lookupNamesField.setAccessible(true);
-      names = (Map<String, Plugin>) lookupNamesField.get(pluginManager);
-      try {
-        Field listenersField = Bukkit.getPluginManager().getClass().getDeclaredField("listeners");
-        listenersField.setAccessible(true);
-        listeners = (Map<Event, SortedSet<RegisteredListener>>) listenersField.get(pluginManager);
-      }
-      catch (Exception e) {
-        reloadlisteners = false;
-      }
-      Field commandMapField = Bukkit.getPluginManager().getClass().getDeclaredField("commandMap");
-      commandMapField.setAccessible(true);
-      commandMap = (SimpleCommandMap) commandMapField.get(pluginManager);
-      Field knownCommandsField = SimpleCommandMap.class.getDeclaredField("knownCommands");
-      knownCommandsField.setAccessible(true);
-      commands = (Map<String, org.bukkit.command.Command>) knownCommandsField.get(commandMap);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-    pluginManager.disablePlugin(plugin);
-    if (plugins != null && plugins.contains(plugin)) {
-      plugins.remove(plugin);
-    }
-    if (names != null && names.containsKey(name)) {
-      names.remove(name);
-    }
-    if (listeners != null && reloadlisteners) {
-      for (SortedSet<RegisteredListener> set : listeners.values()) {
-        set.removeIf(value -> value.getPlugin() == plugin);
-      }
-    }
-    if (commandMap != null) {
-      for (Iterator<Map.Entry<String, org.bukkit.command.Command>> it = commands.entrySet().iterator(); it.hasNext(); ) {
-        Map.Entry<String, org.bukkit.command.Command> entry = it.next();
-        if (entry.getValue() instanceof PluginCommand) {
-          PluginCommand c = (PluginCommand) entry.getValue();
-          if (c.getPlugin() == plugin) {
-            c.unregister(commandMap);
-            it.remove();
-          }
-        }
-      }
-    }
-    ClassLoader cl = plugin.getClass().getClassLoader();
-    if (cl instanceof URLClassLoader) {
-      try {
-        Field pluginField = cl.getClass().getDeclaredField("plugin");
-        pluginField.setAccessible(true);
-        pluginField.set(cl, null);
-        Field pluginInitField = cl.getClass().getDeclaredField("pluginInit");
-        pluginInitField.setAccessible(true);
-        pluginInitField.set(cl, null);
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
-      try {
-        ((URLClassLoader) cl).close();
-      }
-      catch (Exception e) {
-        e.printStackTrace();
-      }
-    }
-    System.gc();
-  }
-
-  // Load Cherry
-  public static void load() {
-    Plugin plugin = null;
-    File cherryFile = Cherry.getPlugin().getFile();
-    if (!cherryFile.isFile()) {
-      return;
-    }
-    try {
-      plugin = Bukkit.getPluginManager().loadPlugin(cherryFile);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }
-    if (plugin == null) {
-      return;
-    }
-    plugin.onLoad();
-    Bukkit.getPluginManager().enablePlugin(plugin);
-  }
-
-  public static void load(File file) {
-    Plugin plugin = null;
-    if (!file.isFile()) {
-      return;
-    }
-    try {
-      plugin = Bukkit.getPluginManager().loadPlugin(file);
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-      return;
-    }
-    if (plugin == null) {
-      return;
-    }
-    plugin.onLoad();
-    Bukkit.getPluginManager().enablePlugin(plugin);
   }
 
   // Boom it
