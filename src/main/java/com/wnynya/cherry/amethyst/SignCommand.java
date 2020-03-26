@@ -1,8 +1,5 @@
 package com.wnynya.cherry.amethyst;
 
-import com.wnynya.cherry.portal.Portal;
-import com.wnynya.cherry.portal.PortalArea;
-import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.block.Sign;
 import org.bukkit.entity.Player;

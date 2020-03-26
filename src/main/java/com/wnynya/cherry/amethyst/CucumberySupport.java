@@ -1,6 +1,8 @@
 package com.wnynya.cherry.amethyst;
 
+import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.Msg;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
@@ -82,6 +84,21 @@ public class CucumberySupport {
     if (!c.getConfig().isBoolean("default.setuserdata.TOGGLE_COPY_NOTE_BLOCK_INSTRUMENT")) {
       c.set("default.setuserdata.TOGGLE_COPY_NOTE_BLOCK_INSTRUMENT", "false");
     }*/
+  }
+
+  public static void enable() {
+
+    if (!Cherry.config.getBoolean("cucumbery-support.enable")) {
+      return;
+    }
+
+    if (!CucumberySupport.exist()) {
+      Msg.debug("[Cucumbery] Cucumbery-Support option has been enabled, But couldn't find Cucumbery plugin.");
+      return;
+    }
+
+    init();
+
   }
 
 }

@@ -1,4 +1,4 @@
-package com.wnynya.cherry.command.portal;
+package com.wnynya.cherry.portal.command;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
@@ -25,6 +25,11 @@ import java.util.List;
 public class PortalCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+
+    if (!Portal.enabled) {
+      Msg.info(sender, Msg.Prefix.PORTAL, "포탈 기능이 비활성화된 상태입니다");
+      return true;
+    }
 
     if (args.length == 0) {
       Msg.error(sender, Msg.NO_ARGS);

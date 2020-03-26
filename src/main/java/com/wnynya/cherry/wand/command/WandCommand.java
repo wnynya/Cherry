@@ -1,4 +1,4 @@
-package com.wnynya.cherry.command.wand;
+package com.wnynya.cherry.wand.command;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
@@ -30,17 +30,16 @@ public class WandCommand implements CommandExecutor {
 
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
-    if (!Cherry.config.getBoolean("function.wand")) {
-      Msg.info(sender, Msg.Prefix.WAND + "완드 기능이 비활성화 상태입니다");
+    if (!Wand.enabled) {
+      Msg.info(sender, Msg.Prefix.WAND, "완드 기능이 비활성화된 상태입니다");
       return true;
     }
 
     UUID uuid;
     Player player = null;
-    Wand wand = null;
+    Wand wand;
 
     if (sender instanceof Player) {
-      uuid = ((Player) sender).getUniqueId();
       player = (Player) sender;
       wand = Wand.getWand(player);
     }

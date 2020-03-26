@@ -1,4 +1,4 @@
-package com.wnynya.cherry.event;
+package com.wnynya.cherry.network.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;

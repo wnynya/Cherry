@@ -1,18 +1,24 @@
 package com.wnynya.cherry.wand;
 
-import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.area.Area;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class WandEvent {
+public class WandEvent implements Listener {
 
+  @EventHandler
   public static void playerInteract(PlayerInteractEvent event) {
+
+    if (!Wand.enabled) {
+      return;
+    }
 
     Player player = event.getPlayer();
 
@@ -22,10 +28,6 @@ public class WandEvent {
 
     if (event.getItem().equals(Wand.getWandItem(Wand.ItemType.EDIT_POSITIONER))) {
       event.setCancelled(true);
-    }
-
-    if (!Cherry.config.getBoolean("function.wand")) {
-      return;
     }
 
     if (!player.hasPermission("cherry.wand.wand")) {

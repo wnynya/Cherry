@@ -5,6 +5,8 @@ import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.area.Area;
+import com.wnynya.cherry.wand.command.WandCommand;
+import com.wnynya.cherry.wand.command.WandTabCompleter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.block.Container;
@@ -20,6 +22,8 @@ import java.util.*;
  */
 
 public class Wand {
+
+  public static boolean enabled = false;
 
   private static Config config = new Config("wand");
   private static HashMap<UUID, Wand> wands = new HashMap<>();
@@ -526,16 +530,6 @@ public class Wand {
 
   // 로드
   public static void load() {
-    if (!Cherry.config.getBoolean("function.wand")) {
-      if (Cherry.debug) {
-        Msg.info("Wand Disabled");
-      }
-      return;
-    }
-
-    if (Cherry.debug) {
-      Msg.info("Wand v0.3");
-    }
 
     Material material;
     Material mat = Material.getMaterial(Cherry.config.getString("wand.edit.normal-item:"));
@@ -555,12 +549,28 @@ public class Wand {
 
     if (Cherry.config.isInt("wand.undo-limit")) {
       undoLimit = Cherry.config.getInt("wand.undo-limit");
+      Msg.debug("[WAND] Set undo-limit to " + undoLimit);
     }
 
   }
 
-  public static void init() {
+  public static void enable() {
+
+    if (!Cherry.config.getBoolean("wand.enable")) {
+      Msg.debug("[WAND] Wand Disabled");
+      return;
+    }
+
+    Msg.debug("[WAND] Enabling Wand v0.3");
+
+    Cherry.getPlugin().registerCommand("wand", new WandCommand(), new WandTabCompleter());
+
+    Cherry.getPlugin().registerEvent(new WandEvent());
+
     load();
+
+    Wand.enabled = true;
+
   }
 
 }

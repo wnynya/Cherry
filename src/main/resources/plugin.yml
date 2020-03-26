@@ -1,6 +1,6 @@
 name: Cherry
 main: com.wnynya.cherry.Cherry
-version: 1.2.6.dev
+version: 1.2.8.dev
 description: Cherry 플러그인
 author: Wany (Wnynya)
 api-version: 1.15
@@ -11,7 +11,7 @@ commands:
   cherry:
     description: 플러그인 메타 명령어입니다.
     usage: /cherry [reload|reloadopt|update]
-    aliases: [c]
+    aliases: [c, cry]
 
   wand:
     description: 완드 명령어업니다.
@@ -35,8 +35,11 @@ commands:
   rlc:
     description: 뭐
 
+  ppap:
+    description: PPAP
+
   menu:
     description: 메뉴 이다.
     usage: /menu
-    aliases: [ㅡ두ㅕ, 메뉴, apsb]
+    aliases: [ㅡ두ㅕ, 메뉴, apsb, cmenu, cherrymenu]
 

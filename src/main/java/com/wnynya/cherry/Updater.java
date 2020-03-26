@@ -1,7 +1,7 @@
 package com.wnynya.cherry;
 
 import com.wnynya.cherry.amethyst.PluginLoader;
-import com.wnynya.cherry.network.terminal.WebSocketClient;
+import org.bukkit.Bukkit;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -36,10 +36,12 @@ public class Updater {
 
         try {
 
+          Msg.debug(version);
+
           updating = true;
 
           // 서버 상태 업데이트 (CWT)
-          WebSocketClient.Message.status(WebSocketClient.Status.UPDATE);
+          //WebSocket.Message.status(WebSocket.Status.UPDATE);
 
           // 파일 다운로드
           downloadCherry(version);
@@ -221,10 +223,6 @@ public class Updater {
                   // 업데이트 체커 종료
                   loopTimer.cancel();
 
-                  if (showMsg) {
-                    Msg.info("[Dev] Update Complete." + Cherry.getPlugin().getDescription().getVersion());
-                  }
-
                   loopExecutorService.shutdownNow();
                 }
               }
@@ -261,10 +259,6 @@ public class Updater {
                   // 업데이트 체커 종료
                   loopTimer.cancel();
 
-                  if (showMsg) {
-                    Msg.info("Update Complete." + Cherry.getPlugin().getDescription().getVersion());
-                  }
-
                   loopExecutorService.shutdownNow();
                 }
               }
@@ -288,12 +282,29 @@ public class Updater {
 
 
   public static boolean checked = false;
+
   public static void enable() {
-    checked = Cherry.config.getBoolean("updater.auto");
-    if (checked) {
-      updaterLoop();
+
+    if (!Cherry.config.getBoolean("updater.enable")) {
+      Msg.debug("[UPDATER] Updater Disabled");
+      return;
     }
+
+    if (!Cherry.config.getBoolean("updater.auto")) {
+      Msg.debug("[UPDATER] Auto-Updater Disabled");
+      return;
+    }
+
+    Msg.debug("[UPDATER] Enabling Updater v1.0");
+
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+      public void run() {
+        updaterLoop();
+      }
+    }, 100L);
+
   }
+
   public static void disable() {
     loopTimer.cancel();
     loopExecutorService.shutdownNow();

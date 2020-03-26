@@ -7,15 +7,9 @@ import com.wnynya.cherry.command.TabCompleter;
 import com.wnynya.cherry.command.easy.EasyTabCompleter;
 import com.wnynya.cherry.command.easy.Gm;
 import com.wnynya.cherry.command.easy.Rlc;
-import com.wnynya.cherry.command.playermeta.PlayerMetaCommand;
-import com.wnynya.cherry.command.playermeta.PlayerMetaTabCompleter;
-import com.wnynya.cherry.command.portal.PortalCommand;
-import com.wnynya.cherry.command.portal.PortalTabCompleter;
-import com.wnynya.cherry.command.wand.WandCommand;
-import com.wnynya.cherry.command.wand.WandTabCompleter;
 import com.wnynya.cherry.event.*;
-import com.wnynya.cherry.network.bungeecord.NetworkChannelListener;
-import com.wnynya.cherry.network.terminal.WebSocketClient;
+import com.wnynya.cherry.network.BungeeCord;
+import com.wnynya.cherry.network.Terminal;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
 import com.wnynya.cherry.wand.Wand;
@@ -46,8 +40,8 @@ public class Cherry extends JavaPlugin {
 
   public static File file;
   public static File serverDir;
-  public static WebSocketClient.Status status;
-
+  public static Terminal.Status status;
+  public static int javaVersion = getJavaVersion();
   public static boolean debug = false;
 
   @Override
@@ -58,98 +52,52 @@ public class Cherry extends JavaPlugin {
     initConfig();
 
     Msg.enable();
+    Terminal.enable();
 
-    WebSocketClient.enable();
-
+    // System Information
     serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
     file = this.getFile();
 
-    // 기본 명령어
+    // Basic Commands
     registerCommand("cherry", new CherryCommand(), new TabCompleter());
     registerCommand("menu", new MenuCommand(), new TabCompleter());
 
-    // PlayerMeta
-    PlayerMeta.init();
-    registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
-
-    // Wand
-    Wand.init();
-    registerCommand("wand", new WandCommand(), new WandTabCompleter());
-
-    // Portal
-    registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
-
-    // World
-    //CherryWorld.init();
-    //registerCommand("world", new WorldCommand(), new WorldTabCompleter());
+    // Functions
+    PlayerMeta.enable();
+    Wand.enable();
+    Portal.enable();
 
     // Events
     registerEvent(new PlayerChat());
     registerEvent(new PlayerConnect());
     registerEvent(new PlayerInteract());
-    registerEvent(new PlayerMove());
-    registerEvent(new PlayerPortal());
     registerEvent(new InventoryClick());
     registerEvent(new Command());
-    registerEvent(new BlockBreak());
-    registerEvent(new BlockPlace());
 
-    // BungeeCord Messaging Channel
-    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-    this.getServer().getMessenger().registerIncomingPluginChannel(this, "BungeeCord", new BungeeCordMsg());
+    // Channels
+    BungeeCord.enable();
 
-    // Cherry Messaging Channel
-    this.getServer().getMessenger().registerOutgoingPluginChannel(this, "cherry:networkchannel");
-    this.getServer().getMessenger().registerIncomingPluginChannel(this, "cherry:networkchannel", new NetworkChannelListener());
-
-    // Vault
-    if (Vault.exist()) {
-      registerEvent(new Vault());
-      Vault.loadVaultChat();
-    }
-
-    // Cucumbery Support
-    if (CucumberySupport.exist()) {
-      CucumberySupport.init();
-    }
+    // Soft Dependency Support
+    Vault.enable();
+    CucumberySupport.enable();
 
     // Easy
     registerCommand("gm", new Gm(), new EasyTabCompleter());
     registerCommand("rlc", new Rlc(), new EasyTabCompleter());
 
-    if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Enabled");
-    }
-
-    //Portal.init();
-
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
-      public void run() {
-        Portal.init();
-      }
-    }, 10L);
-
     // Updater
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
-      public void run() {
-        if (Cherry.config.getBoolean("updater.auto")) {
-          Updater.enable();
-        }
-      }
-    }, 100L);
+    Updater.enable();
 
   }
 
   @Override
   public void onDisable() {
     Updater.disable();
-    WebSocketClient.disable();
-    if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] Plugin Disabled");
-    }
+    Terminal.disable();
+    Msg.debug("Plugin Disabled");
   }
 
-  private void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
+  public void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
     Map commandMap = Cherry.getPlugin().getDescription().getCommands();
     if (commandMap.containsKey(command)) {
       this.getCommand(command).setExecutor(cmdExc);
@@ -157,11 +105,10 @@ public class Cherry extends JavaPlugin {
     }
   }
 
-  private void registerEvent(Listener eventListener) {
+  public void registerEvent(Listener eventListener) {
     PluginManager pm = Bukkit.getServer().getPluginManager();
     pm.registerEvents(eventListener, this);
   }
-
 
   // config.yml
   private boolean initConfig() {
@@ -171,13 +118,13 @@ public class Cherry extends JavaPlugin {
 
     debug = config.getBoolean("debug");
     if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Debug Enabled");
+      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] [Debug] Debug Enabled");
     }
     if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("§d[Cherry]§r Config Loaded");
+      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] [Debug] Config Loaded");
     }
 
-    String configVersion = "1.2.4";
+    String configVersion = "1.2.6";
     String currentVersion = config.getString("config.version");
 
     // Config version check
@@ -197,6 +144,20 @@ public class Cherry extends JavaPlugin {
 
   public static void boom(int i) {
     System.exit(i);
+  }
+
+  private static int getJavaVersion() {
+    String version = System.getProperty("java.version");
+    if (version.startsWith("1.")) {
+      version = version.substring(2, 3);
+    }
+    else {
+      int dot = version.indexOf(".");
+      if (dot != -1) {
+        version = version.substring(0, dot);
+      }
+    }
+    return Integer.parseInt(version);
   }
 
 }

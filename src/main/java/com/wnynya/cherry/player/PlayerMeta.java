@@ -1,6 +1,9 @@
 package com.wnynya.cherry.player;
 
+import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
+import com.wnynya.cherry.command.playermeta.PlayerMetaCommand;
+import com.wnynya.cherry.command.playermeta.PlayerMetaTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -93,7 +96,8 @@ public class PlayerMeta {
     }
   }
 
-  public static void init() {
+  public static void enable() {
+    Cherry.getPlugin().registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
     for (Player player : Bukkit.getOnlinePlayers()) {
       PlayerMeta.initPlayerMeta(player);
     }

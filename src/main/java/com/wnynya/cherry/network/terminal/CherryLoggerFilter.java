@@ -1,5 +1,6 @@
 package com.wnynya.cherry.network.terminal;
 
+import com.wnynya.cherry.network.Terminal;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.Filter;
@@ -98,7 +99,7 @@ public class CherryLoggerFilter implements Filter {
     }
     catch (InterruptedException e) {
     }
-    WebSocketClient.Message.output(message);
+    Terminal.Msg.log(message);
     return null;
   }
 

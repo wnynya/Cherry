@@ -187,6 +187,7 @@ public class Msg {
   }
 
   public static void info(CommandSender sender, String prefix, String msg) {
+    msg = Msg.n2s(msg);
     if (sender instanceof org.bukkit.entity.Player) {
       org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
       info(player, prefix + msg);
@@ -197,6 +198,7 @@ public class Msg {
   }
 
   public static void warn(CommandSender sender, String prefix, String msg) {
+    msg = Msg.n2s(msg);
     if (sender instanceof org.bukkit.entity.Player) {
       org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
       warn(player, prefix, msg);
@@ -207,6 +209,7 @@ public class Msg {
   }
 
   public static void error(CommandSender sender, String prefix, String msg) {
+    msg = Msg.n2s(msg);
     if (sender instanceof org.bukkit.entity.Player) {
       org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
       error(player, prefix, msg);
@@ -216,6 +219,18 @@ public class Msg {
     }
   }
 
+
+  public static void debug(String msg) {
+    if (Cherry.debug) {
+      Bukkit.getServer().getConsoleSender().sendMessage(Msg.n2s("[Cherry] [Debug] " + msg));
+    }
+  }
+
+  public static void debugSystemInfo() {
+    Msg.debug("System Information: ");
+    Msg.debug("  OS  : " + System.getProperty("os.name") + " " + System.getProperty("os.arch") + " (" + System.getProperty("os.version") + ")");
+    Msg.debug("  Java: " + System.getProperty("java.version"));
+  }
 
   /**
    * 모든 플레이어에게 메시지를 보냅니다.

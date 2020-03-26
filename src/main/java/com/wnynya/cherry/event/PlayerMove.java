@@ -1,5 +1,6 @@
 package com.wnynya.cherry.event;
 
+import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.portal.PortalEvent;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -11,7 +12,9 @@ public class PlayerMove implements Listener {
   @EventHandler(priority = EventPriority.HIGHEST)
   public void onPlayerMoveEvent(PlayerMoveEvent event) {
 
-    PortalEvent.playerMove(event);
+    if (Cherry.config.getBoolean("portal.enable")) {
+      PortalEvent.playerMove(event);
+    }
 
   }
 

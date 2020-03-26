@@ -5,13 +5,14 @@ import com.google.common.io.ByteStreams;
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.Tool;
+import com.wnynya.cherry.portal.command.PortalCommand;
+import com.wnynya.cherry.portal.command.PortalTabCompleter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.data.BlockData;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,6 +24,8 @@ import java.util.*;
  * 좌표계 / 월드계 / 서버계(번지코드) 간 포탈
  */
 public class Portal {
+
+  public static boolean enabled = false;
 
   private static Config portalData = new Config("portal/data");
 
@@ -392,7 +395,13 @@ public class Portal {
     return gotoServer;
   }
 
+  public CmdExecutor getCmdExecutor() {
+    return cmdExecutor;
+  }
 
+  public String getCmdMsg() {
+    return cmdMsg;
+  }
 
   public void addGatePortalArea(String areaName, List<Location> area, BlockData fill) {
     PortalArea pa = new PortalArea(this, areaName, area, PortalArea.Type.GATE, fill);
@@ -682,13 +691,8 @@ public class Portal {
 
   // 데이터 및 설정 로드
   public static void load() {
-    if (Cherry.debug) { Msg.info("Portal : v0.4"); }
 
     for (String name : portalData.getConfig().getConfigurationSection("").getKeys(false)) {
-
-      if (Cherry.debug) {
-        Msg.info("  load : " + name);
-      }
 
       Portal portal;
 
@@ -697,6 +701,18 @@ public class Portal {
       }
       else {
         portal = new Portal(name);
+      }
+
+      Msg.debug("[PORTAL] Load Portal " + portal.getName() + " (" + portal.getProtocol().toString() + ", D:" + portal.getDisplayName() + ")");
+
+      if (portal.getProtocol().equals(Protocol.SERVER) && portal.getGotoLocation() != null) {
+        Msg.debug("[PORTAL]   Dest: " + Tool.loc2StrWithWorld(portal.getGotoLocation()));
+      }
+      else if (portal.getProtocol().equals(Protocol.BUNGEECORD) && portal.getGotoServer() != null) {
+        Msg.debug("[PORTAL]   Dest:" + portal.getGotoServer());
+      }
+      else if (portal.getProtocol().equals(Protocol.COMMAND) && portal.getCmdExecutor() != null && portal.getCmdMsg() != null) {
+        Msg.debug("[PORTAL]   Command: " + portal.getCmdExecutor().toString() + " run " + portal.getCmdMsg());
       }
 
       String portalName = portal.getName();
@@ -721,10 +737,6 @@ public class Portal {
             continue;
           }
 
-          if (Cherry.debug) {
-            Msg.info("    " + areaName);
-          }
-
           List<Location> area = (List<Location>) locList;
           Material material = Material.getMaterial(dataStr);
           BlockData fill = Bukkit.createBlockData(material, dataStr);
@@ -732,25 +744,49 @@ public class Portal {
 
           if (type.equals(PortalArea.Type.GATE)) {
             portal.addGatePortalArea(areaName, area, fill);
+            Msg.debug("[PORTAL]   Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r, SIZE:" + area.size() + "&r)");
           }
           else if (type.equals(PortalArea.Type.SIGN)) {
             List<?> lines = data.getList(portalName + ".areas." + areaName + ".fill.lines");
-            if (lines == null) { continue; }
-            String[] linesStr = new String[] {"", "", "", ""};
+            if (lines == null) {
+              continue;
+            }
+            String[] linesStr = new String[]{"", "", "", ""};
             for (int n = 0; n < lines.size(); n++) {
               linesStr[n] = String.valueOf(lines.get(n));
             }
             portal.addSignPortalArea(areaName, area.get(0), fill, linesStr);
+            Msg.debug("[PORTAL]   Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r)");
           }
 
         }
       }
 
     }
+
   }
 
-  public static void init() {
-    load();
+  public static void enable() {
+
+    if (!Cherry.config.getBoolean("portal.enable")) {
+      Msg.debug("[PORTAL] Portal Disabled");
+      return;
+    }
+
+    Msg.debug("[PORTAL] Enabling Portal v0.4");
+
+    Cherry.getPlugin().registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
+
+    Cherry.getPlugin().registerEvent(new PortalEvent());
+
+    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+      public void run() {
+        load();
+      }
+    }, 10L);
+
+    Portal.enabled = true;
+
   }
 
 }

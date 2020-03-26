@@ -1,4 +1,4 @@
-package com.wnynya.cherry.command.portal;
+package com.wnynya.cherry.portal.command;
 
 import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.command.TabCompleter;

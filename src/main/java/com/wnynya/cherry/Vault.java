@@ -20,9 +20,7 @@ public class Vault implements Listener {
   public static void loadVaultChat() {
     if (Vault.exist()) {
       Chat vaultChatClass = Bukkit.getServer().getServicesManager().load(Chat.class);
-      if (Cherry.debug) {
-        Msg.info("Vault: " + (vaultChatClass == null ? "...없음" : vaultChatClass.getName()));
-      }
+      Msg.debug("[VAULT] Chat: " + (vaultChatClass == null ? "...없음" : vaultChatClass.getName()));
       vaultChat = vaultChatClass;
     }
   }
@@ -55,4 +53,22 @@ public class Vault implements Listener {
       loadVaultChat();
     }
   }
+
+
+  public static void enable() {
+
+    if (!Cherry.config.getBoolean("vault-support.enable")) {
+      return;
+    }
+
+    if (!Vault.exist()) {
+      Msg.debug("[VAULT] Vault-Support option has been enabled, But couldn't find Vault plugin.");
+      return;
+    }
+
+    Cherry.getPlugin().registerEvent(new Vault());
+    Vault.loadVaultChat();
+
+  }
+
 }

@@ -4,7 +4,7 @@ import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.amethyst.CucumberySupport;
-import com.wnynya.cherry.network.terminal.WebSocketClient;
+import com.wnynya.cherry.network.terminal.WebSocket;
 import com.wnynya.cherry.portal.PortalEvent;
 import com.wnynya.cherry.wand.Wand;
 import org.bukkit.Bukkit;
@@ -70,13 +70,21 @@ public class PlayerJoin {
       Msg.info(Msg.playerFormatter(event.getPlayer(), format));
     }
 
-    if (Cherry.config.getBoolean("event.join.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected) {
-      WebSocketClient.Message.join(player);
+    if (Cherry.config.getBoolean("event.join.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocket.isConnected) {
+      //WebSocket.Message.join(player);
     }
 
     Advancement advancement = Bukkit.getAdvancement(new NamespacedKey(Cherry.getPlugin(), "wanyfield/root"));
     if (advancement != null) {
       player.getAdvancementProgress(advancement).awardCriteria("impossible");
+    }
+
+    if (Cherry.config.getBoolean("event.join.moveToSpawn.enable")) {
+      Config spawnConfig = new Config("data/spawn", true);
+      Location loc = spawnConfig.getConfig().getLocation("spawn.location");
+      if (loc != null) {
+        player.teleport(loc);
+      }
     }
 
     if (Wand.exist(player.getUniqueId())) {

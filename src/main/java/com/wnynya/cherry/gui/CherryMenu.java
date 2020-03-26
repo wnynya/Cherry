@@ -776,7 +776,7 @@ public class CherryMenu {
         setBoolBtn(inv, 28, cConfig.getBoolean("입장-메시지-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 띄움", Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 입장-메시지-무조건-띄움
-        setBoolBtn(inv, 29, cConfig.getBoolean("입장-메시지-무조건-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 무조건 띄움", Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE));
+        setBoolBtn(inv, 29, cConfig.getBoolean("입장-메시지-무조건-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_J.getValue())), "입장 메시지 무조건 띄움", Arrays.asList("&f서버 입장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_J.getValue())));
 
         // 퇴장-메시지-띄움
         setBoolBtn(inv, 30, cConfig.getBoolean("퇴장-메시지-띄움"), new ItemStack(Skull.get(Skull.URL.LIME_Q.getValue())), "퇴장 메시지 띄움", Arrays.asList("&f서버 퇴장 알림 메시지를 띄울 지 설정합니다"), new ItemStack(Material.LIME_DYE), new ItemStack(Material.GRAY_DYE), new ItemStack(Skull.get(Skull.URL.LIGHT_GRAY_Q.getValue())));

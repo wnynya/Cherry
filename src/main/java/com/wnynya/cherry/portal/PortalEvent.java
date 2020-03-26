@@ -1,9 +1,10 @@
 package com.wnynya.cherry.portal;
 
-import com.wnynya.cherry.Msg;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -12,11 +13,16 @@ import org.bukkit.event.player.PlayerPortalEvent;
 
 import java.util.HashMap;
 
-public class PortalEvent {
+public class PortalEvent implements Listener {
 
   private static HashMap<Player, Portal> portalInner = new HashMap<>();
 
+  @EventHandler
   public static void playerMove(PlayerMoveEvent event) {
+
+    if (!Portal.enabled) {
+      return;
+    }
 
     Player player = event.getPlayer();
 
@@ -50,7 +56,12 @@ public class PortalEvent {
 
   }
 
+  @EventHandler
   public static void playerInteract(PlayerInteractEvent event) {
+
+    if (!Portal.enabled) {
+      return;
+    }
 
     if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
       Player player = event.getPlayer();
@@ -86,7 +97,12 @@ public class PortalEvent {
 
   }
 
+  @EventHandler
   public static void playerJoin(PlayerJoinEvent event) {
+
+    if (!Portal.enabled) {
+      return;
+    }
 
     Player player = event.getPlayer();
 
@@ -110,7 +126,12 @@ public class PortalEvent {
 
   }
 
+  @EventHandler
   public static void playerPortal(PlayerPortalEvent event) {
+
+    if (!Portal.enabled) {
+      return;
+    }
 
     Player player = event.getPlayer();
 

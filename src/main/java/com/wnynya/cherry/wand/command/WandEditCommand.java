@@ -1,4 +1,4 @@
-package com.wnynya.cherry.command.wand;
+package com.wnynya.cherry.wand.command;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;

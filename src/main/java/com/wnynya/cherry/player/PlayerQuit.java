@@ -2,7 +2,7 @@ package com.wnynya.cherry.player;
 
 import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.network.terminal.WebSocketClient;
+import com.wnynya.cherry.network.terminal.WebSocket;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerQuitEvent;
@@ -50,8 +50,8 @@ public class PlayerQuit {
 
     }
 
-    if (Cherry.config.getBoolean("event.quit.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocketClient.isConnected) {
-      WebSocketClient.Message.quit(player);
+    if (Cherry.config.getBoolean("event.quit.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocket.isConnected) {
+      //WebSocket.Message.quit(player);
     }
 
   }

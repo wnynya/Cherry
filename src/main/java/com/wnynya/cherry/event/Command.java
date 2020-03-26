@@ -1,6 +1,5 @@
 package com.wnynya.cherry.event;
 
-import com.wnynya.cherry.network.terminal.WebSocketClient;
 import org.bukkit.Bukkit;
 import org.bukkit.block.CommandBlock;
 import org.bukkit.command.BlockCommandSender;
@@ -23,7 +22,7 @@ public class Command implements Listener {
       event.setCancelled(true);
     }
 
-    WebSocketClient.Message.command(event.getPlayer(), event.getMessage());
+    //WebSocket.Message.command(event.getPlayer(), event.getMessage());
 
   }
 
@@ -37,21 +36,21 @@ public class Command implements Listener {
     }
 
     else if (sender instanceof ConsoleCommandSender) {
-      WebSocketClient.Message.command("CONSOLE", command);
+      //WebSocket.Message.command("CONSOLE", command);
     }
 
     else if (sender instanceof BlockCommandSender) {
       BlockCommandSender bs = (BlockCommandSender) sender;
       if (bs.getBlock().getState() instanceof CommandBlock) {
-        WebSocketClient.Message.command((CommandBlock) bs.getBlock().getState(), command);
+        //WebSocket.Message.command((CommandBlock) bs.getBlock().getState(), command);
       }
       else {
-        WebSocketClient.Message.command(bs.getBlock().getType().name(), command);
+        //WebSocket.Message.command(bs.getBlock().getType().name(), command);
       }
     }
 
     else if (sender instanceof Entity) {
-      WebSocketClient.Message.command((Entity) sender, command);
+      //WebSocket.Message.command((Entity) sender, command);
     }
 
   }
