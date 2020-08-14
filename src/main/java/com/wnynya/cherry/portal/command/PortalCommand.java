@@ -244,9 +244,9 @@ public class PortalCommand implements CommandExecutor {
         for (int n = 4; n < args.length; n++) {
           displayName.append(" ").append(args[n]);
         }
-        portal.setDisplayName(Msg.n2s(displayName.toString()));
+        portal.setDisplayName(Msg.effect(displayName.toString()));
 
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s(oldName + " 포탈의 표시 이름이 " + Msg.n2s(portal.getDisplayName()) + " (으)로 설정되었습니다"));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect(oldName + " 포탈의 표시 이름이 " + Msg.effect(portal.getDisplayName()) + " (으)로 설정되었습니다"));
 
         portal.renewAreas();
 
@@ -263,7 +263,7 @@ public class PortalCommand implements CommandExecutor {
         }
         portal.setCmdMsg(cmdStr.toString());
 
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s(portal.getDisplayName() + " 포탈의 명령어가 " + cmdStr.toString() + " (으)로 설정되었습니다"));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect(portal.getDisplayName() + " 포탈의 명령어가 " + cmdStr.toString() + " (으)로 설정되었습니다"));
 
         portal.renewAreas();
 
@@ -281,7 +281,7 @@ public class PortalCommand implements CommandExecutor {
 
         portal.setCmdExecutor(ce);
 
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s(portal.getDisplayName() + " 포탈의 명령어 실행자가 " + ce.toString() + " (으)로 설정되었습니다"));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect(portal.getDisplayName() + " 포탈의 명령어 실행자가 " + ce.toString() + " (으)로 설정되었습니다"));
 
         portal.renewAreas();
 
@@ -323,7 +323,7 @@ public class PortalCommand implements CommandExecutor {
           if (args[4].equalsIgnoreCase("here")) {
             if (sender instanceof Player) {
               Player player = (Player) sender;
-              Block block = player.getTargetBlock(10);
+              Block block = player.getTargetBlockExact(10);
               if (block == null) {
                 Msg.error(sender, Msg.Prefix.PORTAL, "바라보는 블록을 찾을 수 없습니다.");
                 return true;
@@ -343,7 +343,7 @@ public class PortalCommand implements CommandExecutor {
               wand = Wand.getWand(player.getUniqueId());
             }
             else {
-              wand = Wand.getWand(Cherry.getUUID());
+              wand = Wand.getWand(Cherry.uuid);
             }
             Location pos1 = wand.getEdit().getPosition(1);
             if (pos1 == null) {
@@ -422,7 +422,7 @@ public class PortalCommand implements CommandExecutor {
 
           portal.setGotoLocation(loc);
 
-          Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s( portal.getDisplayName() + " 포탈의 목적지 좌표가 &e" + Tool.loc2StrWithWorld(loc) + "&r(으)로 설정되었습니다"));
+          Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect( portal.getDisplayName() + " 포탈의 목적지 좌표가 &e" + Tool.loc2StrWithWorld(loc) + "&r(으)로 설정되었습니다"));
 
           portal.renewAreas();
 
@@ -662,7 +662,7 @@ public class PortalCommand implements CommandExecutor {
               wand = Wand.getWand(player.getUniqueId());
             }
             else {
-              wand = Wand.getWand(Cherry.getUUID());
+              wand = Wand.getWand(Cherry.uuid);
             }
 
             pos1 = wand.getEdit().getPosition(1);
@@ -788,7 +788,7 @@ public class PortalCommand implements CommandExecutor {
               }
             }
             else {
-              Wand wand = Wand.getWand(Cherry.getUUID());
+              Wand wand = Wand.getWand(Cherry.uuid);
               Location pos1 = wand.getEdit().getPosition(1);
               if (pos1 == null) {
                 Msg.error(sender, Msg.Prefix.PORTAL, "영역 지정이 완료되지 않았습니다.");
@@ -874,7 +874,7 @@ public class PortalCommand implements CommandExecutor {
           else {
             if (sender instanceof Player) {
               Player player = (Player) sender;
-              Block block = player.getTargetBlock(10);
+              Block block = player.getTargetBlockExact(10);
               if (block == null) {
                 Msg.error(sender, Msg.Prefix.PORTAL, "바라보는 블록을 찾을 수 없습니다.");
                 return true;
@@ -941,17 +941,17 @@ public class PortalCommand implements CommandExecutor {
         return true;
       }
 
-      Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s(portal.getDisplayName() + "&f 포탈 정보:"));
-      Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f이름 (ID): &e" + portal.getName()));
-      Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f표시 이름: &e" + portal.getDisplayName()));
-      Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f포탈 영역: (&e" + portal.getPortalAreaNames().size() + "&f)"));
+      Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect(portal.getDisplayName() + "&f 포탈 정보:"));
+      Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f이름 (ID): &e" + portal.getName()));
+      Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f표시 이름: &e" + portal.getDisplayName()));
+      Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f포탈 영역: (&e" + portal.getPortalAreaNames().size() + "&f)"));
       for (String areaName : portal.getPortalAreaNames()) {
         PortalArea pa = portal.getPortalArea(areaName);
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f  [" + portal.getName() + ".&e" + pa.getName() + "&f]: "));
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f    Type: &e" + pa.getType() + ""));
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f    Fill: &e" + pa.getFill().getMaterial().toString()));
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f    Area: (&e" + pa.getArea().size() + "&f)"));
-        Msg.info(sender, Msg.Prefix.PORTAL, Msg.n2s("&f      area[0]: &e" + Tool.loc2StrWithWorld(pa.getArea().get(0)) ));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f  [" + portal.getName() + ".&e" + pa.getName() + "&f]: "));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f    Type: &e" + pa.getType() + ""));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f    Fill: &e" + pa.getFill().getMaterial().toString()));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f    Area: (&e" + pa.getArea().size() + "&f)"));
+        Msg.info(sender, Msg.Prefix.PORTAL, Msg.effect("&f      area[0]: &e" + Tool.loc2StrWithWorld(pa.getArea().get(0)) ));
       }
 
       return true;

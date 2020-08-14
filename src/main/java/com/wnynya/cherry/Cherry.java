@@ -4,15 +4,14 @@ import com.wnynya.cherry.amethyst.CucumberySupport;
 import com.wnynya.cherry.command.CherryCommand;
 import com.wnynya.cherry.command.MenuCommand;
 import com.wnynya.cherry.command.TabCompleter;
-import com.wnynya.cherry.command.easy.EasyTabCompleter;
-import com.wnynya.cherry.command.easy.Gm;
-import com.wnynya.cherry.command.easy.Rlc;
+import com.wnynya.cherry.command.easy.*;
 import com.wnynya.cherry.event.*;
 import com.wnynya.cherry.network.BungeeCord;
 import com.wnynya.cherry.network.Terminal;
 import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.portal.Portal;
 import com.wnynya.cherry.wand.Wand;
+import com.wnynya.cherry.wanyfield.Wanyfield;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -27,20 +26,10 @@ import java.util.UUID;
 public class Cherry extends JavaPlugin {
 
   public static Cherry plugin = null;
-
-  public static Cherry getPlugin() {
-    return plugin;
-  }
-
   public static FileConfiguration config;
-
-  public static UUID getUUID() {
-    return UUID.fromString("00000000-0000-0000-0000-000000000000");
-  }
-
+  public static UUID uuid = UUID.fromString("00000000-0000-0000-0000-000000000000");
   public static File file;
   public static File serverDir;
-  public static Terminal.Status status;
   public static int javaVersion = getJavaVersion();
   public static boolean debug = false;
 
@@ -52,11 +41,6 @@ public class Cherry extends JavaPlugin {
     initConfig();
 
     Msg.enable();
-    Terminal.enable();
-
-    // System Information
-    serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
-    file = this.getFile();
 
     // Basic Commands
     registerCommand("cherry", new CherryCommand(), new TabCompleter());
@@ -67,8 +51,10 @@ public class Cherry extends JavaPlugin {
     Wand.enable();
     Portal.enable();
 
+    Terminal.enable();
+
     // Events
-    registerEvent(new PlayerChat());
+    registerEvent(new AsyncPlayerChat());
     registerEvent(new PlayerConnect());
     registerEvent(new PlayerInteract());
     registerEvent(new InventoryClick());
@@ -82,8 +68,11 @@ public class Cherry extends JavaPlugin {
     CucumberySupport.enable();
 
     // Easy
-    registerCommand("gm", new Gm(), new EasyTabCompleter());
     registerCommand("rlc", new Rlc(), new EasyTabCompleter());
+
+    // System Information
+    serverDir = new File(new File(plugin.getDataFolder().getAbsoluteFile().getParent()).getParent());
+    file = this.getFile();
 
     // Updater
     Updater.enable();
@@ -92,13 +81,13 @@ public class Cherry extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    Wand.disable();
     Updater.disable();
     Terminal.disable();
-    Msg.debug("Plugin Disabled");
   }
 
   public void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {
-    Map commandMap = Cherry.getPlugin().getDescription().getCommands();
+    Map commandMap = Cherry.plugin.getDescription().getCommands();
     if (commandMap.containsKey(command)) {
       this.getCommand(command).setExecutor(cmdExc);
       this.getCommand(command).setTabCompleter(cmdTab);
@@ -118,13 +107,13 @@ public class Cherry extends JavaPlugin {
 
     debug = config.getBoolean("debug");
     if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] [Debug] Debug Enabled");
+      Msg.console(Msg.effect("[Cherry] #D2B0DD;[Debug] &rDebug Enabled"));
     }
     if (Cherry.debug) {
-      Bukkit.getServer().getConsoleSender().sendMessage("[Cherry] [Debug] Config Loaded");
+      Msg.console(Msg.effect("[Cherry] #D2B0DD;[Debug] &rConfig Loaded"));
     }
 
-    String configVersion = "1.2.6";
+    String configVersion = "1.2.9-dev-1";
     String currentVersion = config.getString("config.version");
 
     // Config version check

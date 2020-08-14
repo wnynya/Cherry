@@ -1,7 +1,6 @@
 package com.wnynya.cherry.network;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.network.bungeecord.BungeeCordMsg;
 import com.wnynya.cherry.network.bungeecord.NetworkChannelListener;
 
 public class BungeeCord {
@@ -13,12 +12,11 @@ public class BungeeCord {
     }
 
     // BungeeCord Messaging Channel
-    Cherry.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(Cherry.getPlugin(), "BungeeCord");
-    Cherry.getPlugin().getServer().getMessenger().registerIncomingPluginChannel(Cherry.getPlugin(), "BungeeCord", new BungeeCordMsg());
+    Cherry.plugin.getServer().getMessenger().registerOutgoingPluginChannel(Cherry.plugin, "BungeeCord");
 
     // Cherry Messaging Channel
-    Cherry.getPlugin().getServer().getMessenger().registerOutgoingPluginChannel(Cherry.getPlugin(), "cherry:networkchannel");
-    Cherry.getPlugin().getServer().getMessenger().registerIncomingPluginChannel(Cherry.getPlugin(), "cherry:networkchannel", new NetworkChannelListener());
+    Cherry.plugin.getServer().getMessenger().registerOutgoingPluginChannel(Cherry.plugin, "cherry:networkchannel");
+    Cherry.plugin.getServer().getMessenger().registerIncomingPluginChannel(Cherry.plugin, "cherry:networkchannel", new NetworkChannelListener());
 
   }
 

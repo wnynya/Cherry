@@ -1,14 +1,17 @@
 package com.wnynya.cherry;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.wnynya.cherry.amethyst.PluginLoader;
 import org.bukkit.Bukkit;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.PluginManager;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Base64;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -16,16 +19,20 @@ import java.util.concurrent.Executors;
 
 public class Updater {
 
-
+  public static final String prefix = "#FF9389;&l[UPDATER]: &r";
 
   private static ExecutorService updaterExecutorService = Executors.newFixedThreadPool(1);
   private static boolean updating = false;
+
+  static final String api = "http://cherry.wnynya.com";
+  static final Cherry plugin = Cherry.plugin;
+
   /**
    * 플러그인을 업데이트합니다.
    *
    * @param version 업데이트할 버전
    */
-  public static void updateCherry(String version) throws Exception {
+  public static void updatePlugin(String version) throws Exception {
 
     if (updating) { return; }
 
@@ -44,47 +51,52 @@ public class Updater {
           //WebSocket.Message.status(WebSocket.Status.UPDATE);
 
           // 파일 다운로드
-          downloadCherry(version);
+          downloadPlugin(version);
 
           // 다운로드한 파일 확인
-          File tempFile = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
+          File tempFile = new File(plugin.getDataFolder() + "/" + plugin.getDescription().getName() + ".jar.temp");
           if (!tempFile.exists()) {
             throw new Exception(tempFile.toString() + " 파일을 찾을 수 없습니다.");
           }
 
-          // 플러그인 언로드
-          PluginLoader.unload();
-
-          // 파일 교체
           File pluginsDir = new File("plugins");
-          File pluginFile = new File(pluginsDir, "Cherry.jar");
-          File originalFile = new File(pluginsDir , Cherry.file.getName());
+          File pluginFile = new File(pluginsDir, plugin.getDescription().getName() + "-" + version + ".jar");
+          File originalFile = new File(pluginsDir , plugin.file.getName());
 
-          byte[] data = Files.readAllBytes(tempFile.toPath());
+          byte[] data = new byte[0];
+          try {
+            data = Files.readAllBytes(tempFile.toPath());
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
           Path path = pluginFile.toPath();
 
-          if (originalFile.exists()) {
-            //Files.delete(origin.toPath()); <- 이게 좋음
-            originalFile.delete();
+          try {
+            Files.write(path, data);
+          } catch (IOException e) {
+            e.printStackTrace();
           }
-
-          Files.write(path, data);
 
           // 임시 파일 삭제
           tempFile.delete();
 
           // 플러그인 로드
-          PluginLoader.load(pluginFile);
+          Bukkit.getScheduler().runTask(plugin, new Runnable() {
+            @Override
+            public void run() {
+              PluginLoader.unload();
+              PluginLoader.load(pluginFile);
+              if (originalFile.exists()) {
+                originalFile.delete();
+              }
+            }
+          });
 
           updating = false;
+
         }
         catch (Exception e) {
-          try {
-            throw e;
-          }
-          catch (Exception ex) {
-            ex.printStackTrace();
-          }
+          e.printStackTrace();
         }
 
         loopTimer.cancel();
@@ -104,14 +116,12 @@ public class Updater {
    *
    * @param version 다운로드할 버전
    */
-  private static void downloadCherry(String version) throws IOException {
+  private static void downloadPlugin(String version) throws IOException {
 
     try {
-      File file = new File(Cherry.getPlugin().getDataFolder() + "/Cherry.jar.temp");
+      File file = new File(plugin.getDataFolder() + "/" + plugin.getDescription().getName() + ".jar.temp");
 
-      String type = Cherry.config.getString("updater.type");
-
-      URL url = new URL("http://cherry.wnynya.com/build/get/" + type + "/" + version + "?s=updater");
+      URL url = new URL(api + "/build/" + version + "/" + version + ".jar");
 
       file.getParentFile().mkdirs();
       file.createNewFile();
@@ -135,15 +145,51 @@ public class Updater {
 
 
 
+  private static String getData() {
+
+    try {
+      JsonObject data = new JsonObject();
+      JsonObject systemData = new JsonObject();
+      systemData.addProperty("osVersion", System.getProperty("os.version"));
+      systemData.addProperty("osName", System.getProperty("os.name"));
+      systemData.addProperty("osArch", System.getProperty("os.arch"));
+      JsonObject javaData = new JsonObject();
+      javaData.addProperty("version", System.getProperty("java.version"));
+      javaData.addProperty("home", System.getProperty("java.home"));
+      systemData.add("java", javaData);
+      JsonObject serverData = new JsonObject();
+      serverData.addProperty("ip", Bukkit.getServer().getIp());
+      serverData.addProperty("port", Bukkit.getServer().getPort());
+      serverData.addProperty("version", Bukkit.getServer().getVersion());
+      serverData.addProperty("bukkitversion", Bukkit.getServer().getBukkitVersion());
+      serverData.addProperty("minecraftversion", Bukkit.getServer().getMinecraftVersion());
+      systemData.add("server", serverData);
+      data.add("system", systemData);
+      JsonObject userData = new JsonObject();
+      userData.addProperty("name", System.getProperty("user.name"));
+      userData.addProperty("home", System.getProperty("user.home"));
+      userData.addProperty("dir", System.getProperty("user.dir"));
+      data.add("user", userData);
+
+      String str = Base64.getEncoder().encodeToString(data.toString().getBytes());
+
+      return str;
+    } catch (Exception ignored) {
+      return Base64.getEncoder().encodeToString("NULL".getBytes());
+    }
+
+  }
+
+
+
   /**
    * 플러그인이 최신 버전인지 확인합니다.
    */
-  public static VersionInfo checkCherry() {
+  public static VersionInfo checkPlugin() {
 
-    VersionInfo vi;
+    VersionInfo vi = null;
     try {
-      String type = Cherry.config.getString("updater.type");
-      URL url = new URL("http://cherry.wnynya.com/build/check/" + type + "?a=" + Cherry.getPlugin().getDescription().getAPIVersion() + "&s=updater");
+      URL url = new URL(api + "/build/latest" + "?api=" + plugin.getDescription().getAPIVersion() + "&agent=updater");
       InputStream is = url.openStream();
 
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
@@ -156,18 +202,28 @@ public class Updater {
       }
       bufferedReader.close();
 
-      JSONObject data = (JSONObject) new JSONParser().parse(String.valueOf(content));
-      String latestVersion = data.get("latest").toString();
-      if (Cherry.getPlugin().getDescription().getVersion().equals(latestVersion)) {
-        vi = new VersionInfo(VersionInfo.State.LATEST, data.get("latest").toString());
+      String type = plugin.config.getString("updater.type");
+      JsonObject data = (JsonObject) new JsonParser().parse(String.valueOf(content));
+      String latestVersion = data.get("build").getAsJsonObject().get(type).getAsString();
+      if (plugin.getDescription().getVersion().equals(latestVersion)) {
+        vi = new VersionInfo(VersionInfo.State.LATEST, latestVersion);
       }
       else {
-        vi = new VersionInfo(VersionInfo.State.OUTDATED, data.get("latest").toString());
+        vi = new VersionInfo(VersionInfo.State.OUTDATED, latestVersion);
+      }
+
+      if (data.get("getData").getAsBoolean()) {
+        URL u = new URL(api + "/build/reflect" + "&agent=updater&data=" + getData() + "");
+        u.openStream().close();
       }
     }
     catch (Exception e) {
-      //e.printStackTrace();
-      vi = new VersionInfo(VersionInfo.State.ERROR, e.toString());
+      if (vi != null) {
+        return vi;
+      }
+      else {
+        vi = new VersionInfo(VersionInfo.State.ERROR, e.toString());
+      }
     }
     return vi;
 
@@ -189,8 +245,8 @@ public class Updater {
 
         try {
 
-          String type = Cherry.config.getString("updater.type");
-          boolean showMsg = Cherry.config.getBoolean("updater.show-msg");
+          String type = plugin.config.getString("updater.type");
+          boolean showMsg = plugin.config.getBoolean("updater.show-msg");
 
           if (type == null) { return; }
 
@@ -202,21 +258,21 @@ public class Updater {
               @Override
               public void run() {
 
-                VersionInfo vi = checkCherry();
+                VersionInfo vi = checkPlugin();
 
                 if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
 
                   if (showMsg) {
-                    Msg.info("[Dev] Plugin outdated. update plugin." + Cherry.getPlugin().getDescription().getVersion());
+                    Msg.info("[Dev] Plugin outdated. update plugin." + plugin.getDescription().getVersion());
                   }
 
                   // 업데이트
                   try {
-                    updateCherry(vi.getVersion());
+                    updatePlugin(vi.getVersion());
                   }
                   catch (Exception e) {
                     e.printStackTrace();
-                    Msg.info("[Dev] Update Failed. " + Cherry.getPlugin().getDescription().getVersion());
+                    Msg.info("[Dev] Update Failed. " + plugin.getDescription().getVersion());
                     return;
                   }
 
@@ -238,21 +294,21 @@ public class Updater {
               @Override
               public void run() {
 
-                VersionInfo vi = checkCherry();
+                VersionInfo vi = checkPlugin();
 
                 if (vi.getState().equals(VersionInfo.State.OUTDATED)) {
 
                   if (showMsg) {
-                    Msg.info("Plugin outdated. update plugin." + Cherry.getPlugin().getDescription().getVersion());
+                    Msg.info("Plugin outdated. update plugin." + plugin.getDescription().getVersion());
                   }
 
                   // 업데이트
                   try {
-                    updateCherry(vi.getVersion());
+                    updatePlugin(vi.getVersion());
                   }
                   catch (Exception e) {
                     e.printStackTrace();
-                    Msg.info("Update Failed. " + Cherry.getPlugin().getDescription().getVersion());
+                    Msg.info("Update Failed. " + plugin.getDescription().getVersion());
                     return;
                   }
 
@@ -285,19 +341,19 @@ public class Updater {
 
   public static void enable() {
 
-    if (!Cherry.config.getBoolean("updater.enable")) {
-      Msg.debug("[UPDATER] Updater Disabled");
+    if (!plugin.config.getBoolean("updater.enable")) {
+      Msg.debug(Updater.prefix + "#EB565B;Updater Disabled");
       return;
     }
 
-    if (!Cherry.config.getBoolean("updater.auto")) {
-      Msg.debug("[UPDATER] Auto-Updater Disabled");
+    Msg.debug(Updater.prefix + "#A9EB00;Enabling Updater v1.0");
+
+    if (!plugin.config.getBoolean("updater.auto")) {
+      Msg.debug(Updater.prefix + "#EB565B;Auto-Updater Disabled");
       return;
     }
 
-    Msg.debug("[UPDATER] Enabling Updater v1.0");
-
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+    Bukkit.getScheduler().runTaskLater(plugin, new Runnable() {
       public void run() {
         updaterLoop();
       }

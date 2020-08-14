@@ -27,6 +27,8 @@ public class Portal {
 
   public static boolean enabled = false;
 
+  public static final String prefix = "#A48DFF;&l[PORTAL]: &r";
+
   private static Config portalData = new Config("portal/data");
 
   private static HashMap<String, Portal> portals = new HashMap<>();
@@ -179,7 +181,7 @@ public class Portal {
   private String msgFormatter(String msg) {
     msg = msg.replace("{name}", this.name);
     msg = msg.replace("{displayname}", this.displayName);
-    msg = Msg.n2s(msg);
+    msg = Msg.effect(msg);
     return msg;
   }
 
@@ -258,7 +260,7 @@ public class Portal {
   }
 
   public String getDisplayName() {
-    return Msg.n2s(this.displayName + "&r");
+    return Msg.effect(this.displayName + "&r");
   }
 
 
@@ -703,16 +705,16 @@ public class Portal {
         portal = new Portal(name);
       }
 
-      Msg.debug("[PORTAL] Load Portal " + portal.getName() + " (" + portal.getProtocol().toString() + ", D:" + portal.getDisplayName() + ")");
+      Msg.debug(Portal.prefix + "Load Portal " + portal.getName() + " (" + portal.getProtocol().toString() + ", D:" + portal.getDisplayName() + ")");
 
       if (portal.getProtocol().equals(Protocol.SERVER) && portal.getGotoLocation() != null) {
-        Msg.debug("[PORTAL]   Dest: " + Tool.loc2StrWithWorld(portal.getGotoLocation()));
+        Msg.debug(Portal.prefix + "  Dest: " + Tool.loc2StrWithWorld(portal.getGotoLocation()));
       }
       else if (portal.getProtocol().equals(Protocol.BUNGEECORD) && portal.getGotoServer() != null) {
-        Msg.debug("[PORTAL]   Dest:" + portal.getGotoServer());
+        Msg.debug(Portal.prefix + "  Dest: " + portal.getGotoServer());
       }
       else if (portal.getProtocol().equals(Protocol.COMMAND) && portal.getCmdExecutor() != null && portal.getCmdMsg() != null) {
-        Msg.debug("[PORTAL]   Command: " + portal.getCmdExecutor().toString() + " run " + portal.getCmdMsg());
+        Msg.debug(Portal.prefix + "  Command: " + portal.getCmdExecutor().toString() + " run " + portal.getCmdMsg());
       }
 
       String portalName = portal.getName();
@@ -744,7 +746,7 @@ public class Portal {
 
           if (type.equals(PortalArea.Type.GATE)) {
             portal.addGatePortalArea(areaName, area, fill);
-            Msg.debug("[PORTAL]   Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r, SIZE:" + area.size() + "&r)");
+            Msg.debug(Portal.prefix + "  Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r, SIZE:" + area.size() + "&r)");
           }
           else if (type.equals(PortalArea.Type.SIGN)) {
             List<?> lines = data.getList(portalName + ".areas." + areaName + ".fill.lines");
@@ -756,7 +758,7 @@ public class Portal {
               linesStr[n] = String.valueOf(lines.get(n));
             }
             portal.addSignPortalArea(areaName, area.get(0), fill, linesStr);
-            Msg.debug("[PORTAL]   Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r)");
+            Msg.debug(Portal.prefix + "  Load Area " + portal.getName() + "&r." + areaName + "&r (" + type.toString() + "&r, " + Tool.loc2StrWithWorld(area.get(0)) + "&r)");
           }
 
         }
@@ -769,17 +771,17 @@ public class Portal {
   public static void enable() {
 
     if (!Cherry.config.getBoolean("portal.enable")) {
-      Msg.debug("[PORTAL] Portal Disabled");
+      Msg.debug(Portal.prefix + "#EB565B;Portal Disabled");
       return;
     }
 
-    Msg.debug("[PORTAL] Enabling Portal v0.4");
+    Msg.debug(Portal.prefix + "#A9EB00;Enabling Portal v0.4");
 
-    Cherry.getPlugin().registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
+    Cherry.plugin.registerCommand("portal", new PortalCommand(), new PortalTabCompleter());
 
-    Cherry.getPlugin().registerEvent(new PortalEvent());
+    Cherry.plugin.registerEvent(new PortalEvent());
 
-    Bukkit.getScheduler().runTaskLater(Cherry.getPlugin(), new Runnable() {
+    Bukkit.getScheduler().runTaskLater(Cherry.plugin, new Runnable() {
       public void run() {
         load();
       }

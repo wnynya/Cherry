@@ -16,7 +16,6 @@ import org.bukkit.block.data.BlockData;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 import org.bukkit.util.Vector;
 
 import java.util.ArrayList;
@@ -28,14 +27,14 @@ public class WandEditCommand implements CommandExecutor {
   public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 
     UUID uuid;
-    Player player = null;
+    org.bukkit.entity.Player player = null;
 
-    if (sender instanceof Player) {
-      uuid = ((Player) sender).getUniqueId();
-      player = (Player) sender;
+    if (sender instanceof org.bukkit.entity.Player) {
+      uuid = ((org.bukkit.entity.Player) sender).getUniqueId();
+      player = (org.bukkit.entity.Player) sender;
     }
     else {
-      uuid = Cherry.getUUID();
+      uuid = Cherry.uuid;
     }
 
     if (args.length == 0) {
@@ -70,7 +69,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.PlayerMSg.ONLY);
+            Msg.error(sender, Msg.Player.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -83,17 +82,17 @@ public class WandEditCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.PlayerMSg.ONLY);
+          Msg.error(sender, Msg.Player.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
       }
       if (wand.getEdit().setPosition(1, loc)) {
         if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.effect("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
         }
         else {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.effect("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
         }
       }
       return true;
@@ -125,7 +124,7 @@ public class WandEditCommand implements CommandExecutor {
       else if (args.length >= 4) {
         if (sender.hasPermission("cherry.wand.edit.pos.loc")) {
           if (player == null) {
-            Msg.error(sender, Msg.PlayerMSg.ONLY);
+            Msg.error(sender, Msg.Player.ONLY);
             return true;
           }
           World world = player.getWorld();
@@ -138,17 +137,17 @@ public class WandEditCommand implements CommandExecutor {
       }
       else {
         if (player == null) {
-          Msg.error(sender, Msg.PlayerMSg.ONLY);
+          Msg.error(sender, Msg.Player.ONLY);
           return true;
         }
         loc = player.getLocation().getBlock().getLocation();
       }
       if (wand.getEdit().setPosition(2, loc)) {
         if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.effect("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r, " + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
         }
         else {
-          Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+          Msg.info(sender, Msg.Prefix.WAND + Msg.effect("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
         }
       }
       return true;
@@ -206,7 +205,7 @@ public class WandEditCommand implements CommandExecutor {
       List<Location> area = Area.CUBE.getArea(pos1, pos2);
       wand.storeUndo(area);
       wand.fill(Material.AIR, area, false);
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역을 잘라내었습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("지정 영역을 잘라내었습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
       return true;
     }
 
@@ -256,7 +255,7 @@ public class WandEditCommand implements CommandExecutor {
 
       wand.copy(pos1, pos2, loc);
 
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역을 클립보드애 복사하였습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("지정 영역을 클립보드애 복사하였습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
       return true;
     }
 
@@ -338,7 +337,7 @@ public class WandEditCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       wand.paste(loc);
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("클립보드 데이터를 붙여넣었습니다. (&6" + wBlocks.size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("클립보드 데이터를 붙여넣었습니다. (&6" + wBlocks.size() + "&r블록)"));
       return true;
     }
 
@@ -349,7 +348,7 @@ public class WandEditCommand implements CommandExecutor {
       }
 
       if (player == null) {
-        Msg.error(sender, Msg.PlayerMSg.ONLY);
+        Msg.error(sender, Msg.Player.ONLY);
         return true;
       }
 
@@ -363,7 +362,7 @@ public class WandEditCommand implements CommandExecutor {
 
       wand.copy(pos1, pos2, player.getLocation().getBlock().getLocation());
 
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역을 클립보드애 복사하였습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("지정 영역을 클립보드애 복사하였습니다. (&6" + wand.getClipboardMemory().size() + "&r블록)"));
       return true;
     }
 
@@ -486,7 +485,7 @@ public class WandEditCommand implements CommandExecutor {
 
       wand.storeUndo(undoArea);
 
-      wand.stack(pos1, pos2, dir, n);
+      wand.stack(pos1, pos2, dir, n, false);
 
       String dirKo = "";
       switch (dir) {
@@ -503,7 +502,7 @@ public class WandEditCommand implements CommandExecutor {
           dirKo = "북쪽";
           break;
       }
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역을 " + dirKo + "으로 " + n + "회 붙여넣었습니다. (" + undoArea.size() + "블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("지정 영역을 " + dirKo + "으로 " + n + "회 붙여넣었습니다. (" + undoArea.size() + "블록)"));
       return true;
     }
 
@@ -524,7 +523,7 @@ public class WandEditCommand implements CommandExecutor {
         return true;
       }
 
-      if (args.length < 3) {
+      if (args.length <= 3) {
         Msg.error(sender, Msg.NO_ARGS);
       }
 
@@ -569,7 +568,7 @@ public class WandEditCommand implements CommandExecutor {
 
       String blockNameOriginal = BlockNames.valueOf(blockDataOriginal.getMaterial().toString()).getName();
       String blockNameReplace = BlockNames.valueOf(blockDataReplace.getMaterial().toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") + " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("지정 영역의 " + blockNameOriginal + Msg.getJosa(blockNameOriginal, "을", "를") + " " + blockNameReplace + Msg.getJosa(blockNameReplace, "으로", "로") + " 바꾸었습니다. (&6" + undoArea.size() + "&r블록)"));
       return true;
     }
 
@@ -640,7 +639,7 @@ public class WandEditCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
 
       wand.fill(material, area, applyPhysics);
     }
@@ -738,7 +737,7 @@ public class WandEditCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
 
       wand.fill(material, area, applyPhysics);
     }
@@ -826,7 +825,7 @@ public class WandEditCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
 
       wand.fill(material, area, applyPhysics);
     }
@@ -889,7 +888,7 @@ public class WandEditCommand implements CommandExecutor {
       wand.storeUndo(area);
 
       String blockName = BlockNames.valueOf(material.toString()).getName();
-      Msg.info(sender, Msg.Prefix.WAND + Msg.n2s("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
+      Msg.info(sender, Msg.Prefix.WAND + Msg.effect("&6" + blockName + "&r" + Msg.getJosa(blockName, "을", "를") + " &6" + area.size() + "&r개 설치하였습니다."));
 
       wand.fill(material, area, applyPhysics);
     }

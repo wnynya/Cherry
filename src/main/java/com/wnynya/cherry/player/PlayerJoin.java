@@ -4,81 +4,99 @@ import com.wnynya.cherry.Cherry;
 import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
 import com.wnynya.cherry.amethyst.CucumberySupport;
-import com.wnynya.cherry.network.terminal.WebSocket;
 import com.wnynya.cherry.portal.PortalEvent;
-import com.wnynya.cherry.wand.Wand;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.advancement.Advancement;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class PlayerJoin {
 
   private static ArrayList<Player> canceledPlayers = new ArrayList<>();
-
+  private static HashMap<String, ArrayList<String>> changingPlayers = new HashMap<>();
+  
   public static void server(PlayerJoinEvent event) {
 
     Player player = event.getPlayer();
 
     // First Join
     if (Config.exist("player/" + player.getUniqueId().toString())) {
-
       if (CucumberySupport.exist()) {
         CucumberySupport.playerFirstJoin(player);
       }
-
     }
 
     PlayerMeta.initPlayerMeta(player);
 
-    // 탭리스트 이름 변경
-    if (Cherry.config.getBoolean("event.join.setTabList.enable")) {
-      String format = Cherry.config.getString("event.join.setTabList.format");
-      player.setPlayerListName(Msg.playerFormatter(event.getPlayer(), format));
-    }
-
-    if (canceledPlayers.contains(player)) {
-      event.setJoinMessage(null);
-      canceledPlayers.remove(player);
+    if (changingPlayers.containsKey(player.getName())) {
+      // Change Server Join
+      // Player ChatBar
+      if (Cherry.config.getBoolean("event.join.msg.change.chat.enable")) {
+        event.setJoinMessage(null);
+        PlayerJoin.Message.ChatBar.change(player, changingPlayers.get(player.getName()).get(0), changingPlayers.get(player.getName()).get(1));
+      }
+      // Console
+      if (Cherry.config.getBoolean("event.join.msg.change.console.enable")) {
+        PlayerJoin.Message.Console.change(player, changingPlayers.get(player.getName()).get(0), changingPlayers.get(player.getName()).get(1));
+      }
     }
     else {
-      // 입장 메시지 (플레이어 채팅)
-      if (Cherry.config.getBoolean("event.join.setMessage.playerChat.enable")) {
-        event.setJoinMessage(null);
-        String format = Cherry.config.getString("event.join.setMessage.playerChat.format");
-        Msg.allPwO(Msg.playerFormatter(event.getPlayer(), format), player);
+      // Normal Join
+      // Player ChatBar
+      if (Cherry.config.getBoolean("event.join.msg.normal.chat.enable")) {
+        if (canceledPlayers.contains(player)) {
+          event.setJoinMessage(null);
+        }
+        else {
+          event.setJoinMessage(null);
+          PlayerJoin.Message.ChatBar.normal(player);
+        }
       }
+      // Console
+      if (Cherry.config.getBoolean("event.join.msg.normal.console.enable")) {
+        PlayerJoin.Message.Console.normal(player);
+      }
+    }
+    changingPlayers.remove(player.getName());
+    canceledPlayers.remove(player);
 
-      // 입장 메시지 (플레이어 액션바)
-      if (Cherry.config.getBoolean("event.join.setMessage.playerActionbar.enable")) {
-        event.setJoinMessage(null);
-        String format = Cherry.config.getString("event.join.setMessage.playerActionbar.format");
+    // Play Sound
+    if (Cherry.config.getBoolean("event.join.sound.enable")) {
+      Sound sound = Sound.valueOf(Cherry.config.getString("event.join.sound.sound"));
+      SoundCategory soundCategory = SoundCategory.valueOf(Cherry.config.getString("event.join.sound.soundCategory"));
+      float volume = (float) Cherry.config.getDouble("event.join.sound.volume");
+      float pitch = (float) Cherry.config.getDouble("event.join.sound.pitch");
+
+      if (Cherry.config.getBoolean("event.join.sound.targetPlayer")) {
         for (org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()) {
-          Msg.actionBar(p, Msg.playerFormatter(event.getPlayer(), format));
+          p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
+        }
+      }
+      else {
+        for (org.bukkit.entity.Player p : Bukkit.getOnlinePlayers()) {
+          if (!p.equals(player)) {
+            p.playSound(p.getLocation(), sound, soundCategory, volume, pitch);
+          }
         }
       }
     }
 
-    // 입장 메시지 (콘솔)
-    if (Cherry.config.getBoolean("event.join.setMessage.console.enable")) {
-      event.setJoinMessage(null);
-      String format = Cherry.config.getString("event.join.setMessage.console.format");
-      Msg.info(Msg.playerFormatter(event.getPlayer(), format));
+    // setPlayerListName
+    if (Cherry.config.getBoolean("event.join.list.enable")) {
+      String format = Cherry.config.getString("event.join.list.format");
+      player.setPlayerListName(Msg.playerFormatter(event.getPlayer(), format));
     }
 
-    if (Cherry.config.getBoolean("event.join.websocket") && Cherry.config.getBoolean("websocket.enable") && WebSocket.isConnected) {
-      //WebSocket.Message.join(player);
-    }
-
-    Advancement advancement = Bukkit.getAdvancement(new NamespacedKey(Cherry.getPlugin(), "wanyfield/root"));
+    // set advancement
+    Advancement advancement = Bukkit.getAdvancement(new NamespacedKey(Cherry.plugin, "wanyfield/root"));
     if (advancement != null) {
       player.getAdvancementProgress(advancement).awardCriteria("impossible");
     }
 
+    // movetoSpawn
     if (Cherry.config.getBoolean("event.join.moveToSpawn.enable")) {
       Config spawnConfig = new Config("data/spawn", true);
       Location loc = spawnConfig.getConfig().getLocation("spawn.location");
@@ -87,50 +105,70 @@ public class PlayerJoin {
       }
     }
 
-    if (Wand.exist(player.getUniqueId())) {
-      Wand.getWand(player).setPlayer(player);
-    }
-
+    // PortalEvent
     PortalEvent.playerJoin(event);
 
   }
 
-  public static void serverFirst(Player player, PlayerJoinEvent event) {
+  public static void change(String player, String fromServer, String gotoServer) {
 
-    // Cucumbery Support
-    if (CucumberySupport.exist()) {
-      CucumberySupport.playerFirstJoin(player);
+    if (changingPlayers.containsKey(player)) {
+      changingPlayers.remove(player);
     }
+
+    ArrayList<String> servers = new ArrayList<>();
+    servers.add(0, fromServer);
+    servers.add(1, gotoServer);
+    changingPlayers.put(player, servers);
 
   }
 
-  public static void network(Player player, String server) {
+  private static class Message {
 
-    // 입장 메시지 (플레이어 채팅)
-    if (Cherry.config.getBoolean("event.networkjoin.setMessage.playerChat.enable")) {
-      String format = Cherry.config.getString("event.networkjoin.setMessage.playerChat.format");
-      Msg.allPwO(Msg.playerFormatter(player, format), player);
+    public static class ChatBar {
+
+      public static void normal(Player player) {
+        String format = Cherry.config.getString("event.join.msg.normal.chat.format");
+        if (Cherry.config.getBoolean("event.join.msg.normal.chat.targetPlayer")) {
+          Msg.allP(Msg.playerFormatter(player, format));
+        }
+        else {
+          Msg.allPwO(player, Msg.playerFormatter(player, format));
+        }
+      }
+
+      public static void change(Player player, String fromServer, String gotoServer) {
+        String format = Cherry.config.getString("event.join.msg.change.chat.format");
+        String msg = Msg.playerFormatter(player, format);
+        msg = msg.replace("{fromserver}", fromServer);
+        msg = msg.replace("{gotoserver}", gotoServer);
+        if (Cherry.config.getBoolean("event.join.msg.change.chat.targetPlayer")) {
+          Msg.allP(msg);
+        }
+        else {
+          Msg.allPwO(player, msg);
+        }
+      }
+
     }
 
-    // 입장 메시지 (콘솔)
-    if (Cherry.config.getBoolean("event.networkjoin.setMessage.console.enable")) {
-      String format = Cherry.config.getString("event.networkjoin.setMessage.console.format");
-      Msg.info(Msg.playerFormatter(player, format));
+    public static class Console {
+
+      public static void normal(Player player) {
+        String format = Cherry.config.getString("event.join.msg.normal.console.format");
+        Msg.info(Msg.playerFormatter(player, format));
+      }
+
+      public static void change(Player player, String fromServer, String gotoServer) {
+        String format = Cherry.config.getString("event.join.msg.change.console.format");
+        String msg = Msg.playerFormatter(player, format);
+        msg = msg.replace("{fromserver}", fromServer);
+        msg = msg.replace("{gotoserver}", gotoServer);
+        Msg.info(msg);
+      }
+
     }
 
   }
-
-  public static void switchS(String player, String fromServer, String gotoServer) {
-
-    // 입장 메시지 (콘솔)
-    if (Cherry.config.getBoolean("event.switchjoin.setMessage.console.enable")) {
-      String format = Cherry.config.getString("event.switchjoin.setMessage.console.format");
-      String msg = format.replace("{name}", player);
-      msg = msg.replace("{fromserver}", fromServer);
-      msg = msg.replace("{gotoserver}", gotoServer);
-      Msg.info(msg);
-    }
-
-  }
-
+  
 }

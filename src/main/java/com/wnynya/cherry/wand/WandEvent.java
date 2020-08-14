@@ -55,18 +55,18 @@ public class WandEvent implements Listener {
 
         if (pm.get(PlayerMeta.Path.WAND_MSG).equals("actionbar")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-            Msg.actionBar(player, Msg.n2s("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+            Msg.actionBar(player, Msg.effect("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
           else {
-            Msg.actionBar(player, Msg.n2s("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+            Msg.actionBar(player, Msg.effect("첫번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
         if (pm.get(PlayerMeta.Path.WAND_MSG).equals("normal")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-            Msg.info(player, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+            Msg.info(player, Msg.Prefix.WAND + Msg.effect("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
           else {
-            Msg.info(player, Msg.Prefix.WAND + Msg.n2s("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+            Msg.info(player, Msg.Prefix.WAND + Msg.effect("첫번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
 
@@ -77,7 +77,7 @@ public class WandEvent implements Listener {
           wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(1)));
         }
 
-        wand.enableParticleArea();
+        wand.showParticleArea();
         event.setCancelled(true);
       }
 
@@ -93,18 +93,18 @@ public class WandEvent implements Listener {
 
         if (pm.get(PlayerMeta.Path.WAND_MSG).equals("actionbar")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-            Msg.actionBar(player, Msg.n2s("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+            Msg.actionBar(player, Msg.effect("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
           else {
-            Msg.actionBar(player, Msg.n2s("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+            Msg.actionBar(player, Msg.effect("두번째 포지션: (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
         else if (pm.get(PlayerMeta.Path.WAND_MSG).equals("normal")) {
           if (wand.getEdit().getPosition(1) != null && wand.getEdit().getPosition(2) != null) {
-            Msg.info(player, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
+            Msg.info(player, Msg.Prefix.WAND + Msg.effect("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r) (" + "&6" + Area.CUBE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(2)).size() + "&r블록)"));
           }
           else {
-            Msg.info(player, Msg.Prefix.WAND + Msg.n2s("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
+            Msg.info(player, Msg.Prefix.WAND + Msg.effect("두번째 포지션이 설정되었습니다. (&6" + loc.getX() + "&r, &6" + loc.getY() + "&r, &6" + loc.getZ() + "&r)"));
           }
         }
 
@@ -115,7 +115,7 @@ public class WandEvent implements Listener {
           wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(2), wand.getEdit().getPosition(2)));
         }
 
-        wand.enableParticleArea();
+        wand.showParticleArea();
         event.setCancelled(true);
       }
 
@@ -128,10 +128,10 @@ public class WandEvent implements Listener {
           else {
             wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(2), wand.getEdit().getPosition(2)));
           }
-          wand.enableParticleArea();
+          wand.showParticleArea();
         }
         else {
-          wand.disableParticleArea();
+          wand.hideParticleArea();
         }
       }
 
@@ -144,10 +144,10 @@ public class WandEvent implements Listener {
           else {
             wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wand.getEdit().getPosition(1), wand.getEdit().getPosition(1)));
           }
-          wand.enableParticleArea();
+          wand.showParticleArea();
         }
         else {
-          wand.disableParticleArea();
+          wand.hideParticleArea();
         }
       }
 

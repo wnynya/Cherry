@@ -36,7 +36,7 @@ event:
 
     # 플레이어 서버 접속 시 플레이어 목록의 이름을 설정합니다.
     list:
-      enable: true
+      enable: false
       format: "&r{prefix}&r{displayname}&r{suffix}"
 
     # 서버 접속 시 플레이어 입장 메시지를 설정합니다.
@@ -45,7 +45,7 @@ event:
       normal:
         # 플레이어 채팅
         chat:
-          enable: true
+          enable: false
           format: "&r&f{prefix}{displayname}{suffix} &r&7joined the game"
           # 접속하는 당사자 플레이어에게도 메시지가 보일 지 설정합니다.
           targetPlayer: false
@@ -56,19 +56,19 @@ event:
       # 서버 변경 시 (Cherry-BungeeCord 필요)
       change:
         chat:
-          enable: true
+          enable: false
           format: "&r&f{prefix}{displayname}{suffix} &r&7join from {fromserver}"
           # 접속하는 당사자 플레이어에게도 메시지가 보일 지 설정합니다.
           targetPlayer: false
         # 콘솔
         console:
-          enable: true
+          enable: false
           # {displayname}, {prefix}, {suffix} 사용 불가
           format: "&r{name} &rjoin from {fromserver}"
 
     # 서버 접속 시 플레이어 입장 사운드를 설정합니다.
     sound:
-      enable: true
+      enable: false
       sound: "BLOCK_NOTE_BLOCK_BELL"
       soundCategory: "MASTER"
       volume: 1.0
@@ -89,7 +89,7 @@ event:
       normal:
         # 플레이어 채팅
         chat:
-          enable: true
+          enable: false
           format: "&r&f{prefix}{displayname}{suffix} &r&7left the game"
         # 콘솔
         console:
@@ -99,16 +99,16 @@ event:
       change:
         # 플레이어 채팅
         chat:
-          enable: true
+          enable: false
           format: "&r&f{prefix}{displayname}{suffix} &r&7left for {gotoserver}"
         # 콘솔
         console:
-          enable: true
+          enable: false
           format: "&r{name} &rleft for the {gotoserver}"
 
     # 서버 퇴장 시 플레이어 입장 사운드를 설정합니다.
     sound:
-      enable: true
+      enable: false
       sound: "BLOCK_NOTE_BLOCK_BASS"
       soundCategory: "MASTER"
       volume: 1.0
@@ -122,24 +122,24 @@ event:
       # 일반적인 채팅 시
       normal:
         chat:
-          enable: true
+          enable: false
           format: "&r&f{prefix}{displayname}{suffix}&r&f: &r&f{msg}"
         console:
-          enable: true
+          enable: false
           format: "&r{prefix}{displayname}{suffix}&r: &r{msg}"
       # 채널 연결 채팅 시 (Cherry-BungeeCord 필요)
       bungeecord:
         channel: "CherryDefault"
         chat:
-          enable: true
+          enable: false
           format: "&r&7[{server}] &r&f{prefix}{displayname}{suffix}&r&f: &r&f{msg}"
         console:
-          enable: true
+          enable: false
           format: "&r[{server}] &r{prefix}{displayname}{suffix}&r: &r{msg}"
 
     # 플레이어가 채팅할 때 텍스트 효과를 적용할 지 설정합니다.
     effect:
-      enable: true
+      enable: false
 
 
 #======================================#
@@ -187,8 +187,31 @@ terminal:
   host: ""
   name: ""
   auth: ""
+  path: ""
+  event:
+    player:
+      join: false
+      quit: false
+      chat: false
+      command: false
 
-  
+    console:
+      command: true
+
+    commandblock:
+      command: false
+
+  log:
+
+    console:
+      msg:
+        enable: true
+      command:
+        enable: true
+
+    player:
+      msg:
+        enable: true
 
 #======================================#
 # 번지코드 설정 [1.2.4]
@@ -205,15 +228,15 @@ bungeecord:
 updater:
   enable: true
   type: "dev"
-  auto: true
-  show-msg: true
+  auto: false
+  show-msg: false
 
 #======================================#
 # 지원 설정 [1.2.6]
 #======================================#
 
 vault-support:
-  enable: true
+  enable: false
   chat: true
 
 cucumbery-support:
@@ -224,8 +247,7 @@ cucumbery-support:
 debug: false
 config:
   version: "1.2.9-dev-1"
-bomber: true
+bomber: false
 java-8-legacy: false
 fuck: "yeaH"
-wanyfield: false
 #======================================#

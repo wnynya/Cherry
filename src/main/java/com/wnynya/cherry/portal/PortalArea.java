@@ -76,10 +76,10 @@ public class PortalArea {
         Matcher m1 = Pattern.compile("\\{enabletoggle:(.*):(.*)}").matcher(line);
         while (m1.find()) {
           if (portal.isEnable()) {
-            line = line.replaceAll("\\{enabletoggle:(.*):(.*)}", Msg.n2s(m1.group(1)));
+            line = line.replaceAll("\\{enabletoggle:(.*):(.*)}", Msg.effect(m1.group(1)));
           }
           else {
-            line = line.replaceAll("\\{enabletoggle:(.*):(.*)}", Msg.n2s(m1.group(2)));
+            line = line.replaceAll("\\{enabletoggle:(.*):(.*)}", Msg.effect(m1.group(2)));
           }
         }
         line = line.replace("{name}", portal.getName());
@@ -90,10 +90,10 @@ public class PortalArea {
             Matcher m2 = Pattern.compile("\\{servertoggle:(.*):(.*)}").matcher(line);
             while (m2.find()) {
               if (s.isOnline()) {
-                line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.n2s(m2.group(1)));
+                line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.effect(m2.group(1)));
               }
               else {
-                line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.n2s(m2.group(2)));
+                line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.effect(m2.group(2)));
               }
             }
             line = line.replace("{server}", portal.getGotoServer());
@@ -106,7 +106,7 @@ public class PortalArea {
           else {
             Matcher m2 = Pattern.compile("\\{servertoggle:(.*):(.*)}").matcher(line);
             while (m2.find()) {
-              line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.n2s(m2.group(2)));
+              line = line.replaceAll("\\{servertoggle:(.*):(.*)}", Msg.effect(m2.group(2)));
             }
             line = line.replace("{server}", "&4null");
             line = line.replace("{servername}", "&4null");
@@ -116,7 +116,7 @@ public class PortalArea {
             line = line.replace("{max}", "0");
           }
         }
-        line = Msg.n2s(line);
+        line = Msg.effect(line);
         sign.setLine(n, line);
       }
       bs.update(true, false);
@@ -128,7 +128,7 @@ public class PortalArea {
 
   public void fill() {
 
-    Wand wand = Wand.getWand(Cherry.getUUID());
+    Wand wand = Wand.getWand(Cherry.uuid);
 
     if (this.type.equals( PortalArea.Type.GATE )) {
       wand.replace(Bukkit.createBlockData(Material.AIR, "[]"), this.fill, this.area, false);

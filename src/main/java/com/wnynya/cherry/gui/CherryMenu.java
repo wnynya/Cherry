@@ -1,6 +1,8 @@
 package com.wnynya.cherry.gui;
 
 import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.amethyst.BannerPattern;
+import com.wnynya.cherry.amethyst.DisplayShield;
 import com.wnynya.cherry.amethyst.Skull;
 import com.wnynya.cherry.amethyst.SkullBank;
 import com.wnynya.cherry.player.PlayerMeta;
@@ -19,6 +21,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BannerMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.inventory.meta.SkullMeta;
 
 import java.util.ArrayList;
@@ -40,18 +43,18 @@ public class CherryMenu {
       ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
       SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
       skullMeta.setOwningPlayer((OfflinePlayer) player);
-      skullMeta.setDisplayName(Msg.n2s("&fHello " + player.getDisplayName() + "&f!"));
+      skullMeta.setDisplayName(Msg.effect("&fHello " + player.getDisplayName() + "&f!"));
       skull.setItemMeta(skullMeta);
 
       inv.setItem(10, skull);
 
-      inv.setItem(12, setMeta(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), Msg.n2s("&e&l딱히"), new ArrayList<>()));
-      inv.setItem(13, setMeta(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), Msg.n2s("&6&l아무"), new ArrayList<>()));
-      inv.setItem(14, setMeta(new ItemStack(Material.PINK_STAINED_GLASS_PANE), Msg.n2s("&c&l생각"), new ArrayList<>()));
-      inv.setItem(15, setMeta(new ItemStack(Material.MAGENTA_STAINED_GLASS_PANE), Msg.n2s("&d&l없어도"), new ArrayList<>()));
-      inv.setItem(16, setMeta(new ItemStack(Material.PURPLE_STAINED_GLASS_PANE), Msg.n2s("&5&l괜찮아"), new ArrayList<>()));
+      inv.setItem(12, setMeta(new ItemStack(Material.YELLOW_STAINED_GLASS_PANE), Msg.effect("&e&l딱히"), new ArrayList<>()));
+      inv.setItem(13, setMeta(new ItemStack(Material.ORANGE_STAINED_GLASS_PANE), Msg.effect("&6&l아무"), new ArrayList<>()));
+      inv.setItem(14, setMeta(new ItemStack(Material.PINK_STAINED_GLASS_PANE), Msg.effect("&c&l생각"), new ArrayList<>()));
+      inv.setItem(15, setMeta(new ItemStack(Material.MAGENTA_STAINED_GLASS_PANE), Msg.effect("&d&l없어도"), new ArrayList<>()));
+      inv.setItem(16, setMeta(new ItemStack(Material.PURPLE_STAINED_GLASS_PANE), Msg.effect("&5&l괜찮아"), new ArrayList<>()));
 
-      inv.setItem(28, setMeta(new ItemStack(Material.SWEET_BERRIES), Msg.n2s("&d플레이어 세부 설정"), new ArrayList<>()));
+      inv.setItem(28, setMeta(new ItemStack(Material.SWEET_BERRIES), Msg.effect("&d플레이어 세부 설정"), new ArrayList<>()));
 
       if (com.wnynya.cherry.amethyst.CucumberySupport.exist()) {
         ItemStack csi = new ItemStack(Material.LIME_BANNER);
@@ -61,7 +64,7 @@ public class CherryMenu {
         csiMeta.addPattern(new Pattern(DyeColor.GREEN, PatternType.STRIPE_TOP));
         csiMeta.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
         csi.setItemMeta(csiMeta);
-        inv.setItem(34, setMeta(new ItemStack(Material.SEA_PICKLE), Msg.n2s("&a큐컴버리 메뉴"), Collections.emptyList()));
+        inv.setItem(34, setMeta(new ItemStack(Material.SEA_PICKLE), Msg.effect("&a큐컴버리 메뉴"), Collections.emptyList()));
       }
 
       player.openInventory(inv);
@@ -117,6 +120,8 @@ public class CherryMenu {
         // 노트 툴즈
         setBoolBtn(inv, 11, pm.is(PlayerMeta.Path.NOTETOOL_ENABLE), new ItemStack(new ItemStack(Material.NOTE_BLOCK)), "노트 툴즈", Arrays.asList("&f노트 툴즈의 사용 여부를 설정합니다"), new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
 
+        inv.setItem(12, setMeta(new ItemStack(Material.ACACIA_DOOR), "&ftest", new ArrayList<>()));
+
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&f메인 메뉴로 돌어가기", new ArrayList<>()));
         //inv.setItem(38, setMeta(Skull.get(Skull.URL.PREVIOUS_PAGE), "&d&l이전 페이지로", new ArrayList<>()));
         //inv.setItem(42, setMeta(Skull.get(Skull.URL.NEXT_PAGE), "&d&l다음 페이지로", new ArrayList<>()));
@@ -155,11 +160,94 @@ public class CherryMenu {
         if (n == 10 || n == 19) {
           if (pm.is(PlayerMeta.Path.WAND_ENABLE)) {
             pm.set(PlayerMeta.Path.WAND_ENABLE, false);
-            Wand.getWand(player).disableParticleArea();
+            Wand.getWand(player).hideParticleArea();
           }
           else {
             pm.set(PlayerMeta.Path.WAND_ENABLE, true);
-            Wand.getWand(player).enableParticleArea();
+            Wand.getWand(player).showParticleArea();
+          }
+          SubMenu.CherrySetting.showMenu(player);
+        }
+        if (n == 11 || n == 20) {
+          if (pm.is(PlayerMeta.Path.NOTETOOL_ENABLE)) {
+            pm.set(PlayerMeta.Path.NOTETOOL_ENABLE, false);
+          }
+          else {
+            pm.set(PlayerMeta.Path.NOTETOOL_ENABLE, true);
+          }
+          SubMenu.CherrySetting.showMenu(player);
+        }
+
+        if (n == 12) {
+          WandColorSetting.showMenu(player);
+        }
+      }
+
+    }
+
+    public static class WandSetting {
+
+      public static final String title = cat + "§x§c§7§4§c§5§a§l체리 완드 설정";
+
+      public static void showMenu(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 45, title);
+
+        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
+
+        // 체리 완드
+        DisplayShield.DisplayPattern dpw5 = new DisplayShield.DisplayPattern(DyeColor.WHITE);
+        dpw5.addPattern(new Pattern(DyeColor.BLACK, PatternType.STRIPE_BOTTOM));
+        dpw5.addPattern(new Pattern(DyeColor.BLACK, PatternType.STRIPE_TOP));
+        dpw5.addPattern(new Pattern(DyeColor.BLACK, PatternType.STRIPE_DOWNRIGHT));
+        ItemStack i10 = DisplayShield.get(dpw5);
+        setBoolBtn(inv, 10, pm.is(PlayerMeta.Path.WAND_ENABLE), i10, "체리 완드", Arrays.asList("&f체리 완드의 포지셔너 사용 여부를 설정합니다"), new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
+
+        // 노트 툴즈
+        setBoolBtn(inv, 11, pm.is(PlayerMeta.Path.NOTETOOL_ENABLE), new ItemStack(Material.NOTE_BLOCK), "노트 툴즈", Arrays.asList("&f노트 툴즈의 사용 여부를 설정합니다"), new ItemStack(Material.PURPLE_DYE), new ItemStack(Material.GRAY_DYE));
+
+        inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&f이전 메뉴로 돌어가기", new ArrayList<>()));
+        //inv.setItem(38, setMeta(Skull.get(Skull.URL.PREVIOUS_PAGE), "&d&l이전 페이지로", new ArrayList<>()));
+        //inv.setItem(42, setMeta(Skull.get(Skull.URL.NEXT_PAGE), "&d&l다음 페이지로", new ArrayList<>()));
+
+        player.openInventory(inv);
+
+        player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, SoundCategory.VOICE, 1f, 1f);
+      }
+
+      public static void interactMenu(InventoryClickEvent event) {
+        event.setCancelled(true);
+        Player player = (Player) event.getWhoClicked();
+        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
+
+        int n = event.getSlot();
+
+        if (event.getSlotType() == InventoryType.SlotType.OUTSIDE) {
+          return;
+        }
+        if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
+          return;
+        }
+        if (player.getOpenInventory().getType() != InventoryType.CHEST) {
+          return;
+        }
+
+        if (n == 36) {
+          MainMenu.showMenu(player);
+        }
+        else if (n == 38) {
+          //MainMenu.showMenu(player);
+        }
+        else if (n == 42) {
+          //MainMenu.showMenu(player);
+        }
+        if (n == 10 || n == 19) {
+          if (pm.is(PlayerMeta.Path.WAND_ENABLE)) {
+            pm.set(PlayerMeta.Path.WAND_ENABLE, false);
+            Wand.getWand(player).hideParticleArea();
+          }
+          else {
+            pm.set(PlayerMeta.Path.WAND_ENABLE, true);
+            Wand.getWand(player).showParticleArea();
           }
           SubMenu.CherrySetting.showMenu(player);
         }
@@ -176,6 +264,307 @@ public class CherryMenu {
 
     }
 
+    public static class WandColorSetting {
+
+      public static final String title = cat + "§x§c§7§4§c§5§a§l체리 완드 설정 > 선택 영역 색상";
+
+      public static void showMenu(Player player) {
+        Inventory inv = Bukkit.createInventory(null, 54, title);
+
+        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
+
+        int ri = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+        int gi = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+        int bi = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+
+        String r = String.format("%03d", ri);
+        String g = String.format("%03d", gi);
+        String b = String.format("%03d", bi);
+
+        ArrayList<Pattern> r1 = BannerPattern.getNumeric(Integer.parseInt(r.charAt(0) + ""), DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> r2 = BannerPattern.getNumeric(Integer.parseInt(r.charAt(1) + ""), DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> r3 = BannerPattern.getNumeric(Integer.parseInt(r.charAt(2) + ""), DyeColor.RED, DyeColor.WHITE);
+
+        ArrayList<Pattern> g1 = BannerPattern.getNumeric(Integer.parseInt(g.charAt(0) + ""), DyeColor.GREEN, DyeColor.WHITE);
+        ArrayList<Pattern> g2 = BannerPattern.getNumeric(Integer.parseInt(g.charAt(1) + ""), DyeColor.GREEN, DyeColor.WHITE);
+        ArrayList<Pattern> g3 = BannerPattern.getNumeric(Integer.parseInt(g.charAt(2) + ""), DyeColor.GREEN, DyeColor.WHITE);
+
+        ArrayList<Pattern> b1 = BannerPattern.getNumeric(Integer.parseInt(b.charAt(0) + ""), DyeColor.BLUE, DyeColor.WHITE);
+        ArrayList<Pattern> b2 = BannerPattern.getNumeric(Integer.parseInt(b.charAt(1) + ""), DyeColor.BLUE, DyeColor.WHITE);
+        ArrayList<Pattern> b3 = BannerPattern.getNumeric(Integer.parseInt(b.charAt(2) + ""), DyeColor.BLUE, DyeColor.WHITE);
+
+        inv.setItem(27, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, r1)), "r" + r + ";" + r, Collections.emptyList()));
+        inv.setItem(28, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, r2)), "r" + r + ";" + r, Collections.emptyList()));
+        inv.setItem(29, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, r3)), "r" + r + ";" + r, Collections.emptyList()));
+        inv.setItem(30, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, g1)), "g" + g + ";" + g, Collections.emptyList()));
+        inv.setItem(31, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, g2)), "g" + g + ";" + g, Collections.emptyList()));
+        inv.setItem(32, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, g3)), "g" + g + ";" + g, Collections.emptyList()));
+        inv.setItem(33, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, b1)), "b" + b + ";" + b, Collections.emptyList()));
+        inv.setItem(34, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, b2)), "b" + b + ";" + b, Collections.emptyList()));
+        inv.setItem(35, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, b3)), "b" + b + ";" + b, Collections.emptyList()));
+
+        ArrayList<Pattern> rup = BannerPattern.Mono.TRIANGLE_UP.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> gup = BannerPattern.Mono.TRIANGLE_UP.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> bup = BannerPattern.Mono.TRIANGLE_UP.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        inv.setItem(18, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rup)), "+100", Collections.emptyList()));
+        inv.setItem(19, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rup)), "+10", Collections.emptyList()));
+        inv.setItem(20, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rup)), "+1", Collections.emptyList()));
+        inv.setItem(21, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gup)), "+100", Collections.emptyList()));
+        inv.setItem(22, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gup)), "+10", Collections.emptyList()));
+        inv.setItem(23, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gup)), "+1", Collections.emptyList()));
+        inv.setItem(24, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bup)), "+100", Collections.emptyList()));
+        inv.setItem(25, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bup)), "+10", Collections.emptyList()));
+        inv.setItem(26, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bup)), "+1", Collections.emptyList()));
+
+        ArrayList<Pattern> rdown = BannerPattern.Mono.TRIANGLE_DOWN.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> gdown = BannerPattern.Mono.TRIANGLE_DOWN.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        ArrayList<Pattern> bdown = BannerPattern.Mono.TRIANGLE_DOWN.getPatterns(DyeColor.RED, DyeColor.WHITE);
+        inv.setItem(36, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rdown)), "-100", Collections.emptyList()));
+        inv.setItem(37, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rdown)), "-10", Collections.emptyList()));
+        inv.setItem(38, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.RED_BANNER, rdown)), "-1", Collections.emptyList()));
+        inv.setItem(39, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gdown)), "-100", Collections.emptyList()));
+        inv.setItem(40, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gdown)), "-10", Collections.emptyList()));
+        inv.setItem(41, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.GREEN_BANNER, gdown)), "-1", Collections.emptyList()));
+        inv.setItem(42, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bdown)), "-100", Collections.emptyList()));
+        inv.setItem(43, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bdown)), "-10", Collections.emptyList()));
+        inv.setItem(44, setMeta(DisplayShield.get(new DisplayShield.DisplayPattern(Material.BLUE_BANNER, bdown)), "-1", Collections.emptyList()));
+
+        ItemStack coloured = new ItemStack(Material.LEATHER_CHESTPLATE);
+        ItemMeta coloured_im = coloured.getItemMeta();
+        LeatherArmorMeta lam = (LeatherArmorMeta) coloured_im;
+        lam.setColor(Color.fromRGB(ri, gi, bi));
+        coloured.setItemMeta(lam);
+
+        inv.setItem(4, setMeta(coloured, Msg.effect("rgb" + ri + "," + gi + "," + bi + ";RGB(" + ri + ", " + gi + ", " + bi + ")"), Collections.emptyList()));
+        player.openInventory(inv);
+
+        player.playSound(player.getLocation(), org.bukkit.Sound.UI_BUTTON_CLICK, SoundCategory.VOICE, 1f, 1f);
+      }
+
+      public static void interactMenu(InventoryClickEvent event) {
+        event.setCancelled(true);
+        Player player = (Player) event.getWhoClicked();
+        PlayerMeta pm = PlayerMeta.getPlayerMeta(player);
+
+        int n = event.getSlot();
+
+        if (event.getSlotType() == InventoryType.SlotType.OUTSIDE) {
+          return;
+        }
+        if (event.getClickedInventory().getType() == InventoryType.PLAYER) {
+          return;
+        }
+        if (player.getOpenInventory().getType() != InventoryType.CHEST) {
+          return;
+        }
+
+        switch (n) {
+          case 18: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i + 100 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i + 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 19: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i + 10 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i + 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 20: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i + 1 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i + 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 21: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i + 100 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i + 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 22: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i + 10 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i + 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 23: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i + 1 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i + 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 24: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i + 100 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i + 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 25: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i + 10 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i + 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 26: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i + 1 > 255) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 255);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i + 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+
+
+
+          case 36: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i - 100 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i - 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 37: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i - 10 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i - 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 38: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_RED.val());
+            if (i - 1 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_RED, i - 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 39: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i - 100 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i - 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 40: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i - 10 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i - 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 41: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN.val());
+            if (i - 1 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_GREEN, i - 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 42: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i - 100 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i - 100);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 43: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i - 10 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i - 10);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+          case 44: {
+            int i = pm.getConfig().getInt(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE.val());
+            if (i - 1 < 0) {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, 0);
+            }
+            else {
+              pm.set(PlayerMeta.Path.WAND_SELECTION_COLOR_BLUE, i - 1);
+            }
+            WandColorSetting.showMenu(player);
+            return;
+          }
+        }
+      }
+
+    }
+
   }
 
   public static class CucumberySupport {
@@ -187,16 +576,16 @@ public class CherryMenu {
       public static void showMenu(Player player) {
         Inventory inv = Bukkit.createInventory(null, 45, title);
 
-        inv.setItem(10, setMeta(Skull.get(Skull.URL.SETTING.getValue()), Msg.n2s("&a일반 설정"), new ArrayList<>()));
-        inv.setItem(11, setMeta(Skull.get(Skull.URL.NOTE_BLOCK.getValue()), Msg.n2s("&a소리 설정"), new ArrayList<>()));
-        inv.setItem(12, setMeta(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue()), Msg.n2s("&a메시징 설정"), new ArrayList<>()));
+        inv.setItem(10, setMeta(Skull.get(Skull.URL.SETTING.getValue()), Msg.effect("&a일반 설정"), new ArrayList<>()));
+        inv.setItem(11, setMeta(Skull.get(Skull.URL.NOTE_BLOCK.getValue()), Msg.effect("&a소리 설정"), new ArrayList<>()));
+        inv.setItem(12, setMeta(Skull.get(Skull.URL.SPEECH_BUBBLE.getValue()), Msg.effect("&a메시징 설정"), new ArrayList<>()));
 
         if (player.getGameMode().equals(GameMode.CREATIVE)) {
-          inv.setItem(13, setMeta(Skull.get(Skull.URL.GRASS_BLOCK.getValue()), Msg.n2s("&a크리에이티브 설정"), new ArrayList<>()));
+          inv.setItem(13, setMeta(Skull.get(Skull.URL.GRASS_BLOCK.getValue()), Msg.effect("&a크리에이티브 설정"), new ArrayList<>()));
         }
 
         if (player.hasPermission("cucumbery.gui.serversettingsadmin")) {
-          inv.setItem(14, setMeta(Skull.get(Skull.URL.COMMAND_BLOCK.getValue()), Msg.n2s("&a관리자 설정"), new ArrayList<>()));
+          inv.setItem(14, setMeta(Skull.get(Skull.URL.COMMAND_BLOCK.getValue()), Msg.effect("&a관리자 설정"), new ArrayList<>()));
         }
 
         inv.setItem(36, setMeta(Skull.get(Skull.URL.PREVIOUS_CHAPTER.getValue()), "&f메인 메뉴로 돌어가기", new ArrayList<>()));
@@ -929,10 +1318,10 @@ public class CherryMenu {
 
   public static ItemStack setMeta(ItemStack item, String name, List<String> lore) {
     ItemMeta meta = item.getItemMeta();
-    meta.setDisplayName(Msg.n2s(name));
+    meta.setDisplayName(Msg.effect(name));
     int index = 0;
     for (String l : lore) {
-      lore.set(index, Msg.n2s(l));
+      lore.set(index, Msg.effect(l));
       index++;
     }
     meta.setLore(lore);

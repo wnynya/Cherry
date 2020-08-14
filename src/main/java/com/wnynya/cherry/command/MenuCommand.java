@@ -5,7 +5,6 @@ import com.wnynya.cherry.gui.CherryMenu;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class MenuCommand implements CommandExecutor {
 
@@ -16,12 +15,12 @@ public class MenuCommand implements CommandExecutor {
       return true;
     }
 
-    Player player = null;
-    if (sender instanceof Player) {
-      player = (Player) sender;
+    org.bukkit.entity.Player player = null;
+    if (sender instanceof org.bukkit.entity.Player) {
+      player = (org.bukkit.entity.Player) sender;
     }
     else {
-      Msg.error(sender, Msg.PlayerMSg.ONLY);
+      Msg.error(sender, Msg.Player.ONLY);
       return true;
     }
 

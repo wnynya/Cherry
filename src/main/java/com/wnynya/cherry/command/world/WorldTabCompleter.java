@@ -1,7 +1,7 @@
 package com.wnynya.cherry.command.world;
 
 import com.wnynya.cherry.Tool;
-import com.wnynya.cherry.world.CherryWorld;
+import com.wnynya.cherry.world.World;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -26,7 +26,7 @@ public class WorldTabCompleter implements org.bukkit.command.TabCompleter {
       }
 
       if (args.length == 2 && args[0].equals("load")) {
-        List<String> worlds = (List<String>) CherryWorld.getWorldConfig().getConfig().getList("worlds");
+        List<String> worlds = (List<String>) World.getWorldConfig().getConfig().getList("worlds");
         List<String> worldsClone = new ArrayList<>();
         worldsClone.addAll(worlds);
         for (String worldName : worldsClone) {
@@ -39,7 +39,7 @@ public class WorldTabCompleter implements org.bukkit.command.TabCompleter {
       }
 
       if (args.length == 2 && args[0].equals("unload")) {
-        List<String> worlds = (List<String>) CherryWorld.getWorldConfig().getConfig().getList("worlds");
+        List<String> worlds = (List<String>) World.getWorldConfig().getConfig().getList("worlds");
         List<String> worldsClone = new ArrayList<>();
         worldsClone.addAll(worlds);
         for (String worldName : worldsClone) {
@@ -57,7 +57,7 @@ public class WorldTabCompleter implements org.bukkit.command.TabCompleter {
       }
 
       if (args.length == 3 && args[0].equals("send")) {
-        List<String> worlds = (List<String>) CherryWorld.getWorldConfig().getConfig().getList("worlds");
+        List<String> worlds = (List<String>) World.getWorldConfig().getConfig().getList("worlds");
         List<String> worldsClone = new ArrayList<>();
         worldsClone.addAll(worlds);
         for (String worldName : worldsClone) {

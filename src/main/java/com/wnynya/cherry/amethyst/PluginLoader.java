@@ -21,7 +21,7 @@ import java.util.SortedSet;
 public class PluginLoader {
 
   public static void unload() {
-    Plugin plugin = Cherry.getPlugin();
+    Plugin plugin = Cherry.plugin;
     String name = plugin.getName();
     PluginManager pluginManager = Bukkit.getPluginManager();
     SimpleCommandMap commandMap = null;

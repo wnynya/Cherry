@@ -224,7 +224,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 6 || a == 9) {
               List<String> list;
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b == null) {
                   list = Collections.emptyList();
                 }
@@ -241,7 +241,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 7 || a == 10) {
               List<String> list;
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b == null) {
                   list = Collections.emptyList();
                 }
@@ -258,7 +258,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 8 || a == 11) {
               List<String> list;
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b == null) {
                   list = Collections.emptyList();
                 }
@@ -300,7 +300,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 5) {
               List<String> list = new ArrayList<>();
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b != null) {
                   list.add(b.getLocation().getBlockX() + "");
                 }
@@ -312,7 +312,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 6) {
               List<String> list = new ArrayList<>();
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b != null) {
                   list.add(b.getLocation().getBlockY() + "");
                 }
@@ -323,7 +323,7 @@ public class PortalTabCompleter implements org.bukkit.command.TabCompleter {
             if (a == 7) {
               List<String> list = new ArrayList<>();
               if (sender instanceof Player) {
-                Block b = ((Player) sender).getTargetBlock(10);
+                Block b = ((Player) sender).getTargetBlockExact(10);
                 if (b != null) {
                   list.add(b.getLocation().getBlockZ() + "");
                 }

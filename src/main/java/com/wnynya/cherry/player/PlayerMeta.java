@@ -37,6 +37,18 @@ public class PlayerMeta {
       playerConfig.set(Path.WAND_MSG.val(), "actionbar");
     }
 
+    if (!config.isInt(Path.WAND_SELECTION_COLOR_RED.val())) {
+      playerConfig.set(Path.WAND_SELECTION_COLOR_RED.val(), 255);
+    }
+
+    if (!config.isInt(Path.WAND_SELECTION_COLOR_GREEN.val())) {
+      playerConfig.set(Path.WAND_SELECTION_COLOR_GREEN.val(), 255);
+    }
+
+    if (!config.isInt(Path.WAND_SELECTION_COLOR_BLUE.val())) {
+      playerConfig.set(Path.WAND_SELECTION_COLOR_BLUE.val(), 255);
+    }
+
     if (!config.isBoolean(Path.NOTETOOL_ENABLE.val())) {
       playerConfig.set(Path.NOTETOOL_ENABLE.val(), true);
     }
@@ -61,6 +73,10 @@ public class PlayerMeta {
 
   public static enum Path {
     WAND_ENABLE("wand.enable"), WAND_MSG("wand.msg"), NOTETOOL_ENABLE("notetool.enable"),
+    WAND_SELECTION_COLOR_RED("wand.selection.color.r"),
+    WAND_SELECTION_COLOR_GREEN("wand.selection.color.g"),
+    WAND_SELECTION_COLOR_BLUE("wand.selection.color.b"),
+
     ;
 
     private String path;
@@ -97,7 +113,7 @@ public class PlayerMeta {
   }
 
   public static void enable() {
-    Cherry.getPlugin().registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
+    Cherry.plugin.registerCommand("playermeta", new PlayerMetaCommand(), new PlayerMetaTabCompleter());
     for (Player player : Bukkit.getOnlinePlayers()) {
       PlayerMeta.initPlayerMeta(player);
     }

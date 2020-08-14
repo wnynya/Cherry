@@ -4,7 +4,6 @@ import com.wnynya.cherry.Msg;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class Gm implements CommandExecutor {
 
@@ -15,11 +14,11 @@ public class Gm implements CommandExecutor {
       return true;
     }
 
-    if (!(sender instanceof Player)) {
-      Msg.error(sender, Msg.PlayerMSg.ONLY);
+    if (!(sender instanceof org.bukkit.entity.Player)) {
+      Msg.error(sender, Msg.Player.ONLY);
       return true;
     }
-    Player player = (Player) sender;
+    org.bukkit.entity.Player player = (org.bukkit.entity.Player) sender;
 
     if (args[0].equalsIgnoreCase("survival") || args[0].equalsIgnoreCase("0") || args[0].equalsIgnoreCase("s") || args[0].equalsIgnoreCase("sv")) {
       StringBuilder leftArgs = new StringBuilder();

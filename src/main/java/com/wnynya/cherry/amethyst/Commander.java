@@ -23,7 +23,7 @@ public class Commander {
 
   public static void opList() {
     Config opConfig = new Config("ops", false);
-    Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.getPlugin(), new Runnable() {
+    Bukkit.getScheduler().scheduleSyncRepeatingTask(Cherry.plugin, new Runnable() {
       public void run() {
         if (opConfig.getConfig() == null) {
           return;

@@ -17,7 +17,7 @@ public class Config implements Listener {
   public Config(String configName) {
 
     this.configName = configName;
-    this.configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + this.configName + ".yml");
+    this.configFile = new File(Cherry.plugin.getDataFolder() + "/" + this.configName + ".yml");
 
     if (!(configFile.exists())) {
       createConfig();
@@ -28,7 +28,7 @@ public class Config implements Listener {
   public Config(String configName, boolean autoCreate) {
 
     this.configName = configName;
-    this.configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + this.configName + ".yml");
+    this.configFile = new File(Cherry.plugin.getDataFolder() + "/" + this.configName + ".yml");
 
     if (autoCreate) {
       if (!(configFile.exists())) {
@@ -58,7 +58,7 @@ public class Config implements Listener {
   public FileConfiguration getConfig(String configName) {
 
     this.configName = configName;
-    this.configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + this.configName + ".yml");
+    this.configFile = new File(Cherry.plugin.getDataFolder() + "/" + this.configName + ".yml");
 
     if (!(this.configFile.exists())) {
       createConfig();
@@ -126,8 +126,12 @@ public class Config implements Listener {
     return this.getConfig().getBoolean(path);
   }
 
+  public int getInt(String path) { return this.getConfig().getInt(path); }
+
+  public double getDouble(String path) { return this.getConfig().getDouble(path); }
+
   public static boolean exist(String configName) {
-    File configFile = new File(Cherry.getPlugin().getDataFolder() + "/" + configName + ".yml");
+    File configFile = new File(Cherry.plugin.getDataFolder() + "/" + configName + ".yml");
     return configFile.exists();
   }
 

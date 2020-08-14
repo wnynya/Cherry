@@ -1,9 +1,9 @@
 name: Cherry
 main: com.wnynya.cherry.Cherry
-version: 1.2.8.dev
+version: 1.2.9-dev
 description: Cherry 플러그인
 author: Wany (Wnynya)
-api-version: 1.15
+api-version: 1.16
 softdepend: [Vault, Cucumbery]
 
 commands:
@@ -29,9 +29,6 @@ commands:
   pluginmeta:
     description: 뭐
 
-  gm:
-    description: 뭐
-
   rlc:
     description: 뭐
 
@@ -43,3 +40,5 @@ commands:
     usage: /menu
     aliases: [ㅡ두ㅕ, 메뉴, apsb, cmenu, cherrymenu]
 
+  fuck:
+    description: fuck

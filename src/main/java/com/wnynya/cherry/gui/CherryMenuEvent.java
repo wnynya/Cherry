@@ -18,6 +18,14 @@ public class CherryMenuEvent {
         CherryMenu.SubMenu.CherrySetting.interactMenu(event);
         break;
 
+      case CherryMenu.SubMenu.WandSetting.title:
+        CherryMenu.SubMenu.WandSetting.interactMenu(event);
+        break;
+
+      case CherryMenu.SubMenu.WandColorSetting.title:
+        CherryMenu.SubMenu.WandColorSetting.interactMenu(event);
+        break;
+
       case CherryMenu.CucumberySupport.Main.title:
         CherryMenu.CucumberySupport.Main.interactMenu(event);
         break;
@@ -43,5 +51,6 @@ public class CherryMenuEvent {
         break;
 
     }
+
   }
 }

@@ -16,22 +16,22 @@ public class Tool {
   /* 포멧 변환 */
   public static String reFormatEventMsg(PlayerJoinEvent event, String msg) {
     Player player = event.getPlayer();
-    msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
+    msg = Msg.effect(Tool.reFormatEventMsgPlayer(player, msg));
     return msg;
   }
 
   public static String reFormatEventMsg(PlayerQuitEvent event, String msg) {
     Player player = event.getPlayer();
-    msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
+    msg = Msg.effect(Tool.reFormatEventMsgPlayer(player, msg));
     return msg;
   }
 
   public static String reFormatEventMsg(AsyncPlayerChatEvent event, String msg) {
     Player player = event.getPlayer();
-    msg = Msg.n2s(Tool.reFormatEventMsgPlayer(player, msg));
-    if (Cherry.getPlugin().getConfig().getBoolean("chat.effect.enable")) {
-      msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, Msg.n2s(event.getMessage()));
-      msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER_ALIAS, Msg.n2s(event.getMessage()));
+    msg = Msg.effect(Tool.reFormatEventMsgPlayer(player, msg));
+    if (Cherry.plugin.getConfig().getBoolean("chat.effect.enable")) {
+      msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, Msg.effect(event.getMessage()));
+      msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER_ALIAS, Msg.effect(event.getMessage()));
     }
     else {
       msg = msg.replace(FormatHolder.MESSAGE_PLACEHOLDER, event.getMessage());
@@ -59,7 +59,7 @@ public class Tool {
   public static String getFancyName(Player player) {
 
     String prefix, suffix;
-    if (Cherry.getPlugin().getConfig().getBoolean("chat.vault.enable")) {
+    if (Cherry.plugin.getConfig().getBoolean("chat.vault.enable")) {
       prefix = Vault.getPrefix(player);
       suffix = Vault.getSuffix(player);
     }
@@ -69,7 +69,7 @@ public class Tool {
     }
     String playerName = player.getDisplayName();
 
-    String playerFancyName = Msg.n2s("&r" + prefix + playerName + suffix + "&r");
+    String playerFancyName = Msg.effect("&r" + prefix + playerName + suffix + "&r");
 
     return playerFancyName;
 
@@ -225,7 +225,7 @@ public class Tool {
     public static java.util.List<String> materials() {
       java.util.List<String> list = new ArrayList<>();
       for (Material material : Material.values()) {
-        list.add(material.toString());
+        list.add(material.toString().toLowerCase());
       }
       return list;
     }

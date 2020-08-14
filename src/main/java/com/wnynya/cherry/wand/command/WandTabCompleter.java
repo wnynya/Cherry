@@ -108,7 +108,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         if (args.length == 3) {
           if (args[args.length - 1].isEmpty()) {
@@ -130,7 +130,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         if (args.length == 4) {
           if (args[args.length - 1].isEmpty()) {
@@ -152,7 +152,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         if (args.length == 5) {
           if (args[args.length - 1].isEmpty()) {
@@ -347,7 +347,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         // 정수 입력 (높이)
         if (args.length == 4) {
@@ -360,7 +360,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         // 옵션 입력
         if (5 <= args.length && args.length <= 8) {
@@ -411,7 +411,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
         // 옵션 입력
         if (4 <= args.length && args.length <= 7) {
@@ -486,7 +486,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             }
             return Collections.singletonList(args[args.length - 1] + " ");
           }
-          return Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          return Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
         }
       }
 
@@ -541,7 +541,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             List<String> list = Collections.singletonList(args[args.length - 1] + " ");
             return list;
           }
-          List<String> list = Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          List<String> list = Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
           return list;
         }
         if (args.length == 4) {
@@ -557,7 +557,7 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
             List<String> list = Collections.singletonList(args[args.length - 1] + " ");
             return list;
           }
-          List<String> list = Collections.singletonList(Msg.n2s("정수만 입력할 수 있습니다"));
+          List<String> list = Collections.singletonList(Msg.effect("정수만 입력할 수 있습니다"));
           return list;
         }
         List<String> list = Arrays.asList("-empty", "-pointed", "-applyPhysics", "-e", "-p", "-ap");
@@ -570,18 +570,18 @@ public class WandTabCompleter implements org.bukkit.command.TabCompleter {
         }
         if (args.length == 3) {
           if (args[args.length - 1].isEmpty()) {
-            List<String> list = Collections.singletonList(Msg.n2s("&d<&5&oInteger&r&d &aradius&d>&r"));
+            List<String> list = Collections.singletonList(Msg.effect("&d<&5&oInteger&r&d &aradius&d>&r"));
             return list;
           }
           else if (Tool.Check.isInteger(args[args.length - 1])) {
             if (Integer.parseInt(args[args.length - 1]) > 1000) {
-              List<String> list = Collections.singletonList(Msg.n2s("&c너무 큰 수입니다 (num <= 1000)&r"));
+              List<String> list = Collections.singletonList(Msg.effect("&c너무 큰 수입니다 (num <= 1000)&r"));
               return list;
             }
-            List<String> list = Collections.singletonList(Msg.n2s("&a" + args[args.length - 1] + "&r"));
+            List<String> list = Collections.singletonList(Msg.effect("&a" + args[args.length - 1] + "&r"));
             return list;
           }
-          List<String> list = Collections.singletonList(Msg.n2s("&c정수만 입력할 수 있습니다&r"));
+          List<String> list = Collections.singletonList(Msg.effect("&c정수만 입력할 수 있습니다&r"));
           return list;
         }
         List<String> list = Arrays.asList("-empty", "-pointed", "-applyPhysics", "-e", "-p", "-ap");

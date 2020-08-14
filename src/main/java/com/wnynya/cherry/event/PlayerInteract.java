@@ -12,7 +12,7 @@ public class PlayerInteract implements Listener {
   public void onPlayerInteractEvent(PlayerInteractEvent event) {
 
     NoteTool.clickNoteBlock(event);
-
+    
   }
 
 }

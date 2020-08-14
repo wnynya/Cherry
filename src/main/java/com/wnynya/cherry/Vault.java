@@ -15,12 +15,14 @@ public class Vault implements Listener {
     return plugin != null;
   }
 
+  public static final String prefix = Msg.effect("#E8CF8B;&l[Vault]: &r");
+
   private static Chat vaultChat = null;
 
   public static void loadVaultChat() {
     if (Vault.exist()) {
       Chat vaultChatClass = Bukkit.getServer().getServicesManager().load(Chat.class);
-      Msg.debug("[VAULT] Chat: " + (vaultChatClass == null ? "...없음" : vaultChatClass.getName()));
+      Msg.debug(Vault.prefix + "Chat: " + (vaultChatClass == null ? "...없음" : vaultChatClass.getName()));
       vaultChat = vaultChatClass;
     }
   }
@@ -62,11 +64,11 @@ public class Vault implements Listener {
     }
 
     if (!Vault.exist()) {
-      Msg.debug("[VAULT] Vault-Support option has been enabled, But couldn't find Vault plugin.");
+      Msg.debug(Vault.prefix + "Vault-Support option has been enabled, But couldn't find Vault plugin.");
       return;
     }
 
-    Cherry.getPlugin().registerEvent(new Vault());
+    Cherry.plugin.registerEvent(new Vault());
     Vault.loadVaultChat();
 
   }

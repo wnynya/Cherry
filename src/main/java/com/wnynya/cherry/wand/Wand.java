@@ -1,31 +1,30 @@
 package com.wnynya.cherry.wand;
 
 import com.wnynya.cherry.Cherry;
-import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
-import com.wnynya.cherry.player.PlayerMeta;
 import com.wnynya.cherry.wand.area.Area;
 import com.wnynya.cherry.wand.command.WandCommand;
 import com.wnynya.cherry.wand.command.WandTabCompleter;
 import org.bukkit.*;
 import org.bukkit.block.Block;
+import org.bukkit.block.Campfire;
 import org.bukkit.block.Container;
 import org.bukkit.block.data.BlockData;
+import org.bukkit.block.data.Waterlogged;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
 
-/*
- * 체리 완드
+/**
+ * Cherry Wand
  */
 
 public class Wand {
 
   public static boolean enabled = false;
 
-  private static Config config = new Config("wand");
   private static HashMap<UUID, Wand> wands = new HashMap<>();
 
   private Player player = null;
@@ -33,16 +32,12 @@ public class Wand {
   private WandEdit edit;
   private WandBrush brush;
 
-  private static int undoLimit = 50;
-
-  private List<Location> particleArea = new ArrayList<>();
-  private boolean particleAreaPlay = false;
-
   private Wand(UUID uuid) {
     this.uuid = uuid;
     this.edit = new WandEdit(this);
     this.brush = new WandBrush(this);
     wands.put(uuid, this);
+    this.enableParticleArea();
   }
 
   private Wand(Player player) {
@@ -51,26 +46,7 @@ public class Wand {
     this.edit = new WandEdit(this);
     this.brush = new WandBrush(this);
     wands.put(uuid, this);
-
-    spawnAreaParticle();
-  }
-
-  public UUID getUuid() {
-    return uuid;
-  }
-
-  public boolean setPlayer(Player player) {
-    if (this.uuid.equals(player.getUniqueId())) {
-      this.player = player;
-      return true;
-    }
-    else {
-      return false;
-    }
-  }
-
-  public Config getConfig() {
-    return config;
+    this.enableParticleArea();
   }
 
   public WandEdit getEdit() {
@@ -81,10 +57,15 @@ public class Wand {
     return brush;
   }
 
+  /**
+   * Save Modify History
+   */
+
   private Stack<List<WandBlock>> undoStack = new Stack<>();
   private Stack<List<WandBlock>> redoStack = new Stack<>();
 
-  // 실행 기록 저장
+  private static int undoLimit = 50;
+
   public boolean undo() {
     if (this.undoStack.size() == 0) {
       return false;
@@ -96,9 +77,6 @@ public class Wand {
     }
     storeRedo(area);
     undoStack.pop();
-    if (wBlocks == null) {
-      return false;
-    }
     for (WandBlock wBlock : wBlocks) {
       Block block = wBlock.getLocation().getBlock();
       BlockData blockData = wBlock.getBlockData();
@@ -119,9 +97,6 @@ public class Wand {
     }
     storeUndo(area);
     redoStack.pop();
-    if (wBlocks == null) {
-      return false;
-    }
     for (WandBlock wBlock : wBlocks) {
       Block block = wBlock.getLocation().getBlock();
       BlockData blockData = wBlock.getBlockData();
@@ -157,12 +132,19 @@ public class Wand {
     redoStack.push(wBlocks);
   }
 
-  // 복붙 기능
+  /**
+   * Clipboard
+   */
+
   private List<WandBlock> clipboardMemory = null;
   private Location clipboardWPlayer = null;
   private Location clipboardWPlayerB = null;
 
   public void copy(Location pos1, Location pos2, Location posP) {
+    copy(pos1, pos2, posP, null);
+  }
+
+  public void copy(Location pos1, Location pos2, Location posP, List<Material> blackList) {
     if (pos1 == null || pos2 == null || posP == null) {
       return;
     }
@@ -203,6 +185,13 @@ public class Wand {
     List<Location> area = Area.CUBE.getArea(pos1, pos2);
     for (Location loc : area) {
       Block block = loc.getBlock();
+      if (blackList != null && blackList.size() > 0) {
+        for ( Material m : blackList) {
+          if (block.getType().equals(m)) {
+            continue;
+          }
+        }
+      }
       WandBlock wBlock = new WandBlock(block);
       wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX() - minX, (int) loc.getY() - minY, (int) loc.getZ() - minZ));
       wBlocks.add(wBlock);
@@ -247,9 +236,7 @@ public class Wand {
     }
   }
 
-  public void rotate(int deg) {
-
-  }
+  public void rotate(int deg) {}
 
   public List<WandBlock> getClipboardMemory() {
     return this.clipboardMemory;
@@ -263,22 +250,66 @@ public class Wand {
     return this.clipboardWPlayerB;
   }
 
-  // 에리어 채우기 / 비우기
+  /**
+   * Area Modify
+   */
+
+  /**
+   * 좌표계를 특정 블록으로 채웁니다.
+   * @param blockData 채울 블록
+   * @param area 좌표계
+   * @param applyPhysics 물리 적용 여부
+   */
   public void fill(BlockData blockData, List<Location> area, boolean applyPhysics) {
     World world = area.get(0).getWorld();
 
+    if (world == null) {
+      return;
+    }
+
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
+      boolean need2removeBlockData = false;
 
       if (block.getState() instanceof Container) {
         Container c = (Container) block.getState();
         c.getInventory().setContents(new ItemStack[0]);
+        c.update(true, false);
+        need2removeBlockData = true;
+      }
+
+      if (block.getState() instanceof Campfire) {
+        Campfire b = (Campfire) block.getState();
+        Msg.info("CAMPFIRE");
+        //Msg.warn("CAMPFIRE SIZE: " + b.getSize());
+        for (int n = 0; n < 4; n++) {
+          b.setItem(n, new ItemStack(Material.AIR));
+        }
+        b.update(true, false);
+        need2removeBlockData = true;
+      }
+
+      if (block.getBlockData() instanceof Waterlogged) {
+        Waterlogged is = (Waterlogged) block.getBlockData();
+        is.isWaterlogged();
+        need2removeBlockData = true;
+      }
+
+      if (need2removeBlockData) {
+        block.setBlockData(Bukkit.createBlockData(Material.AIR), false);
       }
 
       block.setBlockData(blockData, applyPhysics);
     }
   }
 
+  /**
+   * 좌표계를 특정 블록으로 채웁니다.
+   * @param material 채울 블록
+   * @param area 좌표계
+   * @param applyPhysics 물리 적용 여부
+   * @param data 채울 블록의 데이터 태그
+   */
   public void fill(Material material, List<Location> area, boolean applyPhysics, String data) {
     if (material == null || !material.isBlock() || area == null || area.isEmpty()) {
       return;
@@ -288,10 +319,21 @@ public class Wand {
     fill(blockData, area, applyPhysics);
   }
 
+  /**
+   * 좌표계를 특정 블록으로 채웁니다.
+   * @param material 채울 블록
+   * @param area 좌표계
+   * @param applyPhysics 물리 적용 여부
+   */
   public void fill(Material material, List<Location> area, boolean applyPhysics) {
     fill(material, area, applyPhysics, "[]");
   }
 
+  /**
+   * 좌표계의 블럭들을 제거합니다.
+   * @param area 좌표계
+   * @param applyPhysics 물리 적용 여부
+   */
   public void remove(List<Location> area, boolean applyPhysics) {
     if (area == null || area.isEmpty()) {
       return;
@@ -299,6 +341,10 @@ public class Wand {
 
     World world = area.get(0).getWorld();
     BlockData blockData = Bukkit.createBlockData(Material.AIR, "[]");
+
+    if (world == null) {
+      return;
+    }
 
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
@@ -313,8 +359,20 @@ public class Wand {
     }
   }
 
+  /**
+   * 좌표계의 특정 블록을 다른 블록으로 바꿉니다.
+   *
+   * @param originalBlockData 찾을 블록
+   * @param replaceBlockData 바꿀 블록
+   * @param area 좌표계
+   * @param applyPhysics 물리 적용 여부
+   */
   public void replace(BlockData originalBlockData, BlockData replaceBlockData, List<Location> area, boolean applyPhysics) {
     World world = area.get(0).getWorld();
+
+    if (world == null) {
+      return;
+    }
 
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
@@ -338,10 +396,42 @@ public class Wand {
     }
   }
 
-  // 스택
-  private List<WandBlock> stackMemory = null;
+  /**
+   * 좌표계의 특정 블럭을 찾습니다.
+   *
+   * @param area 좌표계
+   * @param blockData 찾을 블록
+   * @return
+   */
+  public List<WandBlock> scan(List<Location> area, BlockData blockData) {
+    World world = area.get(0).getWorld();
 
-  public void stack(Location pos1, Location pos2, String dir, int n) {
+    if (world == null) {
+      return null;
+    }
+
+    List<WandBlock> scannedBlocks = new ArrayList<>();
+
+    for (Location pos : area) {
+      Block block = world.getBlockAt(pos);
+
+      if (block.getType().equals(blockData.getMaterial())) {
+        scannedBlocks.add(new WandBlock(block));
+      }
+    }
+
+    return scannedBlocks;
+  }
+
+  /**
+   * 좌표계의 블록들을 특정 방향으로 n 회 복제합니다.
+   * @param pos1 좌표계 시작 좌표
+   * @param pos2 좌표계 끝 좌표
+   * @param dir 복제할 방향
+   * @param n 복제할 횟수
+   * @param applyPhysics 물리 적용 여부
+   */
+  public void stack(Location pos1, Location pos2, String dir, int n, boolean applyPhysics) {
 
     if (pos1 == null || pos2 == null || dir == null || n <= 0) {
       return;
@@ -367,6 +457,10 @@ public class Wand {
       area.add(wBlock);
     }
     World world = pos1.getWorld();
+
+    if (world == null) {
+      return;
+    }
 
     for (int m = 1; m <= n; m++) {
       for (WandBlock wandBlock : area) {
@@ -401,53 +495,38 @@ public class Wand {
           c.getInventory().setContents(new ItemStack[0]);
         }
 
-        block.setBlockData(wandBlock.getBlockData(), false);
+        block.setBlockData(wandBlock.getBlockData(), applyPhysics);
         wandBlock.applyBlockState(block);
       }
     }
 
   }
 
-  public List<WandBlock> scan(List<Location> area, BlockData blockData) {
-    World world = area.get(0).getWorld();
 
-    List<WandBlock> scannedBlocks = new ArrayList<>();
 
-    for (Location pos : area) {
-      Block block = world.getBlockAt(pos);
-
-      if (block.getType().equals(blockData.getMaterial())) {
-        scannedBlocks.add(new WandBlock(block));
-      }
-    }
-
-    return scannedBlocks;
-  }
+  private Timer particleTimer = new Timer();
+  private List<Location> particleArea;
+  private boolean particleAreaShow = false;
 
   public void setParticleArea(List<Location> area) {
     particleArea = area;
   }
 
+  public void showParticleArea() {
+    particleAreaShow = true;
+  }
+
+  public void hideParticleArea() {
+    particleAreaShow = false;
+  }
+
   public void enableParticleArea() {
-    particleAreaPlay = true;
-  }
-
-  public void disableParticleArea() {
-    particleAreaPlay = false;
-  }
-
-  public void spawnAreaParticle() {
-    Timer timer = new Timer();
-    timer.schedule(new TimerTask() {
+    particleTimer.schedule(new TimerTask() {
       public void run() {
-        if (particleAreaPlay) {
-          if (player.isOnline()) {
-            if (PlayerMeta.getPlayerMeta(player).is(PlayerMeta.Path.WAND_ENABLE)) {
-              if (particleArea != null) {
-                for (Location loc : particleArea) {
-                  player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 85, 255), 1));
-                }
-              }
+        if (particleAreaShow) {
+          if (particleArea != null) {
+            for (Location loc : particleArea) {
+              player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 170, 40), 1));
             }
           }
         }
@@ -455,7 +534,14 @@ public class Wand {
     }, 0, 100);
   }
 
-  // 완드 가져오기
+  public void disableParticleArea() {
+    particleTimer.cancel();
+  }
+
+
+
+
+  // Get Wand
   public static Wand getWand(UUID uuid) {
     if (wands.containsKey(uuid)) {
       return wands.get(uuid);
@@ -472,6 +558,14 @@ public class Wand {
     else {
       return new Wand(player);
     }
+  }
+
+  public static List<Wand> getWands() {
+    List<Wand> wandsList = new ArrayList<>();
+    for (Map.Entry<UUID, Wand> w : wands.entrySet()) {
+      wandsList.add(w.getValue());
+    }
+    return wandsList;
   }
 
   public static boolean exist(UUID uuid) {
@@ -497,12 +591,12 @@ public class Wand {
       case EDIT_POSITIONER: {
         ItemStack item = wandItem_editPositioner;
         ItemMeta im = item.getItemMeta();
-        im.setDisplayName(Msg.n2s("&6&l체리 완드"));
+        im.setDisplayName(Msg.effect("&6&l체리 완드"));
         List<String> lore = new ArrayList<String>();
-        lore.add(Msg.n2s(""));
-        lore.add(Msg.n2s("&7블록을 &9&o오른쪽 / 왼쪽 클릭&7하여 &a포지션을 지정&7할 수 있습니다."));
-        lore.add(Msg.n2s(""));
-        lore.add(Msg.n2s("&7허공을 &9&o오른쪽 / 왼쪽 클릭&7하여 &c포지션을 지정 해제&7할 수 있습니다."));
+        lore.add(Msg.effect(""));
+        lore.add(Msg.effect("&7블록을 &9&o오른쪽 / 왼쪽 클릭&7하여 &a포지션을 지정&7할 수 있습니다."));
+        lore.add(Msg.effect(""));
+        lore.add(Msg.effect("&7허공을 &9&o오른쪽 / 왼쪽 클릭&7하여 &c포지션을 지정 해제&7할 수 있습니다."));
         im.setLore(lore);
         item.setItemMeta(im);
         return item;
@@ -549,7 +643,7 @@ public class Wand {
 
     if (Cherry.config.isInt("wand.undo-limit")) {
       undoLimit = Cherry.config.getInt("wand.undo-limit");
-      Msg.debug("[WAND] Set undo-limit to " + undoLimit);
+      Msg.debug(prefix + "Set undo-limit to " + undoLimit);
     }
 
   }
@@ -557,20 +651,28 @@ public class Wand {
   public static void enable() {
 
     if (!Cherry.config.getBoolean("wand.enable")) {
-      Msg.debug("[WAND] Wand Disabled");
+      Msg.debug(Msg.effect(prefix + "#EB565B;Wand Disabled"));
       return;
     }
 
-    Msg.debug("[WAND] Enabling Wand v0.3");
+    Msg.debug(Msg.effect(prefix + "#A9EB00;Enabling Wand v0.3"));
 
-    Cherry.getPlugin().registerCommand("wand", new WandCommand(), new WandTabCompleter());
+    Cherry.plugin.registerCommand("wand", new WandCommand(), new WandTabCompleter());
 
-    Cherry.getPlugin().registerEvent(new WandEvent());
+    Cherry.plugin.registerEvent(new WandEvent());
 
     load();
 
     Wand.enabled = true;
 
+  }
+
+  public static final String prefix = "#FFCA01;&l[WAND]: &r";
+
+  public static void disable() {
+    for ( Wand w : getWands() ) {
+      w.disableParticleArea();
+    }
   }
 
 }

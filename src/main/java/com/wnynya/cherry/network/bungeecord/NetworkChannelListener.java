@@ -2,6 +2,9 @@ package com.wnynya.cherry.network.bungeecord;
 
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
+import com.wnynya.cherry.Cherry;
+import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.player.PlayerChat;
 import com.wnynya.cherry.player.PlayerJoin;
 import com.wnynya.cherry.player.PlayerQuit;
 import com.wnynya.cherry.portal.Portal;
@@ -23,40 +26,21 @@ public class NetworkChannelListener implements PluginMessageListener {
 
     switch (subChannel) {
 
-      case "NetworkJoin": {
-        String playerName = in.readUTF();
-        String server = in.readUTF();
-        Player player = Bukkit.getPlayer(playerName);
-        if (player != null) {
-          PlayerJoin.network(player, server);
-        }
-        break;
-      }
-
-      case "NetworkQuit": {
-        String playerName = in.readUTF();
-        Player player = Bukkit.getPlayer(playerName);
-        if (player != null) {
-          PlayerQuit.network(player);
-        }
-        break;
-      }
-
-      case "SwitchJoin": {
+      case "ServerChangeJoin": {
         String playerName = in.readUTF();
         String serverFrom = in.readUTF();
         String serverGoto = in.readUTF();
-        PlayerJoin.switchS(playerName, serverFrom, serverGoto);
+        PlayerJoin.change(playerName, serverFrom, serverGoto);
         break;
       }
 
-      case "SwitchQuit": {
+      case "ServerChangeQuit": {
         String playerName = in.readUTF();
         String serverFrom = in.readUTF();
         String serverGoto = in.readUTF();
         Player player = Bukkit.getPlayer(playerName);
         if (player != null) {
-          PlayerQuit.switchS(player, serverFrom, serverGoto);
+          PlayerQuit.change(player, serverFrom, serverGoto);
         }
         break;
       }
@@ -82,6 +66,20 @@ public class NetworkChannelListener implements PluginMessageListener {
             s.setCurrentPlayers(0);
             s.setMaxPlayers(0);
             Portal.updateBungeeSigns(serverName);
+          }
+        }
+        break;
+      }
+
+      case "ChannelChat": {
+        String channelName = in.readUTF();
+        String playerName = in.readUTF();
+        String msg = in.readUTF();
+        String fromServer = in.readUTF();
+
+        if (Cherry.config.getBoolean("event.chat.msg.bungeecord.enable")) {
+          if (channelName.equals(Cherry.config.getString("event.chat.msg.bungeecord.channel"))) {
+            PlayerChat.channelReceive(msg, playerName, fromServer);
           }
         }
         break;

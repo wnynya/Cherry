@@ -1,7 +1,5 @@
 package com.wnynya.cherry.amethyst;
 
-import com.destroystokyo.paper.profile.PlayerProfile;
-import com.destroystokyo.paper.profile.ProfileProperty;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -11,14 +9,8 @@ import java.util.UUID;
 
 public class Skull {
 
-  public static ItemStack get(String v) {
-    ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
-    SkullMeta skullMeta = (SkullMeta) skull.getItemMeta();
-    PlayerProfile playerProfile = Bukkit.createProfile(UUID.randomUUID(), "");
-    playerProfile.getProperties().add(new ProfileProperty("textures", v));
-    skullMeta.setPlayerProfile(playerProfile);
-    skull.setItemMeta(skullMeta);
-    return skull;
+  public static ItemStack get(String url) {
+    return new ItemStack(Material.ACACIA_BOAT);
   }
 
   public enum URL {
