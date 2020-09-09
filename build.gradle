@@ -40,7 +40,7 @@ dependencies {
     // compileOnly (group: 'org.spigotmc', name:'spigot-api', version: '1.16.1-R0.1-SNAPSHOT')
 
     // Paper
-    compileOnly (group: 'com.destroystokyo.paper', name:'paper-api', version: '1.16.1-R0.1-SNAPSHOT')
+    compileOnly group: 'com.destroystokyo.paper', name:'paper-api', version: '1.16.2-R0.1-SNAPSHOT'
 
     // Vault
     //compileOnly "com.github.MilkBowl:VaultAPI:1.7"
@@ -50,10 +50,10 @@ dependencies {
     compile group: 'org.java-websocket', name: 'Java-WebSocket', version: '1.5.1'
 
     // Apache
-    compileOnly (group: 'commons-io', name: 'commons-io', version: '2.6')
+    compile group: 'commons-io', name: 'commons-io', version: '2.6'
 
-    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
-    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
+    compileOnly group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.13.3'
+    compileOnly group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.13.3'
 
     // https://mvnrepository.com/artifact/log4j/log4j
     //compile group: 'log4j', name: 'log4j', version: '1.2.17'
@@ -80,7 +80,7 @@ else if (project.hasProperty('test')) {
 }
 
 jar {
-     destinationDirectory.set(new File(dest))
+    destinationDirectory.set(new File(dest))
     archiveFileName.set('Cherry.jar')
     manifest {
         attributes 'Main-Class': 'com.wnynya.cherry.Cherry'

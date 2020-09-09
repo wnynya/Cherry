@@ -182,36 +182,10 @@ portal:
 #======================================#
 
 terminal:
-  enable: false
-  # ws://
-  host: ""
-  name: ""
-  auth: ""
-  path: ""
-  event:
-    player:
-      join: false
-      quit: false
-      chat: false
-      command: false
-
-    console:
-      command: true
-
-    commandblock:
-      command: false
-
-  log:
-
-    console:
-      msg:
-        enable: true
-      command:
-        enable: true
-
-    player:
-      msg:
-        enable: true
+  enable: true
+  host: "cherry.wnynya.com:99"
+  name: "bedserver"
+  auth: "7A9P4PNEPP"
 
 #======================================#
 # 번지코드 설정 [1.2.4]
@@ -241,7 +215,6 @@ vault-support:
 
 cucumbery-support:
   enable: true
-
 
 #======================================#
 debug: false

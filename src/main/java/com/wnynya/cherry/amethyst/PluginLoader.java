@@ -100,7 +100,7 @@ public class PluginLoader {
         e.printStackTrace();
       }
     }
-    System.gc();
+    //System.gc();
   }
 
   public static void load() {

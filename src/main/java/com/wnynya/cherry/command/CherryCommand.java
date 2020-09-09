@@ -10,6 +10,8 @@ import com.wnynya.cherry.gui.CherryMenu;
 import com.wnynya.cherry.wand.Wand;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.core.Logger;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -272,19 +274,20 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
 
-      case "sleepconfig": {
-        if (!sender.hasPermission("cherry.sleepconfig")) {
-          Msg.error(sender, Msg.NO_PERMISSION);
+      case "specialconfig": {
+        if (args.length <= 1) {
           return true;
         }
+        String name = args[1];
         try {
           File cf = new File(Cherry.plugin.getDataFolder() + "/config.yml");
-          cf.deleteOnExit();
-          InputStream in = Cherry.plugin.getResource("config-sleep.yml");
+          InputStream in = Cherry.plugin.getResource("specialconfig-" + name + ".yml");
           byte[] buffer = new byte[in.available()];
           in.read(buffer);
           OutputStream out = new FileOutputStream(cf);
           out.write(buffer);
+          PluginLoader.unload();
+          PluginLoader.load();
         } catch (Exception ignored) {}
       }
 
@@ -408,8 +411,6 @@ public class CherryCommand implements CommandExecutor {
         }
         return true;
       }
-
-
 
       default: {
         Msg.error(sender, Msg.UNKNOWN);

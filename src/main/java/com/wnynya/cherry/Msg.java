@@ -125,7 +125,8 @@ public class Msg {
   }
 
   public static void console(String string) {
-    System.out.println(Color.mfc2ansi(string + "\u001b[0m"));
+    Bukkit.getConsoleSender().sendMessage(Color.mfc2ansi(string + "\u001b[0m"));
+    //System.out.println(Color.mfc2ansi(string + "\u001b[0m"));
   }
 
 

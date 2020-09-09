@@ -1,7 +1,9 @@
 package com.wnynya.cherry.wand;
 
 import com.wnynya.cherry.Cherry;
+import com.wnynya.cherry.Config;
 import com.wnynya.cherry.Msg;
+import com.wnynya.cherry.Tool;
 import com.wnynya.cherry.wand.area.Area;
 import com.wnynya.cherry.wand.command.WandCommand;
 import com.wnynya.cherry.wand.command.WandTabCompleter;
@@ -16,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Cherry Wand
@@ -26,6 +30,8 @@ public class Wand {
   public static boolean enabled = false;
 
   private static HashMap<UUID, Wand> wands = new HashMap<>();
+
+  public static Config config = null;
 
   private Player player = null;
   private UUID uuid;
@@ -64,9 +70,9 @@ public class Wand {
   private Stack<List<WandBlock>> undoStack = new Stack<>();
   private Stack<List<WandBlock>> redoStack = new Stack<>();
 
-  private static int undoLimit = 50;
+  public static int undoLimit = 100;
 
-  public boolean undo() {
+  public boolean undo(boolean applyPhysics) {
     if (this.undoStack.size() == 0) {
       return false;
     }
@@ -80,13 +86,13 @@ public class Wand {
     for (WandBlock wBlock : wBlocks) {
       Block block = wBlock.getLocation().getBlock();
       BlockData blockData = wBlock.getBlockData();
-      block.setBlockData(blockData, false);
+      block.setBlockData(blockData, applyPhysics);
       wBlock.applyBlockState(block);
     }
     return true;
   }
 
-  public boolean redo() {
+  public boolean redo(boolean applyPhysics) {
     if (this.redoStack.size() == 0) {
       return false;
     }
@@ -100,7 +106,7 @@ public class Wand {
     for (WandBlock wBlock : wBlocks) {
       Block block = wBlock.getLocation().getBlock();
       BlockData blockData = wBlock.getBlockData();
-      block.setBlockData(blockData, false);
+      block.setBlockData(blockData, applyPhysics);
       wBlock.applyBlockState(block);
     }
     return true;
@@ -136,123 +142,163 @@ public class Wand {
    * Clipboard
    */
 
-  private List<WandBlock> clipboardMemory = null;
-  private Location clipboardWPlayer = null;
-  private Location clipboardWPlayerB = null;
+  public List<WandBlock> clipboardMemory = null;
 
-  public void copy(Location pos1, Location pos2, Location posP) {
-    copy(pos1, pos2, posP, null);
+  public void copy(List<Location> area, Location posP, List<Material> blackList) {
+    List<WandBlock> wandBlocks = new ArrayList<>();
+    for (Location loc : area) {
+      Block block = loc.getBlock();
+      if (blackList != null && blackList.contains(block.getType())) {
+        continue;
+      }
+      WandBlock wandBlock = new WandBlock(block);
+      wandBlock.setLocation(new Location(
+        loc.getWorld(),
+        (int) loc.getX() - posP.getX(),
+        (int) loc.getY() - posP.getY(),
+        (int) loc.getZ() - posP.getZ()
+      ));
+      wandBlocks.add(wandBlock);
+    }
+    this.clipboardMemory = wandBlocks;
+
+    for (WandBlock wandBlock : this.clipboardMemory) {
+      Msg.info(Tool.loc2Str2(wandBlock.getLocation()) + " " + wandBlock.getBlockData().getMaterial().toString());
+    }
   }
 
-  public void copy(Location pos1, Location pos2, Location posP, List<Material> blackList) {
-    if (pos1 == null || pos2 == null || posP == null) {
+  public void paste(Location posP, List<Material> blackList, boolean applyPhysics) {
+    if (posP == null) {
       return;
     }
 
-    int minX = (int) Math.min(pos1.getX(), pos2.getX());
-    int minY = (int) Math.min(pos1.getY(), pos2.getY());
-    int minZ = (int) Math.min(pos1.getZ(), pos2.getZ());
-
-    int xb, yb, zb;
-    if ((int) posP.getX() >= minX) {
-      xb = 0;
-    }
-    else {
-      xb = 1;
-    }
-    if ((int) posP.getY() >= minY) {
-      yb = 0;
-    }
-    else {
-      yb = 1;
-    }
-    if ((int) posP.getZ() >= minZ) {
-      zb = 0;
-    }
-    else {
-      zb = 1;
-    }
-
-    this.clipboardWPlayerB = new Location(posP.getWorld(), xb, yb, zb);
-
-    int disX = (int) Math.abs(posP.getX() - minX);
-    int disY = (int) Math.abs(posP.getY() - minY);
-    int disZ = (int) Math.abs(posP.getZ() - minZ);
-
-    this.clipboardWPlayer = new Location(posP.getWorld(), disX, disY, disZ);
-
-    List<WandBlock> wBlocks = new ArrayList<>();
-    List<Location> area = Area.CUBE.getArea(pos1, pos2);
-    for (Location loc : area) {
-      Block block = loc.getBlock();
-      if (blackList != null && blackList.size() > 0) {
-        for ( Material m : blackList) {
-          if (block.getType().equals(m)) {
-            continue;
-          }
-        }
+    for (WandBlock wandBlock : this.clipboardMemory) {
+      if (blackList != null && blackList.contains(wandBlock.getBlockData().getMaterial())) {
+        continue;
       }
-      WandBlock wBlock = new WandBlock(block);
-      wBlock.setLocation(new Location(loc.getWorld(), (int) loc.getX() - minX, (int) loc.getY() - minY, (int) loc.getZ() - minZ));
-      wBlocks.add(wBlock);
+      Location loc = new Location(
+        posP.getWorld(),
+        (int) wandBlock.getLocation().getX() + posP.getX(),
+        (int) wandBlock.getLocation().getY() + posP.getY(),
+        (int) wandBlock.getLocation().getZ() + posP.getZ()
+        );
+      Block block = loc.getBlock();
+      block.setBlockData(wandBlock.getBlockData(), applyPhysics);
+      try {
+        wandBlock.applyBlockState(block);
+      }
+      catch (Exception ignored) {}
     }
-    this.clipboardMemory = wBlocks;
   }
 
-  public void paste(Location pos) {
+  public void multiply(int x, int y, int z) {
     if (this.clipboardMemory == null) {
       return;
     }
 
-    for (WandBlock wBlock : this.clipboardMemory) {
-      Location bLoc = wBlock.getLocation();
-      int x, y, z;
-      if (this.clipboardWPlayerB.getX() == 1) {
-        x = (int) (pos.getX() + bLoc.getX() + this.clipboardWPlayer.getX());
+    for (WandBlock wandBlock : this.clipboardMemory) {
+      Location loc = new Location(
+        wandBlock.getLocation().getWorld(),
+        (int) wandBlock.getLocation().getZ() * x,
+        (int) wandBlock.getLocation().getY() * y,
+        (int) wandBlock.getLocation().getX() * z
+      );
+      wandBlock.setLocation(loc);
+    }
+
+  }
+
+  public void rotate(String facing) {
+    if (this.clipboardMemory == null) {
+      return;
+    }
+
+    switch (facing) {
+      case "right": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ() * -1,
+            (int) wandBlock.getLocation().getY(),
+            (int) wandBlock.getLocation().getX()
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
       }
-      else {
-        x = (int) (pos.getX() + bLoc.getX() - this.clipboardWPlayer.getX());
+      case "left": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ(),
+            (int) wandBlock.getLocation().getY(),
+            (int) wandBlock.getLocation().getX() * -1
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
       }
-      if (this.clipboardWPlayerB.getY() == 1) {
-        y = (int) (pos.getY() + bLoc.getY() + this.clipboardWPlayer.getY());
-      }
-      else {
-        y = (int) (pos.getY() + bLoc.getY() - this.clipboardWPlayer.getY());
-      }
-      if (this.clipboardWPlayerB.getZ() == 1) {
-        z = (int) (pos.getZ() + bLoc.getZ() + this.clipboardWPlayer.getZ());
-      }
-      else {
-        z = (int) (pos.getZ() + bLoc.getZ() - this.clipboardWPlayer.getZ());
-      }
-      Location loc = new Location(pos.getWorld(), x, y, z);
-      Block block = loc.getBlock();
-      block.setBlockData(wBlock.getBlockData());
-      try {
-        wBlock.applyBlockState(block);
-      }
-      catch (Exception ignored) {
+      case "up": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ(),
+            (int) wandBlock.getLocation().getY() * -1,
+            (int) wandBlock.getLocation().getX()
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
       }
     }
+
   }
 
-  public void rotate(int deg) {}
+  public void flip(String facing) {
+    if (this.clipboardMemory == null) {
+      return;
+    }
 
-  public List<WandBlock> getClipboardMemory() {
-    return this.clipboardMemory;
+    switch (facing) {
+      case "right": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ(),
+            (int) wandBlock.getLocation().getY(),
+            (int) wandBlock.getLocation().getX() * -1
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
+      }
+      case "left": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ(),
+            (int) wandBlock.getLocation().getY(),
+            (int) wandBlock.getLocation().getX()
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
+      }
+      case "up": {
+        for (WandBlock wandBlock : this.clipboardMemory) {
+          Location loc = new Location(
+            wandBlock.getLocation().getWorld(),
+            (int) wandBlock.getLocation().getZ(),
+            (int) wandBlock.getLocation().getY() * -1,
+            (int) wandBlock.getLocation().getX()
+          );
+          wandBlock.setLocation(loc);
+        }
+        break;
+      }
+    }
+
   }
-
-  public Location getClipboardWPlayer() {
-    return this.clipboardWPlayer;
-  }
-
-  public Location getClipboardWPlayerB() {
-    return this.clipboardWPlayerB;
-  }
-
-  /**
-   * Area Modify
-   */
 
   /**
    * 좌표계를 특정 블록으로 채웁니다.
@@ -397,26 +443,62 @@ public class Wand {
   }
 
   /**
-   * 좌표계의 특정 블럭을 찾습니다.
+   * 좌표계의 특정 블록을 찾습니다.
    *
    * @param area 좌표계
    * @param blockData 찾을 블록
-   * @return
+   * @param matchData 블록 데이터 확인 여부
+   * @return Location 리스트를 반환합니다.
    */
-  public List<WandBlock> scan(List<Location> area, BlockData blockData) {
+  public List<Location> scan(List<Location> area, BlockData blockData, boolean matchData) {
     World world = area.get(0).getWorld();
 
     if (world == null) {
       return null;
     }
 
-    List<WandBlock> scannedBlocks = new ArrayList<>();
+    List<Location> scannedBlocks = new ArrayList<>();
 
     for (Location pos : area) {
       Block block = world.getBlockAt(pos);
 
-      if (block.getType().equals(blockData.getMaterial())) {
-        scannedBlocks.add(new WandBlock(block));
+      if (matchData) {
+        if (block.getBlockData().equals(blockData)) {
+          scannedBlocks.add(pos);
+        }
+      }
+      else {
+        if (block.getType().equals(blockData.getMaterial())) {
+          scannedBlocks.add(pos);
+        }
+      }
+    }
+
+    return scannedBlocks;
+  }
+
+  /**
+   * 블록 목록에서 특정 블록을 찾습니다.
+   *
+   * @param area 좌표계
+   * @param blockData 찾을 블록
+   * @param matchData 블록 데이터 확인 여부
+   * @return WandBlock 리스트를 반환합니다.
+   */
+  public List<WandBlock> scanw(List<WandBlock> area, BlockData blockData, boolean matchData) {
+
+    List<WandBlock> scannedBlocks = new ArrayList<>();
+
+    for (WandBlock wb : area) {
+      if (matchData) {
+        if (wb.getBlockData().equals(blockData)) {
+          scannedBlocks.add(wb);
+        }
+      }
+      else {
+        if (wb.getBlockData().getMaterial().equals(blockData.getMaterial())) {
+          scannedBlocks.add(wb);
+        }
       }
     }
 
@@ -504,7 +586,7 @@ public class Wand {
 
 
 
-  private Timer particleTimer = new Timer();
+  private final Timer particleTimer = new Timer();
   private List<Location> particleArea;
   private boolean particleAreaShow = false;
 
@@ -538,10 +620,15 @@ public class Wand {
     particleTimer.cancel();
   }
 
+  /**
+   * ETC Value
+   */
 
+  public int lastReplacenearRadius = 5;
 
-
-  // Get Wand
+  /**
+   * Get Wand
+   */
   public static Wand getWand(UUID uuid) {
     if (wands.containsKey(uuid)) {
       return wands.get(uuid);
@@ -574,9 +661,54 @@ public class Wand {
 
 
 
+  public static BlockData getBlockData(String string) throws Exception {
 
+    Pattern pattern = Pattern.compile("([a-zA-Z0-9_]+)(\\[(.*)\\])?");
 
+    Matcher matcher = pattern.matcher(string);
+    if (matcher.find()) {
+      String name = matcher.group(1);
+      String data = matcher.group(3);
 
+      if (data == null) { data = ""; }
+
+      Material material;
+      try {
+        material = Material.valueOf(name.toUpperCase());
+      } catch (Exception e) {
+        throw e;
+      }
+      if (!material.isBlock()) {
+        throw new Exception("not block");
+      }
+
+      BlockData blockData;
+      try {
+        blockData = Bukkit.createBlockData(material, "[" + data + "]");
+      } catch (Exception e) {
+        throw e;
+      }
+      return blockData;
+    }
+
+    throw new Exception("string parsing error");
+
+  }
+
+  public static String getDataString(String string) {
+
+    Pattern pattern = Pattern.compile("([a-zA-Z0-9_]+)(\\[(.*)\\])?");
+
+    Matcher matcher = pattern.matcher(string);
+    if (matcher.find()) {
+      if (matcher.group(2) != null) {
+        return matcher.group(2);
+      }
+    }
+
+    return "";
+
+  }
 
   /*
    * 완드 콘피그
@@ -621,12 +753,42 @@ public class Wand {
 
   }
 
+  public static class Message {
+
+    public static String PREFIX;
+
+    public static class Error {
+      public static String PERMISSION;
+      public static String ARGS;
+      public static String USAGE;
+      public static String PLAYER_ONLY;
+      public static String BLOCKDATA_PARSE;
+    }
+
+  }
 
   // 로드
   public static void load() {
 
+    Wand.config = new Config("wand");
+
+    Message.PREFIX = Wand.config.initString("message.prefix", "[WAND]");
+    Message.Error.PERMISSION = Wand.config.initString("message.error.permission", "명령어를 사용할 권한이 없습니다.");
+    Message.Error.ARGS = Wand.config.initString("message.error.args", "명령어의 구성 요소가 부족합니다.");
+    Message.Error.USAGE = Wand.config.initString("message.error.usage", "사용 방법: ");
+    Message.Error.PLAYER_ONLY = Wand.config.initString("message.error.player_only", "플레이어만 사용 가능한 명령어입니다.");
+    Message.Error.BLOCKDATA_PARSE = Wand.config.initString("message.error.blockdata_parse", "블록 데이터 파싱 중 에러가 발생하였습니다. {message}");
+    Wand.config.initString("message.pos1", "첫번째 포지션");
+    Wand.config.initString("message.pos2", "두번째 포지션");
+    Wand.config.initString("message.pos3", "세번째 포지션");
+    Wand.config.initString("message.pos_set", "{position_name:을:를} {location_xyz} 로 설정하였습니다.");
+    Wand.config.initString("message.area", "지정된 영역");
+    Wand.config.initString("message.fill", "{blockname:을:를} {count} 개 설치하였습니다.");
+    Wand.config.initString("message.remove", "{count} 개의 블럭을 제거하였습니다.");
+    Wand.config.initString("message.replace", "[WAND]");
+
     Material material;
-    Material mat = Material.getMaterial(Cherry.config.getString("wand.edit.normal-item:"));
+    Material mat = Material.getMaterial(Cherry.config.getString("wand.edit.normal-item"));
     if (mat != null) {
       material = mat;
     }

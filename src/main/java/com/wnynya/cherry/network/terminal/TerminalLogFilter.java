@@ -5,10 +5,12 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Marker;
 import org.apache.logging.log4j.core.LogEvent;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
+import org.bukkit.Bukkit;
 
 public class TerminalLogFilter implements Filter {
 
@@ -92,11 +94,39 @@ public class TerminalLogFilter implements Filter {
   @Override
   public Result filter(LogEvent event) {
     if (!shutdown) {
-      String message = event.getMessage().getFormattedMessage();
-      long time = event.getTimeMillis();
-      String name = event.getThreadName();
-      try { TimeUnit.MICROSECONDS.sleep(1); } catch (InterruptedException ignored) { }
-      Terminal.Message.log(name + "/" + time + "/" + message);
+      try {
+        String message = event.getMessage().getFormattedMessage();
+        long time = event.getTimeMillis();
+        String thread = event.getThreadName();
+        String stack = "";
+        Throwable t = event.getThrown();
+        String level = event.getLevel().name();
+        if (t != null) {
+          stack += "\r\n";
+          stack += t.getClass().getName() + " => ";
+          stack += t.getMessage();
+          StackTraceElement[] stea = t.getStackTrace();
+          for (StackTraceElement ste : stea) {
+            stack += "\r\n\tat " + ste.getFileName() + ":" + ste.getLineNumber() + " (" + ste.getClassName() + "." + ste.getMethodName() + ")";
+          }
+          Throwable tc = t.getCause();
+          if (tc != null) {
+            stack += "\r\nCaused by: ";
+            stack += tc.getClass().getName();
+            StackTraceElement[] cstea = tc.getStackTrace();
+            for (StackTraceElement ste : cstea) {
+              stack += "\r\n\tat " + ste.getFileName() + ":" + ste.getLineNumber() + " (" + ste.getClassName() + "." + ste.getMethodName() + ")";
+            }
+          }
+        }
+        message += stack;
+        String logger = event.getLoggerName();
+        try { TimeUnit.MICROSECONDS.sleep(1); } catch (InterruptedException ignored) {}
+        Terminal.Console.log(message, time, thread, level, logger);
+      }
+      catch (Exception e) {
+        e.printStackTrace();
+      }
     }
     return null;
   }

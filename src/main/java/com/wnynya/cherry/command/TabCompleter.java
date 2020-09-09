@@ -31,7 +31,7 @@ public class TabCompleter implements org.bukkit.command.TabCompleter {
     if (!arg.equalsIgnoreCase("")) {
       List<String> listA = new ArrayList<>();
       for (String value : list) {
-        if (value.toLowerCase().startsWith(arg.toLowerCase())) {
+        if (value.toLowerCase().contains(arg.toLowerCase())) {
           listA.add(value);
         }
       }

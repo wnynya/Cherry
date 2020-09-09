@@ -110,14 +110,6 @@ public class Config implements Listener {
     saveConfig();
   }
 
-  public boolean is(String path) {
-    FileConfiguration config = getConfig(this.configName);
-    if (config.isConfigurationSection(path) || config.isList(path) || config.isString(path) || config.isBoolean(path) || config.isColor(path) || config.isDouble(path) || config.isInt(path) || config.isItemStack(path) || config.isLocation(path) || config.isLong(path) || config.isOfflinePlayer(path) || config.isVector(path)) {
-      return true;
-    }
-    return false;
-  }
-
   public String getString(String path) {
     return this.getConfig().getString(path);
   }
@@ -129,6 +121,34 @@ public class Config implements Listener {
   public int getInt(String path) { return this.getConfig().getInt(path); }
 
   public double getDouble(String path) { return this.getConfig().getDouble(path); }
+
+  public String initString(String path, String value) {
+    if (!this.getConfig().isString(path)) {
+      this.set(path, value);
+    }
+    return this.getString(path);
+  }
+
+  public boolean initBoolean(String path, boolean value) {
+    if (!this.getConfig().isBoolean(path)) {
+      this.set(path, value);
+    }
+    return this.getBoolean(path);
+  }
+
+  public int initInt(String path, int value) {
+    if (!this.getConfig().isInt(path)) {
+      this.set(path, value);
+    }
+    return this.getInt(path);
+  }
+
+  public double initDouble(String path, double value) {
+    if (!this.getConfig().isDouble(path)) {
+      this.set(path, value);
+    }
+    return this.getDouble(path);
+  }
 
   public static boolean exist(String configName) {
     File configFile = new File(Cherry.plugin.getDataFolder() + "/" + configName + ".yml");

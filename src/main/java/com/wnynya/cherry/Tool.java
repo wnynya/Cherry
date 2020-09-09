@@ -3,6 +3,7 @@ package com.wnynya.cherry;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -234,7 +235,7 @@ public class Tool {
       java.util.List<String> list = new ArrayList<>();
       for (Material material : Material.values()) {
         if (material.isBlock()) {
-          list.add(material.toString());
+          list.add(material.toString().toLowerCase());
         }
       }
       return list;
@@ -286,6 +287,14 @@ public class Tool {
       java.util.List<String> list = new ArrayList<>();
       for (org.bukkit.entity.Player player : Bukkit.getOnlinePlayers()) {
         list.add(prefix + player.getUniqueId().toString());
+      }
+      return list;
+    }
+
+    public static java.util.List<String> worldNames() {
+      java.util.List<String> list = new ArrayList<>();
+      for (World world: Bukkit.getWorlds()) {
+        list.add(world.getName());
       }
       return list;
     }

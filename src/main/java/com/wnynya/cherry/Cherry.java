@@ -44,7 +44,6 @@ public class Cherry extends JavaPlugin {
 
     // Basic Commands
     registerCommand("cherry", new CherryCommand(), new TabCompleter());
-    registerCommand("menu", new MenuCommand(), new TabCompleter());
 
     // Functions
     PlayerMeta.enable();
@@ -57,8 +56,8 @@ public class Cherry extends JavaPlugin {
     registerEvent(new AsyncPlayerChat());
     registerEvent(new PlayerConnect());
     registerEvent(new PlayerInteract());
-    registerEvent(new InventoryClick());
     registerEvent(new Command());
+    registerEvent(new InventoryClick());
 
     // Channels
     BungeeCord.enable();
@@ -81,9 +80,9 @@ public class Cherry extends JavaPlugin {
 
   @Override
   public void onDisable() {
+    Terminal.disable();
     Wand.disable();
     Updater.disable();
-    Terminal.disable();
   }
 
   public void registerCommand(String command, CommandExecutor cmdExc, org.bukkit.command.TabCompleter cmdTab) {

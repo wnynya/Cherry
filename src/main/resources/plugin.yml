@@ -24,7 +24,7 @@ commands:
 
   playermeta:
     description: 플레이어 메타 설정 명령어입니다.
-    aliases: [pm, cpm]
+    aliases: [cpm]
 
   pluginmeta:
     description: 뭐
@@ -34,11 +34,6 @@ commands:
 
   ppap:
     description: PPAP
-
-  menu:
-    description: 메뉴 이다.
-    usage: /menu
-    aliases: [ㅡ두ㅕ, 메뉴, apsb, cmenu, cherrymenu]
 
   fuck:
     description: fuck

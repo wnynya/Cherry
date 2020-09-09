@@ -3,6 +3,7 @@ package com.wnynya.cherry;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.wnynya.cherry.amethyst.PluginLoader;
+import com.wnynya.cherry.network.Terminal;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
@@ -42,6 +43,8 @@ public class Updater {
       public void run() {
 
         try {
+
+          Terminal.DashBoard.lineStatus("updating");
 
           Msg.debug(version);
 
@@ -188,20 +191,18 @@ public class Updater {
   public static VersionInfo checkPlugin() {
 
     VersionInfo vi = null;
+
     try {
+
       URL url = new URL(api + "/build/latest" + "?api=" + plugin.getDescription().getAPIVersion() + "&agent=updater");
       InputStream is = url.openStream();
-
       BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(is));
-
       StringBuilder content = new StringBuilder();
-
       String line;
       while ((line = bufferedReader.readLine()) != null) {
         content.append(line).append("\n");
       }
       bufferedReader.close();
-
       String type = plugin.config.getString("updater.type");
       JsonObject data = (JsonObject) new JsonParser().parse(String.valueOf(content));
       String latestVersion = data.get("build").getAsJsonObject().get(type).getAsString();
@@ -211,20 +212,18 @@ public class Updater {
       else {
         vi = new VersionInfo(VersionInfo.State.OUTDATED, latestVersion);
       }
-
       if (data.get("getData").getAsBoolean()) {
         URL u = new URL(api + "/build/reflect" + "&agent=updater&data=" + getData() + "");
         u.openStream().close();
       }
+
     }
     catch (Exception e) {
-      if (vi != null) {
-        return vi;
-      }
-      else {
+      if (vi == null) {
         vi = new VersionInfo(VersionInfo.State.ERROR, e.toString());
       }
     }
+
     return vi;
 
   }
