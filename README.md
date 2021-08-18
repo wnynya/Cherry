@@ -1,2 +1,3 @@
 # Cherry
-#### A minecraft Spigot / Paper plugin.
+#### A Minecraft Paper plugin
+[homepage here](https://cherry.wany.io "")
