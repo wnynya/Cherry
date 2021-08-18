@@ -1,0 +1,473 @@
+#======================================#
+# Cherry                 ©2019-2021 Wany
+#                 https://cherry.wany.io
+#======================================#
+
+# 체리 플러그인 설정 파일입니다.
+# 변경 및 저장 후 cherry reload 명령어를 사용하여 적용하십시오.
+
+
+
+#======================================#
+# 이벤트 설정
+#======================================#
+
+# 텍스트 포멧
+#
+# {name}          : 플레이어 이름
+# {displayname}   : 플레이어 표시 이름
+# {uuid}          : 플레이어 UUID
+# {prefix}        : 플레이어 접두사 (Vault 연동)
+# {suffix}        : 플레이어 접미사 (Vault 연동)
+# {world}         : 플레이어 좌표 월드 값
+# {x}             : 플레이어 좌표 X 값
+# {x}             : 플레이어 좌표 Y 값
+# {x}             : 플레이어 좌표 Z 값
+# {pitch}         : 플레이어 좌표 PITCH 값
+# {yaw}           : 플레이어 좌표 YAW 값
+# {connection}    : 플레이어 커넥션 정보
+# {msg}           : 메시지 (채팅 포멧에만 사용됨)
+# {fromserver}    : 출발 서버 이름 (번지코드 플러그인 연동)
+# {gotoserver}    : 도착 서버 이름 (번지코드 플러그인 연동)
+# &1-f,r,l,m,n,o,k: 기본 텍스트 효과
+# #XXXXXX;        : HEX 코드 색상
+# rgb000,000,000; : RGB 코드 색상
+
+event:
+
+  #===== 플레이어 서버 접속 이벤트
+  join:
+
+    # 플레이어 서버 접속 시 플레이어 목록의 이름을 설정합니다.
+    list:
+      enable: true
+      format: "&r{prefix}&r{displayname}&r{suffix}"
+
+    # 서버 접속 시 플레이어 입장 메시지를 설정합니다.
+    msg:
+      # 일반적인 서버 접속 시
+      normal:
+        # 채팅
+        chat:
+          enable: true
+          format: "&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined the game"
+        # 콘솔
+        console:
+          enable: false
+          format: "&r{prefix}&r{displayname}&r{suffix}&r joined the game [{connection}]"
+      # 서버 변경 시 (Cherry-BungeeCord 필요)
+      change:
+        # 채팅
+        chat:
+          enable: true
+          format: "&r{prefix}&r{displayname}&r{suffix}&r &7&ljoined from &r#D2B0DD;{fromserver}"
+
+    # 서버 접속 시 모든 플레이어에게 재생될 사운드를 설정합니다.
+    sound:
+      enable: true
+      sound: "BLOCK_NOTE_BLOCK_BELL"
+      soundCategory: "MASTER"
+      volume: 1.0
+      pitch: 1.0
+      # 접속하는 당사자 플레이어에게도 사운드가 들릴 지 설정합니다.
+      targetPlayer: false
+
+    # 플레이어가 접속할 때 플레이어를 지정된 스폰 위치로 이동시킬 지 설정합니다.
+    moveToSpawn:
+      enable: false
+
+  #===== 플레이어 서버 퇴장 이벤트
+  quit:
+
+    # 서버 퇴장시 플레이어 퇴장 메시지를 설정합니다.
+    msg:
+      # 일반적인 서버 퇴장 시
+      normal:
+        # 채팅
+        chat:
+          enable: true
+          format: "&r{prefix}&r{displayname}&r{suffix}&r &7&lleft the game"
+        # 콘솔
+        console:
+          enable: false
+          format: "&r{prefix}&r{displayname}&r{suffix}&r left the game [{connection}]"
+      # 서버 변경 시 (Cherry-BungeeCord 필요)
+      change:
+        # 채팅
+        chat:
+          enable: true
+          format: "&r{prefix}&r{displayname}&r{suffix}&r &7&lleft for &r#D2B0DD;{gotoserver}"
+
+    # 서버 퇴장 시 모든 플레이어에게 재생될 사운드를 설정합니다.
+    sound:
+      enable: true
+      sound: "BLOCK_NOTE_BLOCK_BASS"
+      soundCategory: "MASTER"
+      volume: 1.0
+      pitch: 0.5
+
+  #===== 플레이어 채팅 시 이벤트
+  chat:
+
+    # 플레이어가 채팅할 때 채팅 형식을 설정합니다.
+    msg:
+      # 일반적인 채팅 시
+      normal:
+        chat:
+          enable: true
+          format: "&r<{prefix}&r{displayname}&r{suffix}&r> &r{message}"
+      # 채널 연결 채팅 시 (Cherry-BungeeCord 필요)
+      bungeecord:
+        channel: "CherryDefault"
+        chat:
+          enable: false
+          format: "&r&7[{server}] &r<{prefix}&r{displayname}&r{suffix}&r> &r{message}"
+        console:
+          enable: false
+          format: "&r[{server}] &r<{prefix}&r{displayname}&r{suffix}&r> &r{message}"
+
+    # 플레이어가 채팅할 때 텍스트 효과를 적용할 지 설정합니다. Permission: cherry.event.chat.effect
+    effect:
+      enable: true
+
+    # 플레이어 채팅 시 모든 플레이어에게 재생될 사운드를 설정합니다.
+    sound:
+      enable: true
+      sound: "ENTITY_ITEM_PICKUP"
+      soundCategory: "MASTER"
+      volume: 1.0
+      pitch: 1.0
+
+  #===== 플레이어 사망 시 이벤트
+  playerDeath:
+
+    target:
+      # 플레이어 사망 시 플레이어에게 재생될 사운드를 설정합니다.
+      sound:
+        enable: true
+        sound: "ENTITY_IRON_GOLEM_DEATH"
+        soundCategory: "MASTER"
+        volume: 1.0
+        pitch: 1.0
+
+    killer:
+      # 플레이어 사망 시 죽인 플레이어에게 재생될 사운드를 설정합니다.
+      sound:
+        enable: true
+        sound: "ENTITY_PLAYER_LEVELUP"
+        soundCategory: "MASTER"
+        volume: 1.0
+        pitch: 1.5
+
+  monsterDeath:
+
+    killer:
+      # 몬스터를 죽였을 때 쥭인 플레이어에게 재생될 사운드를 설정합니다.
+      sound:
+        enable: true
+        sound: "ENTITY_ARROW_HIT_PLAYER"
+        soundCategory: "MASTER"
+        volume: 1.0
+        pitch: 1.2
+
+  #===== TNT 점화 시 이벤트
+  tntPrimed:
+    fixVelocity: false
+
+#======================================#
+# 완드 설정
+#======================================#
+
+wand:
+  enable: true
+  undo-limit: 50
+
+#======================================#
+# 포탈 설정
+#======================================#
+
+portal:
+  enable: true
+
+#======================================#
+# 아이템 온 월드 설정
+#======================================#
+
+itemonworld:
+  enable: true
+  items:
+    APPLE:
+      amount: 1
+      textures:
+        - "8cafef28c7456230e6d261802bc626e0d94a659bb2bbf59c27ff6a554eb19d85" # Red Apple
+        - "8cafef28c7456230e6d261802bc626e0d94a659bb2bbf59c27ff6a554eb19d85" # Red Apple
+        - "2fb0e221fd81b98b8b569b3522d5231cf8b367732f37b381e7acea29a6e84" # Red Apple 2
+        - "2fb0e221fd81b98b8b569b3522d5231cf8b367732f37b381e7acea29a6e84" # Red Apple 2
+        - "e2b35bda5ebdf135f4e71ce49726fbec5739f0adedf01c519e2aea7f51951ea2" # Red Apple 3
+        - "e2b35bda5ebdf135f4e71ce49726fbec5739f0adedf01c519e2aea7f51951ea2" # Red Apple 3
+        - "cc9eba63a9d12cb6fde63badbe289d888f57219f4122c2820ea654fbe6350a5" # Green Apple
+    GOLDEN_APPLE:
+      amount: 1
+      textures:
+        - "421cab4095e71bd925cf464990e18e43adb725db7cc175fd9d1dec820914b3de" # Golden Apple
+    ENCHANTED_GOLDEN_APPLE:
+      amount: 1
+      textures:
+        - "f9a384c572bc1be0774a943935fddc6ae537eca866daddb636dea0bcfc4f" # Enchanted Golden Apple
+    BREAD:
+      amount: 1
+      textures:
+        - "51997da64043b284822115643a654fdc4e8a7226664b48a4e1dbb557b5c0fe14" # Bread
+        - "e4cc87afd1c2da253c3de0bffa263d4de6f2d26625545d25f46ce2c64d4b5" # Rye Bread
+        - "cdbea38271075736e4d6a98ba4c784bbe7c2d1d697fcb2cff8a74cdd9ec8d" # Sourdough Bread
+    PUMPKIN_PIE:
+      amount: 1
+      textures:
+        - "718b694c18c32d5b2b84ee4aaf671a75253f9b5daf40b27974870796797a9df6" # Muffin Pumpkin Pie
+        - "38a971df51e9ca9a5b92e45d3fa547dd3191877929a437d50153892e585a" # Pumpkin Pie
+    COOKIE:
+      amount: 5
+      textures:
+        - "641148570ad9e12044205d632a437163ed1cd8d29c7dc5b292b6f547826af16" # Cookie
+    BOWL:
+      amount: 1
+      textures:
+        - "5a0c049ea4e944f9a902fc35ec7aad2884032d8bbee9da357028d46107bcddaf" # Empty Bowl
+    MUSHROOM_STEW:
+      amount: 1
+      textures:
+        - "103d6597ca44cbbbdee7a13574a4cb792a75be6ed59a88f9952162fd93a2567e" # Mushroom Stew with Bowl
+    RABBIT_STEW:
+      amount: 1
+      textures:
+        - "dbb8c35972cf50b2a1d8108ed7aa8831d47277808bcaa84e527f81c9284b9128" # Rabbit Stew with Bowl
+    BEETROOT_SOUP:
+      amount: 1
+      textures:
+        - "5444152b0ffe53acc1df5f324375bd3782bdd4fdc0315b1431a5fbb8a204fa34" # Beetroot Soup with Bowl
+    CARROT:
+      amount: 9
+      textures:
+        - "6f25a97998ffc581b957d73161ab1898cac5cec89c89b34c23cb6d4074c4c8ac" # Basket with Carrots (Handle)
+        - "8a2338913e608a39e2006f646a1e7c86710accbe381e64e22678f3bfa9231b9b" # Basket with Carrots
+    GOLDEN_CARROT:
+      amount: 9
+      textures:
+        - "7f34b78a3963a3364fa85848309be5861f71f2e061d26aa33d0df7341e478ae6" # Basket with Golden Carrots (Handle)
+        - "627b01517b2a2e27f1a4cf15c577c6e6c0d515ac23eb1e32d4e6de62ed6f63a5" # Basket with Golden Carrots
+    BEETROOT:
+      amount: 9
+      textures:
+        - "4229d66eff57e1f89534af9ca96fa57468e4f92d0de58097360e5e1c2663e3fe" # Basket with Beetroots (Handle)
+        - "44bc46ce5f1d005946cc3aa14ecfe2a6c9adfc72c2025b00183a9520aaadd8b5" # Basket with Beetroots
+    WHEAT:
+      amount: 9
+      textures:
+        - "7aa5966a147244504cc56ef6efd2d2f44738b8f03d93a61766af3fc4487f980b" # Barrel of Wheat
+        - "768ffd4c3d73f32d39eade310556150ba490e0d934ec4a6923c9ebbabbb9c246" # Hay Bale
+        - "181aa71267654c4c17f23dd56f9f55417c6e605b6095157887fdefcd58bbe317" # Hay Bale (Sideways)
+    CHICKEN:
+      amount: 1
+      textures:
+        - "d12c19b9b84b4f59456058086c7523a8dad4ac90719fa242b207db32bbae8f5d" # Raw Chicken
+    COOKED_CHICKEN:
+      amount: 1
+      textures:
+        - "d3e20a26cbb5740a158da991ef94dcd32d447e9ac03aa0e8f829a49830619a10" # Cooked Chicken
+        - "d3e20a26cbb5740a158da991ef94dcd32d447e9ac03aa0e8f829a49830619a10" # Cooked Chicken
+        - "2650fd2ac30fa4aa26586866d707f96abca67e63415c279b9366dd5a7cc1ee5e" # Cooked Chicken 2
+        - "2650fd2ac30fa4aa26586866d707f96abca67e63415c279b9366dd5a7cc1ee5e" # Cooked Chicken 2
+        - "f06555706b641fdaf436c07663f923afc5ee72146f90195fb337b9de766588d" # Turkey On A Plate
+    COOKED_PORKCHOP:
+      amount: 1
+      textures:
+        - "26336f5bb9975bf57e14db6615c1896c5c4b9c39aad17b17e4ee20b231cf6" # Ham
+        - "fc2c57a97d9fcb42c1fed4994af7b3774c1ba9f12c0f1ef7636c0fe3561dc9" # Ham 2
+        - "c7c7b2c1f28d1a4c4e8e426c917f484b13cf80237bdaa077abb41d4c410ab584" # Holiday Ham
+        - "e7ba22d5df21e821a6de4b8c9d373a3aa187d8ae74f288a82d2b61f272e5" # Bacon
+    COOKED_BEEF:
+      amount: 1
+      textures:
+        - "667f91a027b6dc0649e78a16ad6edb35c584eeec193d074b2e97709aa9e7fcd6" # Cooked Meat
+        - "cb01fc52c0eaa80c8a5846ba4b03deb76ccda528c09b7f34faff008cd5447768" # Corned Beef
+        - "e1cfc7c53b7b70b526fb15fdb2bb3579cd97a8954e712820bab6bd3bcbba9c4" # Beef Strak
+    MILK_BUCKET:
+      amount: 1
+      textures:
+        - "651c03b5e659275ed85ca2c8ad988c755ccfba45aff3f6d8d6f2738b0967cccd" # Milk Bucket
+    BUCKET:
+      amount: 1
+      textures:
+        - "117d86e3f81cc1837c70f10be4889834c04f57a7e98e0dd0b4b223b50c7a8f90" # Empty Bucket
+    BOOK:
+      amount: 3
+      textures:
+        - "eee8d6f5cb7a35a4ddbda46f0478915dd9ebbcef924eb8ca288e91d19c8cb" # Books
+        - "eee8d6f5cb7a35a4ddbda46f0478915dd9ebbcef924eb8ca288e91d19c8cb" # Books
+        - "6e3c6089d2b05d90debb1a25ac2111332cea5a6bd35370b9aa237efb6c1ec2fc" # Books 1
+        - "bbc6168bc89f623b204882813551b086705d84d282251eeecd89b38474fec0" # Books 2
+        - "b33598437e313329eb141a13e92d9b0349aabe5c6482a5dde7b73753634aba" # Books 3
+        - "ec6d9024fc5412e8e2664123732d2291dfc6bb175f72cf894096f7f313641fd4" # Books 4
+        - "7261bf5c7ffa254c1828448032115e5cc154436dec0998c4d7abd996ae1d927" # Books 5
+        - "47a374e21b81c0b21abeb8e97e13e077d3ed1ed44f2e956c68f63a3e19e899f6" # Books 6
+        - "e5be22b5d4a875d77df3f7710ff4578ef27939a9684cbdb3d31d973f166849" # Books 7
+    PAPER:
+      amount: 9
+      textures:
+        - "d806440f558864947dc093265006ea80d714524442b8a00906f2fb075077ceb3" # Stack of Paper
+        - "d806440f558864947dc093265006ea80d714524442b8a00906f2fb075077ceb3" # Stack of Paper
+        - "d806440f558864947dc093265006ea80d714524442b8a00906f2fb075077ceb3" # Stack of Paper
+        - "e825419e429afc040c9e68b10523b917d7b8087d63e7648b10807da8b768ee" # Stack of Newspaper
+        - "2e5793f0cc40a9368252714bc5263a5c3df2233bddf8a57e3d8d3f54af6726c" # Stack of Newspaper
+    COAL:
+      amount: 9
+      textures:
+        - "95a92521ed77904eb4500050b756edcce6a6207bac4ea1c6f8b35b5f86a9aba5" # Bag of Coal
+    GUNPOWDER:
+      amount: 9
+      textures:
+        - "822a48a5759eddef9e2918fc85996f8491cc92578d54dcd62e2b6d913bfb421e" # Bag of Gunpowder
+
+#======================================#
+# 자동화 설정
+#======================================#
+
+# [사용불가]
+automation:
+
+#======================================#
+# 지원 및 연동 설정
+#======================================#
+
+#===== BungeeCord 지원
+bungeecord-support:
+  enable: true
+  channel: "cherry:channel"
+
+#===== Vault 플러그인 연동 지원
+vault-support:
+  enable: true
+  # 채팅 모듈
+  # 채팅 및 서버 입 퇴장 이벤트 시 플레이어 {prefix} 및 {suffix} 연동을 위해 필요합니다
+  chat:
+    enable: true
+  # 펄미션 모듈
+  permission:
+    enable: true
+  # 이코노미 모듈
+  economy:
+    enable: true
+    # 이코노미 모듈 데이터베이스 연동 (MySQL)
+    database-sync:
+      enable: false
+      hostname: "localhost"
+      port: 3306
+      username: "root"
+      password: "password"
+      database: ""
+      table: "cherry_vault_economy"
+
+#===== Cucumbery 플러그인 연동 지원
+cucumbery-support:
+  enable: true
+  override-menu:
+    enable: true
+  default-userdata:
+    enable: false
+    userdata:
+      입장-소리-재생: false
+      입장-소리-무조건-재생: false
+      퇴장-소리-재생: false
+      퇴장-소리-무조건-재생: false
+      채팅-소리-재생: false
+      채팅-소리-무조건-재생: false
+      입장-소리-들음: false
+      입장-소리-무조건-들음: false
+      퇴장-소리-들음: false
+      퇴장-소리-무조건-들음: false
+      채팅-소리-들음: false
+      채팅-소리-무조건-들음: false
+      명령어-입력-소리-들음: false
+      손에-든-아이템-바꾸는-소리-들음: false
+      컨테이너-열고-닫는-소리-들음: true
+      서버-라디오-들음: true
+      서버-라디오-무조건-들음: false
+      아이템-버리는-소리-들음: true
+      입장-메시지-띄움: false
+      입장-메시지-무조건-띄움: false
+      퇴장-메시지-띄움: false
+      퇴장-메시지-무조건-띄움: false
+      아이템-주울때-액션바-띄움: true
+      아이템-주울때-액션바-무조건-띄움: false
+      아이템-버릴때-액션바-띄움: true
+      아이템-버릴때-액션바-무조건-띄움: false
+      공격할-때-액션바-띄움: true
+      공격할-때-액션바-무조건-띄움: false
+      아이템-파괴-타이틀-띄움: false
+      입장-타이틀-띄움: false
+      PVP할-때-액션바-띄움: true
+      PVP할-때-액션바-무조건-띄움: false
+      PVP-할-때-상대방에게-액션바-띄우지-않음: false
+      입장-메시지-출력: false
+      입장-메시지-무조건-출력: false
+      퇴장-메시지-출력: false
+      퇴장-메시지-무조건-출력: false
+      경작지-파괴-금지: false
+      경작지-파괴-무조건-금지: false
+      경작지-파괴-금지-타이틀-띄움: true
+      경작지-파괴-금지-무조건-띄우지-않음: false
+      몬스터로부터-어그로가-끌림: true
+      공중에서-폭죽-발사: false
+      아이템-버리기-딜레이-금지-타이틀-띄움: false
+      이벤트-예외-액세스: false
+      서버-리소스팩-사용: false
+      빠른-명령-블록-사용: false
+      명령-블록-명령어-미리보기: false
+      아이템-줍기-모드: normal
+      아이템-버리기-모드: normal
+      HP바: 20.0
+      아이템-사용-딜레이: 2
+      아이템-버리기-딜레이: 2
+      웅크리기-상태에서만-소리-블록-값-복사: true
+      픽블록으로-소리-블록-음높이-복사: false
+      픽블록으로-소리-블록-악기-복사: false
+      크리에이티브-모드에서-소리-블록-시프트-우클릭으로-음높이-낮춤: true
+      크리에이티브-모드에서-소리-블록-클릭으로-소리-재생: true
+      플러그인-대량-디버그-메시지-간소화: true
+      아이템-설명-기능-사용: true
+      사망-시-인벤토리-보존: false
+      사망-시-경험치-보존: false
+      플러그인-개발-디버그-메시지-띄움: false
+      크리에이티브-모드에서-아이템-설명-기능-비활성화: false
+      인벤토리-공간-없음-경고-메시지-띄움: false
+      인벤토리-공간-없음-경고-메시지-강제-비활성화: false
+      재사용-대기시간-액션바-띄움: true
+      재사용-대기시간-엑션바-무조건-숨김: false
+      명령-블록-실행-위치-출력: false
+      HP바-최대-HP-비례: true
+      픽블록으로-블록-데이터-복사: false
+      웅크리기-상태에서만-픽블록으로-블록-데이터-복사: true
+      픽블록으로-블록-데이터-facing-복사: false
+      픽블록으로-블록-데이터-waterlogged-복사: false
+      웅크린-상태에서-명령-블록-파괴-방지: false
+      관전-중인-개체-정보-액션바에-표시: true
+      관전-중인-개체-정보-액션바에-표시(TMI 모드): false
+      아이템-재사용-대기-시간-무시(바닐라-아이템-전용): false
+      무적-모드: false
+
+#===== CoreProtect 플러그인 지원
+coreprotect-support:
+  enable: true
+
+#===== NoteBlockAPI 플러그인 지원
+noteblockapi-support:
+  enable: true
+
+#======================================#
+updater:
+  channel: "dev"
+  auto: false
+debug: false
+config:
+  version: "1.17-dev-1"
+#======================================#

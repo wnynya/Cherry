@@ -1,0 +1,39 @@
+name: Cherry
+version: 1.17-dev
+main: io.wany.cherry.Cherry
+
+description: A Minecraft plugin
+author: Wany
+website: https://cherry.wany.io
+
+api-version: 1.17
+softdepend: [Vault, ProtocolLib, Cucumbery, CoreProtect]
+loadbefore: [CoreProtect, Cucumbery, Essentials, HolographicDisplays, LuckPerms, NoteBlockAPI, PlugMan, ProtocolLib, Vault, VoxelSniper, WorldEdit, WorldGuard, mcMMO]
+
+commands:
+
+  cherry:
+    permission: cherry.command.cherry
+
+  wandedit:
+    aliases: [cwand, we, wand, ww, //]
+    permission: cherry.command.wand.edit
+
+  wandbrush:
+    aliases: [cbrush, wb, brush]
+    permission: cherry.command.wand.brush
+
+  portal:
+    aliases: [cportal]
+    permission: cherry.command.portal
+
+  menu:
+    aliases: [cmenu, apsb, 메뉴, ㅡ두ㅕ]
+    permission: cherry.command.menu
+
+  throw:
+    permission: cherry.command.throw
+
+  bungeeteleport:
+    aliases: [btp, gtp, tpb]
+    permission: cherry.command.bungeeteleport
