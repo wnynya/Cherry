@@ -1,8 +1,8 @@
 package io.wany.cherry;
 
-import io.wany.cherry.itemonworld.ItemOnWorld;
 import io.wany.cherry.amethyst.ServerPropertiesSorter;
 import io.wany.cherry.commands.*;
+import io.wany.cherry.itemonworld.ItemOnWorld;
 import io.wany.cherry.listeners.*;
 import io.wany.cherry.playerdata.PlayerData;
 import io.wany.cherry.portal.Portal;
@@ -72,6 +72,7 @@ public class Cherry extends JavaPlugin {
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
     //registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
     registerCommand("menu", new MenuCommand(), new CherryTabCompleter());
+    registerCommand("troll", new TrollCommand(), new CherryTabCompleter());
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());

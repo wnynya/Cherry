@@ -13,6 +13,7 @@ loadbefore: [CoreProtect, Cucumbery, Essentials, HolographicDisplays, LuckPerms,
 commands:
 
   cherry:
+    aliases: [c]
     permission: cherry.command.cherry
 
   wandedit:
@@ -33,6 +34,9 @@ commands:
 
   throw:
     permission: cherry.command.throw
+
+  troll:
+    permission: cherry.command.troll
 
   bungeeteleport:
     aliases: [btp, gtp, tpb]

@@ -81,7 +81,12 @@ public class Updater {
     if (this.version == null) {
       return;
     }
-    File file = new File(plugin.getDataFolder() + "/" + plugin.getDescription().getName() + ".jar.temp");
+
+    String name = plugin.getDescription().getName();
+    if (Cherry.NIGHT && Cherry.CONFIG.getString("night-name") != null) {
+      name = Cherry.CONFIG.getString("night-name");
+    }
+    File file = new File(plugin.getDataFolder() + "/" + name+ ".jar.temp");
     if (file.exists()) {
       file.delete();
     }
@@ -108,8 +113,12 @@ public class Updater {
     if (this.file == null || this.version == null) {
       return;
     }
+    String name = plugin.getDescription().getName();
+    if (Cherry.NIGHT && Cherry.CONFIG.getString("night-name") != null) {
+      name = Cherry.CONFIG.getString("night-name");
+    }
     File pluginsDir = new File("plugins");
-    File pluginFile = new File(pluginsDir, plugin.getDescription().getName() + "-" + this.version + ".jar");
+    File pluginFile = new File(pluginsDir, name + "-" + this.version + ".jar");
 
     byte[] data = new byte[0];
     try {

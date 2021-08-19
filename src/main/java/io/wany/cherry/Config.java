@@ -51,14 +51,6 @@ public class Config {
     return configFile.exists();
   }
 
-  public static FileConfiguration onLoad() {
-    FileConfiguration config = Cherry.PLUGIN.getConfig();
-    Cherry.PLUGIN.getConfig().options().copyDefaults(true);
-    Cherry.PLUGIN.saveDefaultConfig();
-    Cherry.DEBUG = config.getBoolean("debug");
-    return config;
-  }
-
   public void save() {
 
     try {
@@ -179,6 +171,15 @@ public class Config {
       this.set(path, value);
     }
     return this.getString(path);
+  }
+
+  public static FileConfiguration onLoad() {
+    FileConfiguration config = Cherry.PLUGIN.getConfig();
+    Cherry.PLUGIN.getConfig().options().copyDefaults(true);
+    Cherry.PLUGIN.saveDefaultConfig();
+    Cherry.DEBUG = config.getBoolean("debug");
+    Cherry.NIGHT = config.getBoolean("night");
+    return config;
   }
 
 }

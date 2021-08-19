@@ -468,6 +468,7 @@ updater:
   channel: "dev"
   auto: false
 debug: false
+night: false
 config:
   version: "1.17-dev-1"
 #======================================#

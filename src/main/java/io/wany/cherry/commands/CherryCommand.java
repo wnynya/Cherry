@@ -46,6 +46,7 @@ public class CherryCommand implements CommandExecutor {
         }
         PluginLoader.unload();
         PluginLoader.load(Cherry.FILE);
+        Message.info(sender, Cherry.PREFIX + " Cherry reloaded");
         return true;
       }
 

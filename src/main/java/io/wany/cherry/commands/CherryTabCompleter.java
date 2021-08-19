@@ -1,7 +1,12 @@
 package io.wany.cherry.commands;
 
+import io.wany.cherry.amethyst.troll.Troll;
+import io.wany.cherry.amethyst.troll.Trolling;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -32,33 +37,57 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
   public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
     String name = command.getName().toLowerCase();
 
-    if (name.equals("cherry")) {
+    switch (name) {
 
-      if (args.length == 1) {
-        List<String> list = new ArrayList<>();
-        if (sender.hasPermission("cherry.command.reload")) {
-          list.add("reload");
-        }
-        if (sender.hasPermission("cherry.command.update")) {
-          list.add("update");
-        }
-        if (sender.hasPermission("cherry.command.version")) {
-          list.add("version");
-        }
-        if (sender.hasPermission("cherry.command.explosion")) {
-          list.add("explosion");
-        }
+      case "cherry" -> {
 
-        return autoComplete(list, args[0]);
-      }
+        if (args.length == 1) {
+          List<String> list = new ArrayList<>();
+          if (sender.hasPermission("cherry.command.reload")) {
+            list.add("reload");
+          }
+          if (sender.hasPermission("cherry.command.update")) {
+            list.add("update");
+          }
+          if (sender.hasPermission("cherry.command.version")) {
+            list.add("version");
+          }
+          if (sender.hasPermission("cherry.command.explosion")) {
+            list.add("explosion");
+          }
 
-      args[0] = args[0].toLowerCase();
-
-      if (args[0].equals("explosion")) {
-        if (args.length == 3) {
-          List<String> list = Arrays.asList("normal", "fire", "unbreak");
           return autoComplete(list, args[args.length - 1]);
         }
+
+        args[0] = args[0].toLowerCase();
+
+        if (args[0].equals("explosion")) {
+          if (args.length == 3) {
+            List<String> list = Arrays.asList("normal", "fire", "unbreak");
+            return autoComplete(list, args[args.length - 1]);
+          }
+        }
+
+      }
+
+      case "troll" -> {
+
+        if (args.length == 1) {
+          List<String> list = new ArrayList<>();
+          for (Player player : Bukkit.getOnlinePlayers()) {
+            list.add(player.getName());
+          }
+          return autoComplete(list, args[args.length - 1]);
+        }
+
+        if (args.length == 2) {
+          List<String> list = new ArrayList<>();
+          for (Troll troll : Troll.values()) {
+            list.add(troll.name().toLowerCase());
+          }
+          return autoComplete(list, args[args.length - 1]);
+        }
+
       }
 
     }

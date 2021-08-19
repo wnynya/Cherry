@@ -548,31 +548,34 @@ public class Message {
         component = component.append(Message.parse(stringBuilder.toString()));
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
-          component = component.append(Message.parse(Message.effect(VaultChat.getPrefix(player))));
+          Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(8);
           i += 7;
           continue;
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
-          component = component.append(Message.parse(Message.effect(VaultChat.getSuffix(player))));
+          Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(8);
           i += 7;
           continue;
         }
         if (formatPatternCompiler("displayname").matcher(processFormat).find()) {
           component = component.append(player.displayName());
-          if (component.decoration(TextDecoration.ITALIC).equals(TextDecoration.State.NOT_SET)) {
-            component = component.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
-          }
-          if (component.color() == null) {
-            component = component.color(TextColor.color(255, 255, 255));
-          }
           processFormat = processFormat.substring(13);
           i += 12;
           continue;
         }
         if (formatPatternCompiler("name").matcher(processFormat).find()) {
-          component = component.append(Message.parse(player.getName()));
+          Component part = Message.parse(player.getName());
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(13);
           i += 12;
           continue;
@@ -645,13 +648,19 @@ public class Message {
         component = component.append(Message.parse(stringBuilder.toString()));
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
-          component = component.append(Message.parse(Message.effect(VaultChat.getPrefix(player))));
+          Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(8);
           i += 7;
           continue;
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
-          component = component.append(Message.parse(Message.effect(VaultChat.getSuffix(player))));
+          Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(8);
           i += 7;
           continue;
@@ -663,7 +672,10 @@ public class Message {
           continue;
         }
         if (formatPatternCompiler("name").matcher(processFormat).find()) {
-          component = component.append(Message.parse(player.getName()));
+          Component part = Message.parse(player.getName());
+          part = part.hoverEvent(player.displayName().hoverEvent());
+          part = part.clickEvent(player.displayName().clickEvent());
+          component = component.append(part);
           processFormat = processFormat.substring(13);
           i += 12;
           continue;

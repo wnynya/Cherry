@@ -2,6 +2,7 @@ package io.wany.cherry.listeners;
 
 import io.wany.cherry.Cherry;
 import io.wany.cherry.Message;
+import io.wany.cherry.amethyst.Crystal;
 import io.wany.cherry.supports.cucumbery.CucumberySupport;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -28,44 +29,17 @@ public class PlayerCommandPreprocess implements Listener {
     }
     String message = event.getMessage();
     message = message.toLowerCase();
+    //String reverseString = new StringBuffer(message).reverse().toString();
     if (
-      message.equals("/pl") || message.equals("/plugins") || message.equals("/bukkit:plugins")
-      || message.startsWith("/pl ") || message.startsWith("/plugins ") || message.startsWith("/bukkit:plugins ")
+      message.equals("/pl") || message.equals("/plugins") || message.equals("/bukkit:pl") || message.equals("/bukkit:plugins")
+      || message.startsWith("/pl ") || message.startsWith("/plugins ") || message.startsWith("/bukkit:pl ") || message.startsWith("/bukkit:plugins ")
     ) {
       Player player = event.getPlayer();
       if (!player.hasPermission("bukkit.command.plugins")) {
         return;
       }
-      Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
-      List<String> filter = List.of(Cherry.PLUGIN.getName());
-      List<String> pluginNames = new ArrayList<>();
-      for (Plugin plugin : plugins) {
-        if (filter.contains(plugin.getName())) {
-          continue;
-        }
-        if (plugin.isEnabled()) {
-          if (plugin.getDescription().getAPIVersion() == null) {
-            pluginNames.add("§a" + plugin.getName() + "*");
-          }
-          else {
-            pluginNames.add("§a" + plugin.getName());
-          }
-        }
-        else {
-          pluginNames.add("§c" + plugin.getName());
-        }
-      }
-      StringBuilder stringBuilder = new StringBuilder();
-      Collections.sort(pluginNames);
-      stringBuilder.append("§rPlugins (").append(pluginNames.size()).append("): ");
-      for (var i = 0; i < pluginNames.size(); i++) {
-        stringBuilder.append(pluginNames.get(i));
-        if (i < pluginNames.size() - 1) {
-          stringBuilder.append("§r, ");
-        }
-      }
       event.setCancelled(true);
-      player.sendMessage(Message.parse(stringBuilder.toString()));
+      player.sendMessage(Crystal.genNightPlugins());
     }
   }
 

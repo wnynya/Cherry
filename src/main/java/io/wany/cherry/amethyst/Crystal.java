@@ -2,6 +2,7 @@ package io.wany.cherry.amethyst;
 
 import io.wany.cherry.Cherry;
 import io.wany.cherry.Message;
+import net.kyori.adventure.text.Component;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Logger;
@@ -9,8 +10,47 @@ import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Crystal {
+
+  public static Component genNightPlugins() {
+
+    Plugin[] plugins = Bukkit.getPluginManager().getPlugins();
+    List<String> filter = List.of(Cherry.PLUGIN.getName(), "nmsAPI");
+    List<String> pluginNames = new ArrayList<>();
+    for (Plugin plugin : plugins) {
+      if (filter.contains(plugin.getName())) {
+        continue;
+      }
+      if (plugin.isEnabled()) {
+        if (plugin.getDescription().getAPIVersion() == null) {
+          pluginNames.add("§a" + plugin.getName() + "*");
+        }
+        else {
+          pluginNames.add("§a" + plugin.getName());
+        }
+      }
+      else {
+        pluginNames.add("§c" + plugin.getName());
+      }
+    }
+    Component pluginsMessage = Message.parse("§rPlugins (" + pluginNames.size() + "): ");
+    Collections.sort(pluginNames);
+    for (var i = 0; i < pluginNames.size(); i++) {
+      Component pluginName = Message.parse(pluginNames.get(i));
+      pluginsMessage = pluginsMessage.append(pluginName);
+      if (i < pluginNames.size() - 1) {
+        pluginsMessage = pluginsMessage.append(Message.parse("§r, "));
+      }
+    }
+
+    return pluginsMessage;
+  }
 
   public static void kickBoom(Player player) {
     player.playSound(player.getLocation(), Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.MASTER, 5.0f, 2.0f);
