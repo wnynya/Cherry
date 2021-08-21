@@ -41,3 +41,10 @@ commands:
   bungeeteleport:
     aliases: [btp, gtp, tpb]
     permission: cherry.command.bungeeteleport
+
+  exit:
+    aliases: [quit, 나가기, 겜접, gg]
+    permission: minecraft.command.exit
+
+  drop:
+    permission: minecraft.command.drop

@@ -33,7 +33,7 @@ public class CucumberySupport {
   public static boolean EXIST = false;
   public static boolean LOADED = false;
 
-
+  private static long LASTDISABLED = 0;
 
   public static void onPlayerJoin(PlayerJoinEvent event) {
     defaultUserData(event.getPlayer());
@@ -152,6 +152,9 @@ public class CucumberySupport {
     if (!plugin.getName().equals(NAME)) {
       return;
     }
+    if (LOADED) {
+      Console.debug(PREFIX + NAME + " Reloading Time: " + (System.currentTimeMillis() - LASTDISABLED) + "ms");
+    }
     Console.debug(PREFIX + NAME + " v" + plugin.getDescription().getVersion() + " Enabled");
     if (LOADED) {
       Console.debug(PREFIX + "Re-Enabling " + NAME + "-Support");
@@ -175,6 +178,7 @@ public class CucumberySupport {
       return;
     }
     Console.debug(PREFIX + NAME + " v" + plugin.getDescription().getVersion() + " Disabled");
+    LASTDISABLED = System.currentTimeMillis();
     EXIST = false;
     if (LOADED) {
       Console.debug(PREFIX + "Disabling " + NAME + "-Support");

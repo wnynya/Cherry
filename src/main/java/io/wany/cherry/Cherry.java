@@ -73,6 +73,8 @@ public class Cherry extends JavaPlugin {
     //registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
     registerCommand("menu", new MenuCommand(), new CherryTabCompleter());
     registerCommand("troll", new TrollCommand(), new CherryTabCompleter());
+    registerCommand("exit", new ExitCommand(), new CherryTabCompleter());
+    registerCommand("drop", new DropCommand(), new CherryTabCompleter());
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());

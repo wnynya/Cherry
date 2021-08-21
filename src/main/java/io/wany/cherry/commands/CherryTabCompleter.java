@@ -90,6 +90,15 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
 
       }
 
+      case "drop" -> {
+
+        if (args.length == 1) {
+          List<String> list = List.of("true", "false");
+          return autoComplete(list, args[args.length - 1]);
+        }
+
+      }
+
     }
 
     return Collections.emptyList();
