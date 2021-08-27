@@ -75,12 +75,14 @@ public class Cherry extends JavaPlugin {
     registerCommand("troll", new TrollCommand(), new CherryTabCompleter());
     registerCommand("exit", new ExitCommand(), new CherryTabCompleter());
     registerCommand("drop", new DropCommand(), new CherryTabCompleter());
+    registerCommand("lid", new LidCommand(), new CherryTabCompleter());
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());
     registerEvent(new PlayerChat());
     registerEvent(new PlayerDeath());
     registerEvent(new PlayerInteract());
+    registerEvent(new PlayerMove());
     registerEvent(new PlayerCommandPreprocess());
     registerEvent(new BlockBreak());
     registerEvent(new BlockPhysics());

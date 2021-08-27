@@ -92,6 +92,4 @@ public class Skull {
 
   public static Skull CHARACTER_P_PURPLE = new Skull("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvMmYzYzRiZDZmZDRlMTVkZmZhYzM0NjgwYTc2NmI4YTJiNWQ1MjM0NTFjYmQzZjk4MzQyOTRjYzhmMmM5MmJmIn19fQ==");
 
-
-
 }

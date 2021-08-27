@@ -48,3 +48,6 @@ commands:
 
   drop:
     permission: minecraft.command.drop
+
+  lid:
+    permission: minecraft.command.lid

@@ -40,7 +40,7 @@ public class CucumberySupportMenu {
       inventory.setItem(31, ItemTool.meta(Skull.MESSAGE.toItemStack(), Message.parse(Message.effect("#52EE52;메시징 설정")), List.of(Message.parse("§7출력되는 메시지와 관련된 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
 
 
-      if (player.getGameMode().equals(GameMode.CREATIVE)) {
+      if (player.hasPermission("cucumbery.gui.serversettingsadmin") || player.getGameMode().equals(GameMode.CREATIVE)) {
         inventory.setItem(32, ItemTool.meta(Skull.GRASS_BLOCK.toItemStack(), Message.parse(Message.effect("#52EE52;크리에이티브 설정")), List.of(Message.parse("§7크리이에티브 모드와 관련된 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
       }
 
@@ -80,7 +80,9 @@ public class CucumberySupportMenu {
           Menu.show(player, Setting.Messaging.inventory(player));
         }
         case 32 -> {
-          Menu.show(player, Setting.Creative.inventory(player));
+          if (player.hasPermission("cucumbery.gui.serversettingsadmin") || player.getGameMode().equals(GameMode.CREATIVE)) {
+            Menu.show(player, Setting.Creative.inventory(player));
+          }
         }
         case 33 -> {
           if (player.hasPermission("cucumbery.gui.serversettingsadmin")) {
@@ -263,7 +265,7 @@ public class CucumberySupportMenu {
         Menu.booleanStateButton(userDataConfig.getBoolean("아이템-파괴-타이틀-띄움"), inventory, 15, Skull.CHARACTER_T_WHITE.toItemStack(), "아이템 파괴 시 타이틀", List.of(Message.parse("§7아이템 파괴 시 타이틀을 띄울 지 설정합니다"), Message.parse("§r"), Message.parse("§e변경하려면 클릭하세요!")));
 
         // 아이템-설명-기능-사용
-        Menu.booleanStateButton(userDataConfig.getBoolean("아이템-설명-기능-사용"), inventory, 16, Skull.CHARACTER_I_WHITE.toItemStack(), "아이템 설명", List.of(Message.parse("§7아이템 설명 기능을 사용할 지 설정합니다"), Message.parse("§r"), Message.parse("§e변경하려면 클릭하세요!")));
+        //Menu.booleanStateButton(userDataConfig.getBoolean("아이템-설명-기능-사용"), inventory, 16, Skull.CHARACTER_I_WHITE.toItemStack(), "아이템 설명", List.of(Message.parse("§7아이템 설명 기능을 사용할 지 설정합니다"), Message.parse("§r"), Message.parse("§e변경하려면 클릭하세요!")));
 
         inventory.setItem(36, ItemTool.meta(Skull.PREV.toItemStack(), Message.parse(Message.effect("#52EE52;큐컴버리 메뉴로 돌어가기")), List.of(Message.parse(Message.effect("#52EE52;큐컴버리 메뉴§7로 돌아갑니다")), Message.parse("§r"), Message.parse("§e돌아가려면 클릭하세요!"))));
 
@@ -303,10 +305,10 @@ public class CucumberySupportMenu {
             userDataConfig.toggle("아이템-파괴-타이틀-띄움");
             Menu.show(player, inventory(player));
           }
-          case 16, 25 -> {
-            userDataConfig.toggle("아이템-설명-기능-사용");
-            Menu.show(player, inventory(player));
-          }
+          //case 16, 25 -> {
+          //  userDataConfig.toggle("아이템-설명-기능-사용");
+          //  Menu.show(player, inventory(player));
+          //}
 
           case 36 -> {
             Menu.show(player, Main.inventory(player));

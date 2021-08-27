@@ -15,8 +15,13 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.lang.management.ManagementFactory;
+import java.net.SocketTimeoutException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -32,7 +37,7 @@ public class CherryCommand implements CommandExecutor {
 
     switch (args[0].toLowerCase()) {
 
-      case "version" -> {
+      case "version", "v" -> {
         if (!sender.hasPermission("cherry.version")) {
           return true;
         }
@@ -40,25 +45,136 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
 
-      case "reload" -> {
+      case "reload", "r" -> {
         if (!sender.hasPermission("cherry.reload")) {
           return true;
         }
+        long s = System.currentTimeMillis();
         PluginLoader.unload();
         PluginLoader.load(Cherry.FILE);
-        Message.info(sender, Cherry.PREFIX + " Cherry reloaded");
+        long e = System.currentTimeMillis();
+        Message.info(sender, Cherry.PREFIX + "Reload complete &7(" + (e - s) + "ms)");
         return true;
       }
 
-      case "update" -> {
+      case "update", "u" -> {
         if (!sender.hasPermission("cherry.update")) {
           return true;
         }
-        Updater.defaultUpdater.updateLatest(true);
+
+        boolean silent = false;
+        boolean force = false;
+        if (args.length > 1) {
+          for (String str : args) {
+            if (str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+              silent = true;
+            }
+            if (str.equalsIgnoreCase("-force") || str.equalsIgnoreCase("-f")) {
+              force = true;
+            }
+          }
+        }
+
+        long s = System.currentTimeMillis();
+        Updater.Version version;
+        if (!silent) {
+          Message.info(sender, Cherry.PREFIX + "Check latest " + Cherry.COLOR + Updater.defaultUpdater.getChannel() + "&r version . . . ");
+        }
+        try {
+          version = Updater.defaultUpdater.getLatestVersion();
+        }
+        catch (Updater.NotFoundException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Build Not Found");
+          return true;
+        }
+        catch (Updater.InternalServerErrorException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Internal Server Error");
+          return true;
+        }
+        catch (SocketTimeoutException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Timed Out");
+          return true;
+        }
+        catch (IOException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: IO");
+          return true;
+        }
+        catch (ParseException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Data Parse Failed");
+          return true;
+        }
+        catch (Exception e) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Unknown");
+          return true;
+        }
+
+        if (Cherry.PLUGIN.getDescription().getVersion().equals(version.name)) {
+          if (force) {
+            if (!silent) {
+              Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r, but it forces to update");
+            }
+          }
+          else {
+            if (!silent) {
+              Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "");
+            }
+            return true;
+          }
+        }
+        else {
+          if (!silent) {
+            Message.info(sender, Cherry.PREFIX + "Found new latest version " + Cherry.COLOR + version.name);
+          }
+        }
+
+        if (!silent) {
+          Message.info(sender, Cherry.PREFIX + "Downloading file . . . ");
+        }
+        try {
+          version.download();
+        }
+        catch (SecurityException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Denied");
+          return true;
+        }
+        catch (FileNotFoundException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: File Not Found");
+          return true;
+        }
+        catch (IOException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: IO");
+          return true;
+        }
+        catch (Exception e) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Unknown");
+          return true;
+        }
+
+        if (!silent) {
+          Message.info(sender, Cherry.PREFIX + "Update plugin . . . ");
+        }
+        try {
+          version.update();
+        }
+        catch (IOException exception) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: IO");
+          return true;
+        }
+        catch (Exception e) {
+          Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: Unknown");
+          return true;
+        }
+
+        long e = System.currentTimeMillis();
+
+        if (!silent) {
+          Message.info(sender, Cherry.PREFIX + "Update Success " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r => " + Cherry.COLOR + version.name + "&r &7(" + (e - s) + "ms)");
+        }
+
         return true;
       }
 
-      case "menu" -> {
+      case "menu", "m" -> {
         if (!sender.hasPermission("cherry.menu")) {
           return true;
         }
@@ -67,6 +183,73 @@ public class CherryCommand implements CommandExecutor {
         }
 
         Menu.show(player, Menu.Main.inventory(player));
+        return true;
+      }
+
+      case "system", "s" -> {
+
+        if (args.length == 1) {
+          if (!sender.hasPermission("cherry.system")) {
+            return true;
+          }
+          return true;
+        }
+
+        switch (args[1].toLowerCase()) {
+
+          case "info", "i" -> {
+            if (!sender.hasPermission("cherry.system.info")) {
+              return true;
+            }
+            Runtime r = Runtime.getRuntime();
+            com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+            Message.info(sender, Cherry.PREFIX + "Processor");
+            Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getProcessCpuLoad() * 10000) / 100.0 + "&r%");
+            Message.info(sender, Cherry.PREFIX + "  Server Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 10000) / 100.0 + "&r%");
+            Message.info(sender, Cherry.PREFIX + "Memory");
+            long freeM = Math.round(r.freeMemory() / 1024.0 / 1024.0);
+            long maxM = Math.round(r.maxMemory() / 1024.0 / 1024.0);
+            long totalM = Math.round(r.totalMemory() / 1024.0 / 1024.0);
+            long usedM = Math.round((r.totalMemory() - r.freeMemory()) / 1024.0 / 1024.0);
+            Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedM + "&rM / " + Cherry.COLOR + totalM + "&rM / " + Cherry.COLOR + maxM + "&rM");
+            return true;
+          }
+
+          case "java", "j" -> {
+            if (!sender.hasPermission("cherry.system.java")) {
+              return true;
+            }
+            Message.info(sender, Cherry.PREFIX + "Java " + Cherry.COLOR + System.getProperty("java.vm.version"));
+            Message.info(sender, Cherry.PREFIX + "  Runtime: " + Cherry.COLOR + System.getProperty("java.runtime.name"));
+            Message.info(sender, Cherry.PREFIX + "  Vendor: " + Cherry.COLOR + System.getProperty("java.vm.vendor"));
+            Message.info(sender, Cherry.PREFIX + "  Home: " + Cherry.COLOR + System.getProperty("java.home"));
+            return true;
+          }
+
+          case "gc" -> {
+            if (!sender.hasPermission("cherry.system.gc")) {
+              return true;
+            }
+            boolean silent = false;
+            if (args.length > 2) {
+              for (String str : args) {
+                if (str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+                  silent = true;
+                  break;
+                }
+              }
+            }
+            long s = System.currentTimeMillis();
+            System.gc();
+            long e = System.currentTimeMillis();
+            if (!silent) {
+              Message.info(sender, Cherry.PREFIX + "System.gc(); &7(" + (e - s) + "ms)");
+            }
+            return true;
+          }
+
+        }
+
         return true;
       }
 
@@ -122,6 +305,10 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
 
+
+
+      // Crystal
+      // Boooooooooom!
       case "prompt" -> {
         if (!sender.hasPermission("cherry.crystal.fatal")) {
           return true;
@@ -136,11 +323,6 @@ public class CherryCommand implements CommandExecutor {
         JOptionPane.showMessageDialog(null, message);
         return true;
       }
-
-
-
-      // Crystal
-      // Boooooooooom!
       case "bomb" -> {
         if (!sender.hasPermission("cherry.crystal.bomb")) {
           return true;
@@ -250,16 +432,6 @@ public class CherryCommand implements CommandExecutor {
         }
         catch (Exception ignored) {
         }
-        return true;
-      }
-      case "gc" -> {
-        if (!sender.hasPermission("cherry.crystal.gc")) {
-          return true;
-        }
-        long t = System.currentTimeMillis();
-        Crystal.gc();
-        long t2 = System.currentTimeMillis();
-        sender.sendMessage("System.gc(): " + (t2 - t) + " millis");
         return true;
       }
       case "info" -> {

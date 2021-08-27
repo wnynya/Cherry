@@ -4,6 +4,7 @@ import io.papermc.paper.inventory.ItemRarity;
 import io.wany.cherry.amethyst.Color;
 import io.wany.cherry.supports.vault.VaultChat;
 import net.kyori.adventure.text.Component;
+import net.kyori.adventure.text.ComponentLike;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.TranslatableComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -758,6 +759,40 @@ public class Message {
     format = format.replace("{yaw}", player.getLocation().getYaw() + "");
     format = format.replace("{connection}", player.getAddress().toString());
     return format;
+  }
+
+  public static String commandErrorArgs(String[] args, int i) {
+    StringBuilder stringBuilder = new StringBuilder();
+    for (; i < args.length; i++) {
+      stringBuilder.append(args[i]);
+      if (i != args.length - 1) {
+        stringBuilder.append(" ");
+      }
+    }
+    return stringBuilder.toString();
+  }
+
+  public static Component commandErrorArgsComponent(String label, String[] args, int i) {
+    StringBuilder stringBuilder = new StringBuilder();
+    stringBuilder.append("&7");
+    stringBuilder.append(label);
+    stringBuilder.append(" ");
+    for (int j = 0; j < i; j++) {
+      stringBuilder.append(args[j]);
+      stringBuilder.append(" ");
+    }
+    stringBuilder.append("&c&n");
+    stringBuilder.append(commandErrorArgs(args, i));
+    return Message.parse(
+      Message.effect(stringBuilder.toString()),
+      Component.translatable("command.context.here")
+        .color(TextColor.fromHexString("#FF5555"))
+        .decoration(TextDecoration.ITALIC, TextDecoration.State.TRUE)
+    );
+  }
+
+  public static Component commandErrorTranslatable(String key, ComponentLike... args) {
+    return Component.translatable(key).args(args).color(TextColor.fromHexString("#FF5555"));
   }
 
   public static class CommandFeedback {

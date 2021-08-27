@@ -2,6 +2,8 @@ package io.wany.cherry.wand.command;
 
 import io.wany.cherry.amethyst.DataTypeChecker;
 import io.wany.cherry.amethyst.Tool;
+import org.bukkit.Bukkit;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -14,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
+
   public static List<String> autoComplete(List<String> list, String arg) {
     if (!arg.equalsIgnoreCase("")) {
       List<String> listA = new ArrayList<>();
@@ -32,211 +35,222 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
     return list;
   }
 
+  public static void usedFlags(String[] args, int commandArgsLength, List<String> list) {
+    int n = 0;
+    for (String arg : args) {
+      if (n >= commandArgsLength) {
+        if (arg.equals("-silent") || arg.equals("-s")) {
+          list.remove("-silent");
+          list.remove("-s");
+        }
+        if (arg.equals("-applyPhysics") || arg.equals("-ap")) {
+          list.remove("-applyPhysics");
+          list.remove("-ap");
+        }
+      }
+      n++;
+    }
+  }
+
   @Override
   public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, String[] args) {
 
-    Player player = null;
-    if (sender instanceof Player) {
-      player = (Player) sender;
+    if (args.length <= 1) {
+      List<String> list = new ArrayList<>();
+      if (sender.hasPermission("cherry.wand.edit.get")) {
+        list.add("get");
+      }
+      if (sender.hasPermission("cherry.wand.undo")) {
+        list.add("undo");
+      }
+      if (sender.hasPermission("cherry.wand.redo")) {
+        list.add("redo");
+      }
+      if (sender.hasPermission("cherry.wand.edit.stack")) {
+        list.add("stack");
+      }
+      if (sender.hasPermission("cherry.wand.edit.pos")) {
+        list.addAll(List.of("pos1", "pos2"));
+      }
+      if (sender.hasPermission("cherry.wand.edit.copy")) {
+        list.add("copy");
+      }
+      if (sender.hasPermission("cherry.wand.edit.cut")) {
+        list.add("cut");
+      }
+      if (sender.hasPermission("cherry.wand.edit.paste")) {
+        list.add("paste");
+      }
+      if (sender.hasPermission("cherry.wand.edit.rotate")) {
+        list.add("rotate");
+      }
+      if (sender.hasPermission("cherry.wand.edit.replace")) {
+        list.add("replace");
+      }
+      if (sender.hasPermission("cherry.wand.edit.replacenear")) {
+        list.add("replacenear");
+      }
+      if (sender.hasPermission("cherry.wand.edit.cube")) {
+        list.addAll(List.of("cube", "emptycube", "walledcube"));
+        list.addAll(List.of("ecube", "wcube"));
+      }
+      if (sender.hasPermission("cherry.wand.edit.cyl")) {
+        list.addAll(List.of("cyl", "emptycyl"));
+        list.addAll(List.of("pointcyl", "emptypointcyl"));
+        list.addAll(List.of("ecyl", "pcyl", "epcyl"));
+      }
+      if (sender.hasPermission("cherry.wand.edit.sphere")) {
+        list.addAll(List.of("sphere", "emptysphere"));
+        list.addAll(List.of("pointsphere", "emptypointsphere"));
+        list.addAll(List.of("esphere", "psphere", "epsphere"));
+      }
+      if (sender.hasPermission("cherry.wand.edit.wall")) {
+        list.add("wall");
+      }
+
+      return autoComplete(list, args[args.length - 1]);
     }
 
-    if (command.getName().equalsIgnoreCase("wandedit")) {
+    String arg0 = args[0].toLowerCase();
 
-      if (args.length == 1) {
-        List<String> list = new ArrayList<>();
-        if (sender.hasPermission("cherry.wand.get")) {
-          list.add("get");
-        }
-        if (sender.hasPermission("cherry.wand.undo")) {
-          list.add("undo");
-        }
-        if (sender.hasPermission("cherry.wand.redo")) {
-          list.add("redo");
-        }
-        if (sender.hasPermission("cherry.wand.stack")) {
-          list.add("stack");
-        }
-        if (sender.hasPermission("cherry.wand.pos")) {
-          list.addAll(Arrays.asList("pos1", "pos2"));
-        }
-        if (sender.hasPermission("cherry.wand.copy")) {
-          list.add("copy");
-        }
-        if (sender.hasPermission("cherry.wand.cut")) {
-          list.add("cut");
-        }
-        if (sender.hasPermission("cherry.wand.paste")) {
-          list.add("paste");
-        }
-        if (sender.hasPermission("cherry.wand.paste")) {
-          list.add("rotate");
-        }
-        if (sender.hasPermission("cherry.wand.replace")) {
-          list.add("replace");
-        }
-        if (sender.hasPermission("cherry.wand.replacenear")) {
-          list.add("replacenear");
-        }
-        if (sender.hasPermission("cherry.wand.edit.cube")) {
-          list.addAll(Arrays.asList("cube", "emptycube", "walledcube"));
-          list.addAll(Arrays.asList("ecube", "wcube"));
-        }
-        if (sender.hasPermission("cherry.wand.edit.cyl")) {
-          list.addAll(Arrays.asList("cyl", "emptycyl"));
-          list.addAll(Arrays.asList("pointcyl", "emptypointcyl"));
-          list.addAll(Arrays.asList("ecyl", "pcyl", "epcyl"));
-        }
-        if (sender.hasPermission("cherry.wand.edit.sphere")) {
-          list.addAll(Arrays.asList("sphere", "emptysphere"));
-          list.addAll(Arrays.asList("pointsphere", "emptypointsphere"));
-          list.addAll(Arrays.asList("esphere", "psphere", "epsphere"));
-        }
-        if (sender.hasPermission("cherry.wand.edit.wall")) {
-          list.add("wall");
-        }
-        if (sender.hasPermission("cherry.wand.edit.cmdscan")) {
-          list.add("cmdscan");
-        }
-        return autoComplete(list, args[args.length - 1]);
-      }
+    switch (arg0) {
 
-      args[0] = args[0].toLowerCase();
-
-      if (args[0].equals("pos1") || args[0].equals("pos2")) {
-
-        if (!sender.hasPermission("cherry.wand.pos")) {
-          return Collections.emptyList();
-        }
-
-        if (args.length == 2) {
-          if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
-              if (block != null && !block.getType().isAir()) {
-                return Collections.singletonList(block.getLocation().getBlockX() + "");
-              }
-              else {
-                return Collections.singletonList(player.getLocation().getBlockX() + "");
-              }
-            }
-            return Collections.singletonList("<X>");
-          }
-          else {
-            int v = 0;
-            if (player != null) {
-              v = (int) player.getLocation().getX();
-            }
-            return onIntegerTabCompleteWave("X", 30000000, -30000000, args[args.length - 1], v);
-          }
-        }
-
-        if (args.length == 3) {
-          if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
-              if (block != null && !block.getType().isAir()) {
-                return Collections.singletonList(block.getLocation().getBlockY() + "");
-              }
-              else {
-                return Collections.singletonList(player.getLocation().getBlockY() + "");
-              }
-            }
-            return Collections.singletonList("<Y>");
-          }
-          else {
-            int v = 0;
-            if (player != null) {
-              v = (int) player.getLocation().getY();
-            }
-            return onIntegerTabCompleteWave("Y", 256, 0, args[args.length - 1], v);
-          }
-        }
-
-        if (args.length == 4) {
-          if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
-              if (block != null && !block.getType().isAir()) {
-                return Collections.singletonList(block.getLocation().getBlockZ() + "");
-              }
-              else {
-                return Collections.singletonList(player.getLocation().getBlockZ() + "");
-              }
-            }
-            return Collections.singletonList("<Z>");
-          }
-          else {
-            int v = 0;
-            if (player != null) {
-              v = (int) player.getLocation().getZ();
-            }
-            return onIntegerTabCompleteWave("Z", 30000000, -30000000, args[args.length - 1], v);
-          }
-        }
-
-        if (args.length == 5) {
-          List<String> list = new ArrayList<>();
-          return autoComplete(Tool.Lista.worldNames(), args[args.length - 1]);
-        }
-
-        int commandArgsLength = 5;
-        if (args.length <= commandArgsLength + 1) {
-          List<String> list = new ArrayList<>(Arrays.asList("-silent", "-s"));
-          int n = 0;
-          for (String arg : args) {
-            if (n >= commandArgsLength) {
-              if (arg.equals("-silent") || arg.equals("-s")) {
-                list.remove("-silent");
-                list.remove("-s");
-              }
-            }
-            n++;
-          }
-          return autoComplete(list, args[args.length - 1]);
-        }
-
-        return Collections.emptyList();
-      }
-
-      if (args[0].equals("undo") || args[0].equals("redo")) {
-
+      case "undo", "redo" -> {
         if ((!sender.hasPermission("cherry.wand.undo") && args[0].equals("undo")) || (!sender.hasPermission("cherry.wand.redo") && args[0].equals("redo"))) {
           return Collections.emptyList();
         }
+
+        int commandArgsLength = 3;
 
         if (args.length == 2) {
           return onIntegerTabComplete("반복 횟수", 1000, 1, args[args.length - 1]);
         }
 
         if (args.length == 3) {
-          List<String> list = new ArrayList<>();
-          list.addAll(Tool.Lista.playerNames());
-          list.addAll(Tool.Lista.playerUUIDStrings());
+          List<String> list = new ArrayList<>(Tool.Lista.playerNames());
           return autoComplete(list, args[args.length - 1]);
         }
 
-        int commandArgsLength = 3;
-        if (args.length <= commandArgsLength + 2) {
-          List<String> list = new ArrayList<>(Arrays.asList("-applyPhysics", "-ap", "-silent", "-s"));
-          int n = 0;
-          for (String arg : args) {
-            if (n >= commandArgsLength) {
-              if (arg.equals("-applyPhysics") || arg.equals("-ap")) {
-                list.remove("-applyPhysics");
-                list.remove("-ap");
-              }
-              if (arg.equals("-silent") || arg.equals("-s")) {
-                list.remove("-silent");
-                list.remove("-s");
-              }
-            }
-            n++;
-          }
+        // flags
+        List <String> flags = List.of("-silent", "-applyPhysics");
+        if (args.length <= commandArgsLength + flags.size()) {
+          List<String> list = new ArrayList<>(flags);
+          usedFlags(args, commandArgsLength, list);
           return autoComplete(list, args[args.length - 1]);
         }
 
         return Collections.emptyList();
       }
+
+      case "pos1", "pos2" -> {
+        if (!sender.hasPermission("cherry.wand.edit.pos")) {
+          return Collections.emptyList();
+        }
+
+        int commandArgsLength = 1;
+
+        if (sender.hasPermission("cherry.wand.edit.pos.location")) {
+          commandArgsLength = 5;
+          // location x y z world
+          if (args.length == 2) {
+            List<String> list = new ArrayList<>(List.of("x"));
+            if (sender instanceof Player player) {
+              Block block = player.getTargetBlock(10);
+              if (block != null) {
+                if (!args[args.length - 1].equals("")) {
+                  list = new ArrayList<>(List.of(
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getY(),
+                    args[args.length - 1] + " " + block.getY() + " " + block.getZ(),
+                    args[args.length - 1] + " " + block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
+                  ));
+                }
+                else {
+                  list = new ArrayList<>(List.of(
+                    block.getX() + "",
+                    block.getX() + " " + block.getY(),
+                    block.getX() + " " + block.getY() + " " + block.getZ(),
+                    block.getX() + " " + block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
+                  ));
+                }
+              }
+            }
+            return autoComplete(list, args[args.length - 1]);
+          }
+          if (args.length == 3) {
+            List<String> list = new ArrayList<>(List.of("y"));
+            if (sender instanceof Player player) {
+              Block block = player.getTargetBlock(10);
+              if (block != null) {
+                if (!args[args.length - 1].equals("")) {
+                  list = new ArrayList<>(List.of(
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getZ(),
+                    args[args.length - 1] + " " + block.getZ() + " " + block.getWorld().getName()
+                  ));
+                }
+                else {
+                  list = new ArrayList<>(List.of(
+                    block.getY() + "",
+                    block.getY() + " " + block.getZ(),
+                    block.getY() + " " + block.getZ() + " " + block.getWorld().getName()
+                  ));
+                }
+              }
+            }
+            return autoComplete(list, args[args.length - 1]);
+          }
+          if (args.length == 4) {
+            List<String> list = new ArrayList<>(List.of("z"));
+            if (sender instanceof Player player) {
+              Block block = player.getTargetBlock(10);
+              if (block != null) {
+                if (!args[args.length - 1].equals("")) {
+                  list = new ArrayList<>(List.of(
+                    args[args.length - 1] + "",
+                    args[args.length - 1] + " " + block.getWorld().getName()
+                  ));
+                }
+                else {
+                  list = new ArrayList<>(List.of(
+                    block.getZ() + "",
+                    block.getZ() + " " + block.getWorld().getName()
+                  ));
+                }
+              }
+            }
+            return autoComplete(list, args[args.length - 1]);
+          }
+          if (args.length == 5) {
+            List<String> list = new ArrayList<>();
+            for (World world : Bukkit.getWorlds()) {
+              list.add(world.getName());
+            }
+            return autoComplete(list, args[args.length - 1]);
+          }
+        }
+
+        // flags
+        List <String> flags = List.of("-silent");
+        if (args.length <= commandArgsLength + flags.size()) {
+          List<String> list = new ArrayList<>(flags);
+          usedFlags(args, commandArgsLength, list);
+          return autoComplete(list, args[args.length - 1]);
+        }
+
+        return Collections.emptyList();
+      }
+
+    }
+
+    Player sendPlayer = null;
+    if (sender instanceof Player) {
+      sendPlayer = (Player) sender;
+    }
+
+    if (command.getName().equalsIgnoreCase("wandedit")) {
+
+      args[0] = args[0].toLowerCase();
 
       if (args[0].equals("copy")) {
         if (!sender.hasPermission("cherry.wand.copy")) {
@@ -245,13 +259,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 2) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockX() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockX() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockX() + "");
               }
             }
             return Collections.singletonList("<X>");
@@ -263,13 +277,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 3) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockY() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockY() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockY() + "");
               }
             }
             return Collections.singletonList("<Y>");
@@ -281,13 +295,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 4) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockZ() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockZ() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockZ() + "");
               }
             }
             return Collections.singletonList("<Z>");
@@ -327,13 +341,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 2) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockX() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockX() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockX() + "");
               }
             }
             return Collections.singletonList("<X>");
@@ -345,13 +359,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 3) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockY() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockY() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockY() + "");
               }
             }
             return Collections.singletonList("<Y>");
@@ -363,13 +377,13 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
         if (args.length == 4) {
           if (args[args.length - 1].isEmpty()) {
-            if (player != null) {
-              Block block = player.getTargetBlock(10);
+            if (sendPlayer != null) {
+              Block block = sendPlayer.getTargetBlock(10);
               if (block != null && !block.getType().isAir()) {
                 return Collections.singletonList(block.getLocation().getBlockZ() + "");
               }
               else {
-                return Collections.singletonList(player.getLocation().getBlockZ() + "");
+                return Collections.singletonList(sendPlayer.getLocation().getBlockZ() + "");
               }
             }
             return Collections.singletonList("<Z>");
@@ -757,7 +771,7 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
     }
 
-    else if (command.getName().equalsIgnoreCase("wandbrush")) {
+    /*else if (command.getName().equalsIgnoreCase("wandbrush")) {
 
       if (args.length == 1) {
         List<String> list = new ArrayList<>();
@@ -789,21 +803,21 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
           if (args.length == 2) {
             if (args[args.length - 1].isEmpty()) {
-              if (player != null) {
-                Block block = player.getTargetBlock(10);
+              if (sendPlayer != null) {
+                Block block = sendPlayer.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockX() + "");
                 }
                 else {
-                  return Collections.singletonList(player.getLocation().getBlockX() + "");
+                  return Collections.singletonList(sendPlayer.getLocation().getBlockX() + "");
                 }
               }
               return Collections.singletonList("<X>");
             }
             else {
               int v = 0;
-              if (player != null) {
-                v = (int) player.getLocation().getX();
+              if (sendPlayer != null) {
+                v = (int) sendPlayer.getLocation().getX();
               }
               return onIntegerTabCompleteWave("X", 30000000, -30000000, args[args.length - 1], v);
             }
@@ -811,21 +825,21 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
           if (args.length == 3) {
             if (args[args.length - 1].isEmpty()) {
-              if (player != null) {
-                Block block = player.getTargetBlock(10);
+              if (sendPlayer != null) {
+                Block block = sendPlayer.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockY() + "");
                 }
                 else {
-                  return Collections.singletonList(player.getLocation().getBlockY() + "");
+                  return Collections.singletonList(sendPlayer.getLocation().getBlockY() + "");
                 }
               }
               return Collections.singletonList("<Y>");
             }
             else {
               int v = 0;
-              if (player != null) {
-                v = (int) player.getLocation().getY();
+              if (sendPlayer != null) {
+                v = (int) sendPlayer.getLocation().getY();
               }
               return onIntegerTabCompleteWave("Y", 256, 0, args[args.length - 1], v);
             }
@@ -833,21 +847,21 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
           if (args.length == 4) {
             if (args[args.length - 1].isEmpty()) {
-              if (player != null) {
-                Block block = player.getTargetBlock(10);
+              if (sendPlayer != null) {
+                Block block = sendPlayer.getTargetBlock(10);
                 if (block != null && !block.getType().isAir()) {
                   return Collections.singletonList(block.getLocation().getBlockZ() + "");
                 }
                 else {
-                  return Collections.singletonList(player.getLocation().getBlockZ() + "");
+                  return Collections.singletonList(sendPlayer.getLocation().getBlockZ() + "");
                 }
               }
               return Collections.singletonList("<Z>");
             }
             else {
               int v = 0;
-              if (player != null) {
-                v = (int) player.getLocation().getZ();
+              if (sendPlayer != null) {
+                v = (int) sendPlayer.getLocation().getZ();
               }
               return onIntegerTabCompleteWave("Z", 30000000, -30000000, args[args.length - 1], v);
             }
@@ -973,7 +987,7 @@ public class WandEditTabCompleter implements org.bukkit.command.TabCompleter {
 
       }
 
-    }
+    }*/
 
     return Collections.emptyList();
   }
