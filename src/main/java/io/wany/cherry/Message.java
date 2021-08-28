@@ -774,12 +774,22 @@ public class Message {
 
   public static Component commandErrorArgsComponent(String label, String[] args, int i) {
     StringBuilder stringBuilder = new StringBuilder();
-    stringBuilder.append("&7");
+    if (i == -1) {
+      stringBuilder.append("&c&n");
+    }
+    else {
+      stringBuilder.append("&7");
+    }
     stringBuilder.append(label);
     stringBuilder.append(" ");
     for (int j = 0; j < i; j++) {
       stringBuilder.append(args[j]);
       stringBuilder.append(" ");
+    }
+    if (i >= 0) {
+      if (stringBuilder.length() > 10) {
+        stringBuilder = new StringBuilder("&7..." + stringBuilder.substring(stringBuilder.length() - 10));
+      }
     }
     stringBuilder.append("&c&n");
     stringBuilder.append(commandErrorArgs(args, i));
