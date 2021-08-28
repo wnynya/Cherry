@@ -126,11 +126,18 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
               List<String> list = new ArrayList<>();
               if (sender.hasPermission("cherry.system.info")) {
                 list.add("info");
-                list.add("i");
               }
               if (sender.hasPermission("cherry.system.java")) {
                 list.add("java");
-                list.add("j");
+              }
+              if (sender.hasPermission("cherry.system.processor")) {
+                list.add("processor");
+              }
+              if (sender.hasPermission("cherry.system.graphic")) {
+                list.add("graphic");
+              }
+              if (sender.hasPermission("cherry.system.disk")) {
+                list.add("disk");
               }
               if (sender.hasPermission("cherry.system.gc")) {
                 list.add("gc");

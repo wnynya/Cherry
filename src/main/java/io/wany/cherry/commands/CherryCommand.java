@@ -1,14 +1,26 @@
 package io.wany.cherry.commands;
 
+import com.jho5245.cucumbery.Cucumbery;
+import com.profesorfalken.jsensors.JSensors;
+import com.profesorfalken.jsensors.model.components.*;
+import com.profesorfalken.jsensors.model.sensors.Fan;
+import com.profesorfalken.jsensors.model.sensors.Load;
+import com.profesorfalken.jsensors.model.sensors.Temperature;
 import io.wany.cherry.Cherry;
+import io.wany.cherry.Console;
 import io.wany.cherry.Message;
 import io.wany.cherry.Updater;
 import io.wany.cherry.amethyst.Color;
 import io.wany.cherry.amethyst.Crystal;
 import io.wany.cherry.amethyst.PluginLoader;
 import io.wany.cherry.gui.Menu;
+import io.wany.cherry.supports.coreprotect.CoreProtectSupport;
+import io.wany.cherry.supports.cucumbery.CucumberySupport;
+import io.wany.cherry.terminal.TerminalServerStatus;
+import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,6 +30,8 @@ import org.jetbrains.annotations.NotNull;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
+import java.awt.*;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.lang.management.ManagementFactory;
@@ -26,6 +40,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class CherryCommand implements CommandExecutor {
 
@@ -62,114 +78,123 @@ public class CherryCommand implements CommandExecutor {
           return true;
         }
 
-        boolean silent = false;
-        boolean force = false;
-        if (args.length > 1) {
-          for (String str : args) {
-            if (str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
-              silent = true;
-            }
-            if (str.equalsIgnoreCase("-force") || str.equalsIgnoreCase("-f")) {
-              force = true;
-            }
-          }
-        }
+        ExecutorService e = Executors.newFixedThreadPool(1);
+        e.submit(() -> {
 
-        long s = System.currentTimeMillis();
-        Updater.Version version;
-        if (!silent) {
-          Message.info(sender, Cherry.PREFIX + "Check latest " + Cherry.COLOR + Updater.defaultUpdater.getChannel() + "&r version . . . ");
-        }
-        try {
-          version = Updater.defaultUpdater.getLatestVersion();
-        }
-        catch (Updater.NotFoundException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Build Not Found");
-          return true;
-        }
-        catch (Updater.InternalServerErrorException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Internal Server Error");
-          return true;
-        }
-        catch (SocketTimeoutException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Timed Out");
-          return true;
-        }
-        catch (IOException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: IO");
-          return true;
-        }
-        catch (ParseException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Data Parse Failed");
-          return true;
-        }
-        catch (Exception e) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Unknown");
-          return true;
-        }
+          boolean silent = false;
+          boolean force = false;
+          if (args.length > 1) {
+            for (String str : args) {
+              if (str.equalsIgnoreCase("-silent") || str.equalsIgnoreCase("-s")) {
+                silent = true;
+              }
+              if (str.equalsIgnoreCase("-force") || str.equalsIgnoreCase("-f")) {
+                force = true;
+              }
+            }
+          }
 
-        if (Cherry.PLUGIN.getDescription().getVersion().equals(version.name)) {
-          if (force) {
-            if (!silent) {
-              Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r, but it forces to update");
-            }
-          }
-          else {
-            if (!silent) {
-              Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "");
-            }
-            return true;
-          }
-        }
-        else {
+          long s = System.currentTimeMillis();
+          Updater.Version version = null;
           if (!silent) {
-            Message.info(sender, Cherry.PREFIX + "Found new latest version " + Cherry.COLOR + version.name);
+            Message.info(sender, Cherry.PREFIX + "Check latest " + Cherry.COLOR + Updater.defaultUpdater.getChannel() + "&r version . . . ");
           }
-        }
+          try {
+            version = Updater.defaultUpdater.getLatestVersion();
+          }
+          catch (Updater.NotFoundException exception) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Build Not Found");
+          }
+          catch (Updater.InternalServerErrorException exception) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Internal Server Error");
+          }
+          catch (SocketTimeoutException exception) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Timed Out");
+          }
+          catch (IOException exception) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: IO");
+          }
+          catch (ParseException exception) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Data Parse Failed");
+          }
+          catch (Exception e1) {
+            Message.warn(sender, Cherry.PREFIX + "&eError on updater/check: Unknown");
+          }
 
-        if (!silent) {
-          Message.info(sender, Cherry.PREFIX + "Downloading file . . . ");
-        }
-        try {
-          version.download();
-        }
-        catch (SecurityException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Denied");
-          return true;
-        }
-        catch (FileNotFoundException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: File Not Found");
-          return true;
-        }
-        catch (IOException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: IO");
-          return true;
-        }
-        catch (Exception e) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Unknown");
-          return true;
-        }
+          if (version != null) {
 
-        if (!silent) {
-          Message.info(sender, Cherry.PREFIX + "Update plugin . . . ");
-        }
-        try {
-          version.update();
-        }
-        catch (IOException exception) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: IO");
-          return true;
-        }
-        catch (Exception e) {
-          Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: Unknown");
-          return true;
-        }
+            if (Cherry.PLUGIN.getDescription().getVersion().equals(version.name) && !force) {
+              if (!silent) {
+                Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "");
+              }
+            }
+            else {
 
-        long e = System.currentTimeMillis();
+              if (Cherry.PLUGIN.getDescription().getVersion().equals(version.name)) {
+                if (!silent) {
+                  Message.info(sender, Cherry.PREFIX + "Already latest version " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r, but it forces to update");
+                }
+              }
+              else {
+                if (!silent) {
+                  Message.info(sender, Cherry.PREFIX + "Found new latest version " + Cherry.COLOR + version.name);
+                }
+              }
 
-        if (!silent) {
-          Message.info(sender, Cherry.PREFIX + "Update Success " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r => " + Cherry.COLOR + version.name + "&r &7(" + (e - s) + "ms)");
-        }
+              if (!silent) {
+                Message.info(sender, Cherry.PREFIX + "Downloading file . . . ");
+              }
+              try {
+                version.download();
+              }
+              catch (SecurityException exception) {
+                Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Denied");
+                version = null;
+              }
+              catch (FileNotFoundException exception) {
+                Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: File Not Found");
+                version = null;
+              }
+              catch (IOException exception) {
+                Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: IO");
+                version = null;
+              }
+              catch (Exception e1) {
+                Message.warn(sender, Cherry.PREFIX + "&eError on updater/download: Unknown");
+                version = null;
+              }
+
+              if (version != null) {
+                if (!silent) {
+                  Message.info(sender, Cherry.PREFIX + "Update plugin . . . ");
+                }
+                try {
+                  version.update();
+                }
+                catch (IOException exception) {
+                  Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: IO");
+                  version = null;
+                }
+                catch (Exception e1) {
+                  Message.warn(sender, Cherry.PREFIX + "&eError on updater/update: Unknown");
+                  version = null;
+                }
+
+                if (version != null) {
+                  long e1 = System.currentTimeMillis();
+
+                  if (!silent) {
+                    Message.info(sender, Cherry.PREFIX + "Update Success " + Cherry.COLOR + Cherry.PLUGIN.getDescription().getVersion() + "&r => " + Cherry.COLOR + version.name + "&r &7(" + (e1 - s) + "ms)");
+                  }
+                }
+
+              }
+
+            }
+
+          }
+
+        });
 
         return true;
       }
@@ -201,17 +226,38 @@ public class CherryCommand implements CommandExecutor {
             if (!sender.hasPermission("cherry.system.info")) {
               return true;
             }
-            Runtime r = Runtime.getRuntime();
-            com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+
+            Message.info(sender, Cherry.PREFIX + "Bukkit");
+            Message.info(sender, Cherry.PREFIX + "  " + Cherry.COLOR + Bukkit.getServer().getName() + "&r " + Bukkit.getServer().getVersion());
+            Message.info(sender, Cherry.PREFIX + "  Players: " + Cherry.COLOR + Bukkit.getOnlinePlayers().size() + "&r / " + Bukkit.getMaxPlayers());
+            int worldLoadedChunks = 0;
+            int worldForceLoadedChunks = 0;
+            for (World world : Bukkit.getWorlds()) {
+              worldLoadedChunks += world.getLoadedChunks().length;
+              worldForceLoadedChunks += world.getForceLoadedChunks().size();
+            }
+            Message.info(sender, Cherry.PREFIX + "  Worlds: " + Cherry.COLOR + Bukkit.getWorlds().size() + "&r Chunks: " + worldLoadedChunks + " (" + worldForceLoadedChunks + ")");
+
             Message.info(sender, Cherry.PREFIX + "Processor");
-            Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getProcessCpuLoad() * 10000) / 100.0 + "&r%");
-            Message.info(sender, Cherry.PREFIX + "  Server Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 10000) / 100.0 + "&r%");
+            com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+            for (final Cpu cpu : TerminalServerStatus.cpus) {
+              Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + cpu.name);
+            }
+            Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 10000) / 100.0 + "&r%");
+            Message.info(sender, Cherry.PREFIX + "  Server Load: " + Cherry.COLOR + Math.round(osb.getProcessCpuLoad() * 10000) / 100.0 + "&r%");
+
             Message.info(sender, Cherry.PREFIX + "Memory");
+            Runtime r = Runtime.getRuntime();
             long freeM = Math.round(r.freeMemory() / 1024.0 / 1024.0);
             long maxM = Math.round(r.maxMemory() / 1024.0 / 1024.0);
             long totalM = Math.round(r.totalMemory() / 1024.0 / 1024.0);
             long usedM = Math.round((r.totalMemory() - r.freeMemory()) / 1024.0 / 1024.0);
             Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedM + "&rM / " + Cherry.COLOR + totalM + "&rM / " + Cherry.COLOR + maxM + "&rM");
+
+            Message.info(sender, Cherry.PREFIX + "TPS");
+            double[] bukkitTPS = Bukkit.getTPS();
+            Message.info(sender, Cherry.PREFIX + "  " + Cherry.COLOR + TerminalServerStatus.lastTPS + "&r, " + Math.round(bukkitTPS[0] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[1] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[2] * 10) / 10.0);
+
             return true;
           }
 
@@ -223,6 +269,128 @@ public class CherryCommand implements CommandExecutor {
             Message.info(sender, Cherry.PREFIX + "  Runtime: " + Cherry.COLOR + System.getProperty("java.runtime.name"));
             Message.info(sender, Cherry.PREFIX + "  Vendor: " + Cherry.COLOR + System.getProperty("java.vm.vendor"));
             Message.info(sender, Cherry.PREFIX + "  Home: " + Cherry.COLOR + System.getProperty("java.home"));
+            return true;
+          }
+
+          case "processor", "processors", "cpu", "cpus" -> {
+            if (!sender.hasPermission("cherry.system.processor")) {
+              return true;
+            }
+
+            Message.info(sender, Cherry.PREFIX + "Processor");
+            com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
+            if (TerminalServerStatus.cpus.size() == 0) {
+              Message.info(sender, Cherry.PREFIX + "  &7No detailed processor information");
+            }
+            for (final Cpu cpu : TerminalServerStatus.cpus) {
+              Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + cpu.name);
+              Message.info(sender, Cherry.PREFIX + "  Arch: " + Cherry.COLOR + osb.getArch());
+              Message.info(sender, Cherry.PREFIX + "  Threads: " + Cherry.COLOR + osb.getAvailableProcessors());
+              List<Temperature> temps = cpu.sensors.temperatures;
+              if (temps.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Temperatures:");
+              }
+              for (final Temperature temp : temps) {
+                Message.info(sender, Cherry.PREFIX + "    " + temp.name + ": " + Cherry.COLOR + Math.round(temp.value * 10) / 10.0 + "&r °C");
+              }
+              List<Load> loads = cpu.sensors.loads;
+              if (loads.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Loads:");
+              }
+              for (final Load load : loads) {
+                Message.info(sender, Cherry.PREFIX + "    " + load.name + ": " + Cherry.COLOR + Math.round(load.value * 10) / 10.0 + "&r %");
+              }
+              List<Fan> fans = cpu.sensors.fans;
+              if (fans.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Fans:");
+              }
+              for (final Fan fan : fans) {
+                Message.info(sender, Cherry.PREFIX + "    " + fan.name + ": " + Cherry.COLOR + Math.round(fan.value * 10) / 10.0 + "&r RPM");
+              }
+            }
+            Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 1000) / 10.0 + "&r%");
+            Message.info(sender, Cherry.PREFIX + "  Server Load: " + Cherry.COLOR + Math.round(osb.getProcessCpuLoad() * 1000) / 10.0 + "&r%");
+
+            return true;
+          }
+
+          case "graphic", "graphics", "gpu", "gpus" -> {
+            if (!sender.hasPermission("cherry.system.graphic")) {
+              return true;
+            }
+
+            Message.info(sender, Cherry.PREFIX + "Graphic");
+            if (TerminalServerStatus.gpus.size() == 0) {
+              Message.info(sender, Cherry.PREFIX + "  &7No detailed graphic processor information");
+            }
+            for (final Gpu gpus : TerminalServerStatus.gpus) {
+              Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + gpus.name);
+              List<Temperature> temps = gpus.sensors.temperatures;
+              if (temps.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Temperatures:");
+              }
+              for (final Temperature temp : temps) {
+                Message.info(sender, Cherry.PREFIX + "    " + temp.name + ": " + Cherry.COLOR + Math.round(temp.value * 10) / 10.0 + "&r °C");
+              }
+              List<Load> loads = gpus.sensors.loads;
+              if (loads.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Loads:");
+              }
+              for (final Load load : loads) {
+                Message.info(sender, Cherry.PREFIX + "    " + load.name + ": " + Cherry.COLOR + Math.round(load.value * 10) / 10.0 + "&r %");
+              }
+              List<Fan> fans = gpus.sensors.fans;
+              if (fans.size() > 1) {
+                Message.info(sender, Cherry.PREFIX + "  Fans:");
+              }
+              for (final Fan fan : fans) {
+                Message.info(sender, Cherry.PREFIX + "    " + fan.name + ": " + Cherry.COLOR + Math.round(fan.value * 10) / 10.0 + "&r RPM");
+              }
+            }
+            try {
+              for (GraphicsDevice gd : GraphicsEnvironment.getLocalGraphicsEnvironment().getScreenDevices()) {
+                int width = gd.getDisplayMode().getWidth();
+                int height = gd.getDisplayMode().getHeight();
+                int bit = gd.getDisplayMode().getBitDepth();
+                int refreshRate = gd.getDisplayMode().getRefreshRate();
+                String idString = gd.getIDstring();
+                Message.info(sender, Cherry.PREFIX + "  Monitor " + Cherry.COLOR + idString);
+                Message.info(sender, Cherry.PREFIX + "    " + width + "x" + height + " / " + refreshRate + "Hz " + bit + "Bits");
+              }
+            } catch (Exception ignored) {}
+
+            return true;
+          }
+
+          case "disk", "disks", "storage", "storages" -> {
+            if (!sender.hasPermission("cherry.system.disk")) {
+              return true;
+            }
+
+            Message.info(sender, Cherry.PREFIX + "Disk");
+            ExecutorService e = Executors.newFixedThreadPool(1);
+            e.submit(() -> {
+              long serverDir = TerminalServerStatus.getFolderSize(Cherry.SERVER_DIR);
+              long worlds = 0;
+              for (World world : Bukkit.getWorlds()) {
+                worlds += TerminalServerStatus.getFolderSize(world.getWorldFolder());
+              }
+              long pluginsDir = TerminalServerStatus.getFolderSize(Cherry.PLUGINS_DIR);
+              long cherryDir = TerminalServerStatus.getFolderSize(Cherry.DIR);
+              long cucumberyDir = new File(Cherry.PLUGINS_DIR.getAbsolutePath() + "/Cucumbery").length();
+              long coreprotectLog = new File(Cherry.PLUGINS_DIR.getAbsolutePath() + "/CoreProtect/database.db").length();
+              Message.info(sender, Cherry.PREFIX + "  Server: " + TerminalServerStatus.getFriendlySize(serverDir));
+              Message.info(sender, Cherry.PREFIX + "  Worlds: " + TerminalServerStatus.getFriendlySize(worlds));
+              Message.info(sender, Cherry.PREFIX + "  Plugins: " + TerminalServerStatus.getFriendlySize(pluginsDir));
+              Message.info(sender, Cherry.PREFIX + "  Cherry: " + TerminalServerStatus.getFriendlySize(cherryDir));
+              if (CucumberySupport.EXIST) {
+                Message.info(sender, Cherry.PREFIX + "  Cucumbery: " + TerminalServerStatus.getFriendlySize(cucumberyDir));
+              }
+              if (CoreProtectSupport.EXIST) {
+                Message.info(sender, Cherry.PREFIX + "  CoreProtect: " + TerminalServerStatus.getFriendlySize(coreprotectLog));
+              }
+            });
+
             return true;
           }
 
