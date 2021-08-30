@@ -29,6 +29,7 @@ public class PlayerChat implements Listener {
     ChatRenderer chatRenderer = (source, sourceDisplayName, message, viewer) -> {
       String format = chatFormat;
       format = Message.effect(format);
+      message = Message.parse(Message.effect(Message.stringify(message)));
       Component component = Message.formatPlayerChat(source, message, format);
       /*format = Message.formatPlayer(source, format);
       String messageString = Message.stringify(message);

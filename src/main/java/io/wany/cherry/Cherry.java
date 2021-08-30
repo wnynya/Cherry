@@ -1,6 +1,7 @@
 package io.wany.cherry;
 
 import io.wany.cherry.amethyst.ServerPropertiesSorter;
+import io.wany.cherry.amethyst.SystemInfo;
 import io.wany.cherry.commands.*;
 import io.wany.cherry.itemonworld.ItemOnWorld;
 import io.wany.cherry.listeners.*;
@@ -54,6 +55,7 @@ public class Cherry extends JavaPlugin {
 
     PLUGIN = this;
     CONFIG = Config.onLoad();
+    SystemInfo.onLoad();
     Terminal.onLoad();
 
   }
@@ -76,6 +78,13 @@ public class Cherry extends JavaPlugin {
     registerCommand("exit", new ExitCommand(), new CherryTabCompleter());
     registerCommand("drop", new DropCommand(), new CherryTabCompleter());
     registerCommand("lid", new LidCommand(), new CherryTabCompleter());
+
+    /*try {
+      Bukkit.getPluginCommand("nuke").setExecutor(new NukeCommand());
+    }
+    catch (Exception e) {
+      e.printStackTrace();
+    }*/
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());
@@ -117,6 +126,7 @@ public class Cherry extends JavaPlugin {
   @Override
   public void onDisable() {
 
+    SystemInfo.onDisable();
     Terminal.onDisable();
     PlayerData.onDisable();
     Wand.onDisable();
