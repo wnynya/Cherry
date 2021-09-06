@@ -55,7 +55,6 @@ public class Cherry extends JavaPlugin {
 
     PLUGIN = this;
     CONFIG = Config.onLoad();
-    SystemInfo.onLoad();
     Terminal.onLoad();
 
   }
@@ -63,6 +62,7 @@ public class Cherry extends JavaPlugin {
   @Override
   public void onEnable() {
 
+    SystemInfo.onEnable();
     Terminal.onEnable();
     PlayerData.onEnable();
     Wand.onEnable();
@@ -70,21 +70,17 @@ public class Cherry extends JavaPlugin {
     ItemOnWorld.onEnable();
 
     registerCommand("cherry", new CherryCommand(), new CherryTabCompleter());
-    registerCommand("throw", new ThrowCommand(), new ThrowTabCompleter());
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
-    //registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
     registerCommand("menu", new MenuCommand(), new CherryTabCompleter());
+
     registerCommand("troll", new TrollCommand(), new CherryTabCompleter());
+    registerCommand("throw", new ThrowCommand(), new CherryTabCompleter());
+
     registerCommand("exit", new ExitCommand(), new CherryTabCompleter());
     registerCommand("drop", new DropCommand(), new CherryTabCompleter());
     registerCommand("lid", new LidCommand(), new CherryTabCompleter());
-
-    /*try {
-      Bukkit.getPluginCommand("nuke").setExecutor(new NukeCommand());
-    }
-    catch (Exception e) {
-      e.printStackTrace();
-    }*/
+    registerCommand("toggledownfall", new ToggledownfallCommand(), new CherryTabCompleter());
+    registerCommand("closeinventory", new CloseinventoryCommand(), new CherryTabCompleter());
 
     registerEvent(new PlayerJoin());
     registerEvent(new PlayerQuit());

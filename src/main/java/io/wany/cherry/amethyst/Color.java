@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@SuppressWarnings("all")
 public class Color {
 
   private int red = 0;
@@ -18,13 +19,12 @@ public class Color {
   public Color(@NotNull Type type, @NotNull String s) {
     switch (type) {
       case HEX -> {
+        Matcher m8 = ColorPattern.HEXA_8.matcher(s);
         Matcher m6 = ColorPattern.HEX_6.matcher(s);
+        Matcher m4 = ColorPattern.HEXA_4.matcher(s);
         Matcher m3 = ColorPattern.HEX_3.matcher(s);
         Matcher m2 = ColorPattern.HEX_2.matcher(s);
         Matcher m1 = ColorPattern.HEX_1.matcher(s);
-
-        Matcher m8 = ColorPattern.HEXA_8.matcher(s);
-        Matcher m4 = ColorPattern.HEXA_4.matcher(s);
 
         if (m8.find()) {
           red = Integer.parseInt(m8.group(1) + m8.group(2) + "", 16);
@@ -100,15 +100,9 @@ public class Color {
           String head = m3.group(1).toLowerCase();
           for (int n = 0; n < head.length(); n++) {
             switch (head.charAt(n)) {
-              case 'h' -> {
-                hue = Integer.parseInt(m3.group((n + 1) * 3) + "") / 360.0;
-              }
-              case 's' -> {
-                saturation = Integer.parseInt(m3.group((n + 1) * 3) + "") / 100.0;
-              }
-              case 'l' -> {
-                lightness = Integer.parseInt(m3.group((n + 1) * 3) + "") / 100.0;
-              }
+              case 'h' -> hue = Integer.parseInt(m3.group((n + 1) * 3) + "") / 360.0;
+              case 's' -> saturation = Integer.parseInt(m3.group((n + 1) * 3) + "") / 100.0;
+              case 'l' -> lightness = Integer.parseInt(m3.group((n + 1) * 3) + "") / 100.0;
             }
           }
         }
@@ -439,7 +433,6 @@ public class Color {
     double max = Math.max(r, Math.max(g, b));
     double min = Math.min(r, Math.min(g, b));
     double hue = (max + min) / 2;
-    double lightness = (max + min) / 2;
     if (max == min) {
       hue = 0;
     }
@@ -465,7 +458,7 @@ public class Color {
     double b = getBlue() / 255.0;
     double max = Math.max(r, Math.max(g, b));
     double min = Math.min(r, Math.min(g, b));
-    double saturation = (max + min) / 2;
+    double saturation;
     double lightness = (max + min) / 2;
     if (max == min) {
       saturation = 0;

@@ -193,6 +193,12 @@ public class Message {
       else if (object instanceof String) {
         component = component.append(parse((String) object));
       }
+      else if (object instanceof Number) {
+        component = component.append(parse("§c" + object));
+      }
+      else if (object instanceof Boolean) {
+        component = component.append(parse("§6" + object));
+      }
       else if (object instanceof Entity) {
         component = component.append(parse((Entity) object));
       }
@@ -241,9 +247,10 @@ public class Message {
   }
 
   public static Component parse(@NotNull Material material) {
-    return Component.translatable(material.getTranslationKey());
+    return Component.translatable(material.translationKey());
   }
 
+  @SuppressWarnings("all")
   public static Component parse(@NotNull ItemStack itemStack) {
     Component component;
     ItemMeta itemMeta = itemStack.getItemMeta();
@@ -259,6 +266,7 @@ public class Message {
       component = Component.translatable((material.isBlock() ? "block" : "item") + ".minecraft." + id);
       component = component.decoration(TextDecoration.ITALIC, TextDecoration.State.FALSE);
       switch (material) {
+        case WHEAT -> component = Component.translatable("item.minecraft.wheat");
         case PLAYER_HEAD, PLAYER_WALL_HEAD -> {
         }
         case POTION, SPLASH_POTION, LINGERING_POTION, TIPPED_ARROW -> {
@@ -468,8 +476,9 @@ public class Message {
     List<TextComponent> components = stringifier(component);
     for (TextComponent c : components) {
       boolean deco = false;
-      if (c.color() != null) {
-        stringBuilder.append(new Color(Color.Type.HEX, c.color().asHexString()).getMFC());
+      TextColor color = c.color();
+      if (color != null) {
+        stringBuilder.append(new Color(Color.Type.HEX, color.asHexString()).getMFC());
         deco = true;
       }
       if (c.decoration(TextDecoration.BOLD).equals(TextDecoration.State.TRUE)) {
@@ -743,22 +752,6 @@ public class Message {
     }
     component = component.append(Message.parse(stringBuilder.toString()));
     return component;
-  }
-
-  public static String formatPlayerd(Player player, String format) {
-    format = format.replace("{name}", player.getName());
-    //format = format.replace("{displayname}", Message.effect(Message.stringify(player.displayName())));
-    format = format.replace("{prefix}", Message.effect(VaultChat.getPrefix(player)));
-    format = format.replace("{suffix}", Message.effect(VaultChat.getSuffix(player)));
-    format = format.replace("{uuid}", player.getUniqueId().toString());
-    format = format.replace("{world}", player.getLocation().getWorld().getName());
-    format = format.replace("{x}", player.getLocation().getX() + "");
-    format = format.replace("{y}", player.getLocation().getY() + "");
-    format = format.replace("{z}", player.getLocation().getZ() + "");
-    format = format.replace("{pitch}", player.getLocation().getPitch() + "");
-    format = format.replace("{yaw}", player.getLocation().getYaw() + "");
-    format = format.replace("{connection}", player.getAddress().toString());
-    return format;
   }
 
   public static String commandErrorArgs(String[] args, int i) {

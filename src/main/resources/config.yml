@@ -329,6 +329,19 @@ itemonworld:
         - "822a48a5759eddef9e2918fc85996f8491cc92578d54dcd62e2b6d913bfb421e" # Bag of Gunpowder
 
 #======================================#
+# 날씨 및 시각 동기화 설정
+#======================================#
+
+realworldsync:
+  datetime:
+    enable: false
+    timezone:
+      offset: 9;
+  weather:
+    enable: false
+    location: "Busan,KR"
+
+#======================================#
 # 자동화 설정
 #======================================#
 

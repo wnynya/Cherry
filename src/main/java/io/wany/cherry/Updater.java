@@ -3,6 +3,9 @@ package io.wany.cherry;
 import io.wany.cherry.amethyst.PluginLoader;
 import io.wany.cherry.amethyst.RandomString;
 import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -30,8 +33,6 @@ public class Updater {
   private static final Cherry plugin = Cherry.PLUGIN;
   private static final String pluginAPI = plugin.getDescription().getAPIVersion();
   private static final String userAgent = NAME;
-  private static final ExecutorService updaterExecutorService = Executors.newFixedThreadPool(1);
-  private static final Timer updaterLoopTimer = new Timer();
   public static Updater defaultUpdater;
 
   public static class NotFoundException extends RuntimeException {}
@@ -39,16 +40,18 @@ public class Updater {
   public static class UnknownException extends Exception {}
 
   private final String api; //https://cherry.wany.io/api/builds
-  private final String channel;
+  private final Channel channel;
+  private final ExecutorService executorService = Executors.newFixedThreadPool(1);
+  private static final Timer timer = new Timer();
 
-  public Updater(String api, String channel) {
+  public Updater(@NotNull String api, @NotNull Channel channel) {
     this.api = api;
     this.channel = channel;
   }
 
   public Version getLatestVersion() throws IOException, ParseException, NotFoundException, InternalServerErrorException, UnknownException {
 
-    URL url = new URL(this.api + "/" + this.channel + "/latest" + "?api=" + pluginAPI);
+    URL url = new URL(this.api + "/" + this.channel.name + "/latest" + "?api=" + pluginAPI);
 
     HttpURLConnection connection = (HttpURLConnection) url.openConnection();
     connection.setRequestMethod("GET");
@@ -100,8 +103,28 @@ public class Updater {
     catch (Exception ignored) {}
   }
 
-  public String getChannel() {
-    return this.channel;
+  public void openAutomation() {
+    this.executorService.submit(() -> {
+      this.timer.schedule(new TimerTask() {
+        @Override
+        public void run() {
+          auto();
+        }
+      }, 0, this.channel.checkInterval);
+    });
+  }
+
+  public void closeAutomation() {
+    this.timer.cancel();
+    this.executorService.shutdownNow();
+  }
+
+  public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, @NotNull String[] args) {
+    return true;
+  }
+
+  public String getChannelName() {
+    return this.channel.name;
   }
 
   public static class Version {
@@ -110,7 +133,7 @@ public class Updater {
     public final URL storage;
     private File file = null;
 
-    public Version(String name, URL storage) {
+    private Version(String name, URL storage) {
       this.name = name;
       this.storage = storage;
     }
@@ -192,41 +215,39 @@ public class Updater {
 
   }
 
+  public static class Channel {
+
+    public final String name;
+    public final long checkInterval;
+
+    public Channel(String name, long checkInterval) {
+      this.name = name;
+      this.checkInterval = checkInterval;
+    }
+
+  }
 
 
   public static void onEnable() {
     String apiURLString = "https://api.wany.io/cherry/builds";
-    String channel = Cherry.CONFIG.getString("updater.channel"); //OR Config
-    if (channel == null) {
-      channel = "release";
+    String channelName = Cherry.CONFIG.getString("updater.channel");
+    if (channelName == null) {
+      channelName = "release";
     }
+    long checkInterval = 1000;
+    if (channelName.equals("release")) {
+      checkInterval = 1000 * 60 * 60;
+    }
+    Channel channel = new Channel(channelName, checkInterval);
     defaultUpdater = new Updater(apiURLString, channel);
     if (!Cherry.CONFIG.getBoolean("updater.auto")) {
       return;
     }
-    String chan = channel;
-    updaterExecutorService.submit(() -> {
-      switch (chan) {
-        case "release" -> updaterLoopTimer.schedule(new TimerTask() {
-          @Override
-          public void run() {
-            defaultUpdater.auto();
-          }
-        }, 0, 1000 * 60 * 60);
-        case "dev" -> updaterLoopTimer.schedule(new TimerTask() {
-          @Override
-          public void run() {
-            defaultUpdater.auto();
-          }
-        }, 0, 1000 * 2);
-      }
-    });
+    defaultUpdater.openAutomation();
   }
 
   public static void onDisable() {
-    updaterLoopTimer.cancel();
-    updaterExecutorService.shutdownNow();
+    defaultUpdater.closeAutomation();
   }
-
 
 }

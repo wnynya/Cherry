@@ -1,23 +1,20 @@
 package io.wany.cherry.commands;
 
-import com.jho5245.cucumbery.Cucumbery;
-import com.profesorfalken.jsensors.JSensors;
-import com.profesorfalken.jsensors.model.components.*;
+import com.profesorfalken.jsensors.model.components.Cpu;
+import com.profesorfalken.jsensors.model.components.Gpu;
 import com.profesorfalken.jsensors.model.sensors.Fan;
 import com.profesorfalken.jsensors.model.sensors.Load;
 import com.profesorfalken.jsensors.model.sensors.Temperature;
 import io.wany.cherry.Cherry;
-import io.wany.cherry.Console;
 import io.wany.cherry.Message;
 import io.wany.cherry.Updater;
 import io.wany.cherry.amethyst.Color;
 import io.wany.cherry.amethyst.Crystal;
 import io.wany.cherry.amethyst.PluginLoader;
+import io.wany.cherry.amethyst.SystemInfo;
 import io.wany.cherry.gui.Menu;
 import io.wany.cherry.supports.coreprotect.CoreProtectSupport;
 import io.wany.cherry.supports.cucumbery.CucumberySupport;
-import io.wany.cherry.terminal.TerminalServerStatus;
-import org.apache.commons.io.FileUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -31,9 +28,7 @@ import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.net.SocketTimeoutException;
 import java.util.ArrayList;
@@ -97,7 +92,7 @@ public class CherryCommand implements CommandExecutor {
           long s = System.currentTimeMillis();
           Updater.Version version = null;
           if (!silent) {
-            Message.info(sender, Cherry.PREFIX + "Check latest " + Cherry.COLOR + Updater.defaultUpdater.getChannel() + "&r version . . . ");
+            Message.info(sender, Cherry.PREFIX + "Check latest " + Cherry.COLOR + Updater.defaultUpdater.getChannelName() + "&r version . . . ");
           }
           try {
             version = Updater.defaultUpdater.getLatestVersion();
@@ -240,7 +235,7 @@ public class CherryCommand implements CommandExecutor {
 
             Message.info(sender, Cherry.PREFIX + "Processor");
             com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-            for (final Cpu cpu : TerminalServerStatus.cpus) {
+            for (final Cpu cpu : SystemInfo.cpus) {
               Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + cpu.name);
             }
             Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 10000) / 100.0 + "&r%");
@@ -256,7 +251,7 @@ public class CherryCommand implements CommandExecutor {
 
             Message.info(sender, Cherry.PREFIX + "TPS");
             double[] bukkitTPS = Bukkit.getTPS();
-            Message.info(sender, Cherry.PREFIX + "  " + Cherry.COLOR + TerminalServerStatus.lastTPS + "&r, " + Math.round(bukkitTPS[0] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[1] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[2] * 10) / 10.0);
+            Message.info(sender, Cherry.PREFIX + "  " + Cherry.COLOR + SystemInfo.serverLastTPS + "&r, " + Math.round(bukkitTPS[0] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[1] * 10) / 10.0 + "&r, " + Math.round(bukkitTPS[2] * 10) / 10.0);
 
             return true;
           }
@@ -265,10 +260,10 @@ public class CherryCommand implements CommandExecutor {
             if (!sender.hasPermission("cherry.system.java")) {
               return true;
             }
-            Message.info(sender, Cherry.PREFIX + "Java " + Cherry.COLOR + System.getProperty("java.vm.version"));
-            Message.info(sender, Cherry.PREFIX + "  Runtime: " + Cherry.COLOR + System.getProperty("java.runtime.name"));
-            Message.info(sender, Cherry.PREFIX + "  Vendor: " + Cherry.COLOR + System.getProperty("java.vm.vendor"));
-            Message.info(sender, Cherry.PREFIX + "  Home: " + Cherry.COLOR + System.getProperty("java.home"));
+            Message.info(sender, Cherry.PREFIX + "Java " + Cherry.COLOR + SystemInfo.javaVMVersion);
+            Message.info(sender, Cherry.PREFIX + "  Runtime: " + Cherry.COLOR + SystemInfo.javaRuntimeName);
+            Message.info(sender, Cherry.PREFIX + "  Vendor: " + Cherry.COLOR + SystemInfo.javaVMVersion);
+            Message.info(sender, Cherry.PREFIX + "  Home: " + Cherry.COLOR + SystemInfo.javaHome);
             return true;
           }
 
@@ -279,10 +274,10 @@ public class CherryCommand implements CommandExecutor {
 
             Message.info(sender, Cherry.PREFIX + "Processor");
             com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-            if (TerminalServerStatus.cpus.size() == 0) {
+            if (SystemInfo.cpus.size() == 0) {
               Message.info(sender, Cherry.PREFIX + "  &7No detailed processor information");
             }
-            for (final Cpu cpu : TerminalServerStatus.cpus) {
+            for (final Cpu cpu : SystemInfo.cpus) {
               Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + cpu.name);
               Message.info(sender, Cherry.PREFIX + "  Arch: " + Cherry.COLOR + osb.getArch());
               Message.info(sender, Cherry.PREFIX + "  Threads: " + Cherry.COLOR + osb.getAvailableProcessors());
@@ -320,10 +315,10 @@ public class CherryCommand implements CommandExecutor {
             }
 
             Message.info(sender, Cherry.PREFIX + "Graphic");
-            if (TerminalServerStatus.gpus.size() == 0) {
+            if (SystemInfo.gpus.size() == 0) {
               Message.info(sender, Cherry.PREFIX + "  &7No detailed graphic processor information");
             }
-            for (final Gpu gpus : TerminalServerStatus.gpus) {
+            for (final Gpu gpus : SystemInfo.gpus) {
               Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + gpus.name);
               List<Temperature> temps = gpus.sensors.temperatures;
               if (temps.size() > 1) {
@@ -357,7 +352,9 @@ public class CherryCommand implements CommandExecutor {
                 Message.info(sender, Cherry.PREFIX + "  Monitor " + Cherry.COLOR + idString);
                 Message.info(sender, Cherry.PREFIX + "    " + width + "x" + height + " / " + refreshRate + "Hz " + bit + "Bits");
               }
-            } catch (Exception ignored) {}
+            }
+            catch (Exception ignored) {
+            }
 
             return true;
           }
@@ -370,24 +367,24 @@ public class CherryCommand implements CommandExecutor {
             Message.info(sender, Cherry.PREFIX + "Disk");
             ExecutorService e = Executors.newFixedThreadPool(1);
             e.submit(() -> {
-              long serverDir = TerminalServerStatus.getFolderSize(Cherry.SERVER_DIR);
+              long serverDir = SystemInfo.getFolderByteSize(Cherry.SERVER_DIR);
               long worlds = 0;
               for (World world : Bukkit.getWorlds()) {
-                worlds += TerminalServerStatus.getFolderSize(world.getWorldFolder());
+                worlds += SystemInfo.getFolderByteSize(world.getWorldFolder());
               }
-              long pluginsDir = TerminalServerStatus.getFolderSize(Cherry.PLUGINS_DIR);
-              long cherryDir = TerminalServerStatus.getFolderSize(Cherry.DIR);
+              long pluginsDir = SystemInfo.getFolderByteSize(Cherry.PLUGINS_DIR);
+              long cherryDir = SystemInfo.getFolderByteSize(Cherry.DIR);
               long cucumberyDir = new File(Cherry.PLUGINS_DIR.getAbsolutePath() + "/Cucumbery").length();
               long coreprotectLog = new File(Cherry.PLUGINS_DIR.getAbsolutePath() + "/CoreProtect/database.db").length();
-              Message.info(sender, Cherry.PREFIX + "  Server: " + TerminalServerStatus.getFriendlySize(serverDir));
-              Message.info(sender, Cherry.PREFIX + "  Worlds: " + TerminalServerStatus.getFriendlySize(worlds));
-              Message.info(sender, Cherry.PREFIX + "  Plugins: " + TerminalServerStatus.getFriendlySize(pluginsDir));
-              Message.info(sender, Cherry.PREFIX + "  Cherry: " + TerminalServerStatus.getFriendlySize(cherryDir));
+              Message.info(sender, Cherry.PREFIX + "  Server: " + SystemInfo.getFriendlyByteSize(serverDir));
+              Message.info(sender, Cherry.PREFIX + "  Worlds: " + SystemInfo.getFriendlyByteSize(worlds));
+              Message.info(sender, Cherry.PREFIX + "  Plugins: " + SystemInfo.getFriendlyByteSize(pluginsDir));
+              Message.info(sender, Cherry.PREFIX + "  Cherry: " + SystemInfo.getFriendlyByteSize(cherryDir));
               if (CucumberySupport.EXIST) {
-                Message.info(sender, Cherry.PREFIX + "  Cucumbery: " + TerminalServerStatus.getFriendlySize(cucumberyDir));
+                Message.info(sender, Cherry.PREFIX + "  Cucumbery: " + SystemInfo.getFriendlyByteSize(cucumberyDir));
               }
               if (CoreProtectSupport.EXIST) {
-                Message.info(sender, Cherry.PREFIX + "  CoreProtect: " + TerminalServerStatus.getFriendlySize(coreprotectLog));
+                Message.info(sender, Cherry.PREFIX + "  CoreProtect: " + SystemInfo.getFriendlyByteSize(coreprotectLog));
               }
             });
 
@@ -468,11 +465,49 @@ public class CherryCommand implements CommandExecutor {
           return true;
         }
 
-        Message.info(player, "test");
+        World world = Bukkit.getWorld("world");
+        world.setWeatherDuration(20 * 60 * 60);
+        world.setThunderDuration(20 * 60 * 60);
+        world.setStorm(false);
+        world.setThundering(false);
+
+        player.sendMessage(Message.parse(""));
 
         return true;
       }
 
+      case "exec" -> {
+        if (!sender.hasPermission("cherry.lfb")) {
+          return true;
+        }
+
+        StringBuilder command = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+          command.append(args[i]);
+          if (i < args.length - 1) {
+            command.append(" ");
+          }
+        }
+        try {
+          ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command.toString());
+          builder.redirectErrorStream(true);
+          Process p = builder.start();
+          BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
+          String line;
+          while (true) {
+            line = r.readLine();
+            if (line == null) {
+              break;
+            }
+            System.out.println(line);
+          }
+        }
+        catch (Exception e) {
+          e.printStackTrace();
+        }
+
+        return true;
+      }
 
 
       // Crystal
@@ -668,4 +703,3 @@ public class CherryCommand implements CommandExecutor {
   }
 
 }
-

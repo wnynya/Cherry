@@ -1,6 +1,4 @@
 # Project exclude paths
-/src/main/java/io/wany/cherry/terminal/
-/src/main/java/io/wany/cherry/Updater.java
 /target/
 /.idea/
 /dependency-reduced-pom.xml

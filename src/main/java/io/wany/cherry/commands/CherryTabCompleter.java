@@ -69,23 +69,18 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
           List<String> list = new ArrayList<>();
           if (sender.hasPermission("cherry.version")) {
             list.add("version");
-            list.add("v");
           }
           if (sender.hasPermission("cherry.reload")) {
             list.add("reload");
-            list.add("r");
           }
           if (sender.hasPermission("cherry.update")) {
             list.add("update");
-            list.add("u");
           }
           if (sender.hasPermission("cherry.menu")) {
             list.add("menu");
-            list.add("m");
           }
           if (sender.hasPermission("cherry.system")) {
             list.add("system");
-            list.add("s");
           }
           if (sender.hasPermission("cherry.explosion")) {
             list.add("explosion");
@@ -199,6 +194,26 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
 
       }
 
+      case "throw" -> {
+
+        if (args.length == 1) {
+          List<String> list = Collections.singletonList("new");
+          return autoComplete(list, args[args.length - 1]);
+        }
+
+        else if (args.length >= 1 && args[0].equals("new")) {
+
+          if (args.length == 2) {
+            if (sender.hasPermission("cherry.command.reload")) {
+              List<String> list = Arrays.asList("UnhandledException", "NullPointerException", "StackOverflowError", "ArrayIndexOutOfBoundsException", "ClassCastException", "IllegalArgumentException", "ArithmeticException", "UnsupportedOperationException");
+              return autoComplete(list, args[args.length - 1]);
+            }
+          }
+
+        }
+
+      }
+
       case "drop" -> {
 
         if (args.length == 1) {
@@ -289,6 +304,18 @@ public class CherryTabCompleter implements org.bukkit.command.TabCompleter {
           List<String> list = new ArrayList<>();
           for (World world : Bukkit.getWorlds()) {
             list.add(world.getName());
+          }
+          return autoComplete(list, args[args.length - 1]);
+        }
+
+      }
+
+      case "closeinventory" -> {
+
+        if (args.length == 1) {
+          List<String> list = new ArrayList<>();
+          for (Player player : Bukkit.getOnlinePlayers()) {
+            list.add(player.getName());
           }
           return autoComplete(list, args[args.length - 1]);
         }

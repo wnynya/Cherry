@@ -4,7 +4,7 @@ import java.util.List;
 
 public class BungeecordServer {
 
-  private String name;
+  private final String name;
   private Status status;
   private List<BungeecordPlayer> players;
 
@@ -34,7 +34,7 @@ public class BungeecordServer {
     this.players = players;
   }
 
-  public static enum Status {
+  public enum Status {
     ONLINE,
     OFFLINE,
     UNKNOWN,
