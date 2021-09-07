@@ -17,6 +17,8 @@ import org.bukkit.block.Container;
 import org.bukkit.block.data.*;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.BlockInventoryHolder;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -36,28 +38,27 @@ public class Wand {
   public static Config config = null;
   public static int undoLimit = 100;
   private static final HashMap<UUID, Wand> wands = new HashMap<>();
+
   private static ItemStack wandItem_editPositioner = null;
   private static ItemStack wandItem_brushNormal = null;
   private static ItemStack wandItem_brushApplyPhysics = null;
 
-  private final Timer particleTimer = new Timer();
   public List<WandBlock> clipboard = null;
-  public int lastReplacenearRadius = 5;
-  private Player player = null;
+  private Player player;
   private final UUID uuid;
   private final WandEdit edit;
   private final WandBrush brush;
   private final Stack<List<WandBlock>> undoStack = new Stack<>();
   private final Stack<List<WandBlock>> redoStack = new Stack<>();
-  private List<Location> particleArea;
-  private boolean particleAreaShow = false;
+  public int lastReplacenearRadius = 5;
 
   private Wand(UUID uuid) {
+    this.player = Bukkit.getPlayer(uuid);
     this.uuid = uuid;
     this.edit = new WandEdit(this);
     this.brush = new WandBrush(this);
     wands.put(uuid, this);
-    this.enableParticleArea();
+    this.edit.startParticleArea();
   }
 
   private Wand(Player player) {
@@ -66,15 +67,21 @@ public class Wand {
     this.edit = new WandEdit(this);
     this.brush = new WandBrush(this);
     wands.put(uuid, this);
-    this.enableParticleArea();
+    this.edit.startParticleArea();
   }
 
   public WandEdit getEdit() {
-    return edit;
+    return this.edit;
   }
 
   public WandBrush getBrush() {
-    return brush;
+    return this.brush;
+  }
+
+  public Player getPlayer() { return this.player; }
+
+  public void refreshPlayer(PlayerJoinEvent event) {
+    this.player = event.getPlayer();
   }
 
   /**
@@ -208,7 +215,7 @@ public class Wand {
   }
 
   /**
-   * WIP
+   * [WIP]
    * 클립보드의 블록 데이터의 좌표를 수치만큼 곱합니다.
    *
    * @param x            x 좌표에 곱해질 수치
@@ -228,7 +235,7 @@ public class Wand {
   }
 
   /**
-   * WIP
+   * [WIP]
    * 클립보드의 블록 데이터를 특정 방향으로 회전시킵니다.
    *
    * @param facing       회전시킬 방향
@@ -303,9 +310,7 @@ public class Wand {
           wandBlock.setBlockData(blockData);
         }
       }
-      case "left" -> {
-        multiply(1, 1, -1);
-      }
+      case "left" -> multiply(1, 1, -1);
       case "up" -> {
         for (WandBlock wandBlock : this.clipboard) {
           Location loc = new Location(wandBlock.getLocation().getWorld(), (int) wandBlock.getLocation().getZ(), (int) wandBlock.getLocation().getY() * -1, (int) wandBlock.getLocation().getX());
@@ -317,7 +322,7 @@ public class Wand {
   }
 
   /**
-   * WIP
+   * [WIP]
    * 클립보드의 블록 데이터를 특정 방향으로 반전시킵니다.
    *
    * @param facing       반전시킬 방향
@@ -328,26 +333,23 @@ public class Wand {
     }
 
     switch (facing) {
-      case "right": {
+      case "right" -> {
         for (WandBlock wandBlock : this.clipboard) {
           Location loc = new Location(wandBlock.getLocation().getWorld(), (int) wandBlock.getLocation().getZ(), (int) wandBlock.getLocation().getY(), (int) wandBlock.getLocation().getX() * -1);
           wandBlock.setLocation(loc);
         }
-        break;
       }
-      case "left": {
+      case "left" -> {
         for (WandBlock wandBlock : this.clipboard) {
           Location loc = new Location(wandBlock.getLocation().getWorld(), (int) wandBlock.getLocation().getZ(), (int) wandBlock.getLocation().getY(), (int) wandBlock.getLocation().getX());
           wandBlock.setLocation(loc);
         }
-        break;
       }
-      case "up": {
+      case "up" -> {
         for (WandBlock wandBlock : this.clipboard) {
           Location loc = new Location(wandBlock.getLocation().getWorld(), (int) wandBlock.getLocation().getZ(), (int) wandBlock.getLocation().getY() * -1, (int) wandBlock.getLocation().getX());
           wandBlock.setLocation(loc);
         }
-        break;
       }
     }
 
@@ -371,33 +373,28 @@ public class Wand {
       Block block = world.getBlockAt(pos);
       boolean need2removeBlockData = false;
 
-      if (block.getState() instanceof Container) {
-        Container c = (Container) block.getState();
-        c.getInventory().setContents(new ItemStack[0]);
-        c.update(true, false);
+      if (block.getState() instanceof Container container) {
+        container.getInventory().setContents(new ItemStack[0]);
+        container.update(true, false);
         need2removeBlockData = true;
       }
 
-      if (block.getState() instanceof BlockInventoryHolder) {
-        BlockInventoryHolder h = (BlockInventoryHolder) block.getState();
-        Inventory i = h.getInventory();
+      if (block.getState() instanceof BlockInventoryHolder blockInventoryHolder) {
+        Inventory i = blockInventoryHolder.getInventory();
         i.clear();
         need2removeBlockData = true;
       }
 
-      if (block.getState() instanceof Campfire) {
-        Campfire b = (Campfire) block.getState();
-        //Message.warn("CAMPFIRE SIZE: " + b.getSize());
+      if (block.getState() instanceof Campfire campfire) {
         for (int n = 0; n < 4; n++) {
-          b.setItem(n, new ItemStack(Material.AIR));
+          campfire.setItem(n, new ItemStack(Material.AIR));
         }
-        b.update(true, false);
+        campfire.update(true, false);
         need2removeBlockData = true;
       }
 
-      if (block.getBlockData() instanceof Waterlogged) {
-        Waterlogged is = (Waterlogged) block.getBlockData();
-        is.isWaterlogged();
+      if (block.getBlockData() instanceof Waterlogged waterlogged) {
+        waterlogged.isWaterlogged();
         need2removeBlockData = true;
       }
 
@@ -407,33 +404,6 @@ public class Wand {
 
       block.setBlockData(blockData, applyPhysics);
     }
-  }
-
-  /**
-   * 좌표계를 특정 블록으로 채웁니다.
-   *
-   * @param material     채울 블록
-   * @param area         좌표계
-   * @param applyPhysics 물리 적용 여부
-   * @param data         채울 블록의 데이터 태그
-   */
-  public void fill(Material material, List<Location> area, boolean applyPhysics, String data) {
-    if (material == null || !material.isBlock() || area == null || area.isEmpty()) {
-      return;
-    }
-    BlockData blockData = Bukkit.createBlockData(material, data);
-    fill(blockData, area, applyPhysics);
-  }
-
-  /**
-   * 좌표계를 특정 블록으로 채웁니다.
-   *
-   * @param material     채울 블록
-   * @param area         좌표계
-   * @param applyPhysics 물리 적용 여부
-   */
-  public void fill(Material material, List<Location> area, boolean applyPhysics) {
-    fill(material, area, applyPhysics, "[]");
   }
 
   /**
@@ -475,9 +445,8 @@ public class Wand {
         }
       }
 
-      if (block.getState() instanceof Container) {
-        Container c = (Container) block.getState();
-        c.getInventory().setContents(new ItemStack[0]);
+      if (block.getState() instanceof Container container) {
+        container.getInventory().setContents(new ItemStack[0]);
       }
 
       block.setBlockData(replaceBlockData, applyPhysics);
@@ -587,9 +556,8 @@ public class Wand {
         }
         Block block = world.getBlockAt(newLoc);
 
-        if (block.getState() instanceof Container) {
-          Container c = (Container) block.getState();
-          c.getInventory().setContents(new ItemStack[0]);
+        if (block.getState() instanceof Container container) {
+          container.getInventory().setContents(new ItemStack[0]);
         }
 
         wandBlock.apply(block, applyPhysics);
@@ -600,35 +568,87 @@ public class Wand {
 
 
 
-  public void setParticleArea(List<Location> area) {
-    particleArea = area;
+  /**
+   * Get Wand
+   */
+  public static Wand getWand(UUID uuid) {
+    if (wands.containsKey(uuid)) {
+      return wands.get(uuid);
+    }
+    else {
+      return new Wand(uuid);
+    }
   }
 
-  public void showParticleArea() {
-    particleAreaShow = true;
+  public static Wand getWand(Player player) {
+    if (wands.containsKey(player.getUniqueId())) {
+      return wands.get(player.getUniqueId());
+    }
+    else {
+      return new Wand(player);
+    }
   }
 
-  public void hideParticleArea() {
-    particleAreaShow = false;
+  public static void onPlayerJoin(PlayerJoinEvent event) {
+
+    if (!Wand.ENABLED) {
+      return;
+    }
+
+    getWand(event.getPlayer()).refreshPlayer(event);
+
+    WandEdit.onPlayerJoin(event);
+
   }
 
-  public void enableParticleArea() {
-    particleTimer.schedule(new TimerTask() {
-      public void run() {
-        if (particleAreaShow) {
-          if (particleArea != null) {
-            for (Location loc : particleArea) {
-              player.spawnParticle(Particle.REDSTONE, loc, 0, 0, 0, 0, new Particle.DustOptions(Color.fromRGB(255, 120, 45), 1));
-            }
-          }
-        }
+  public static void onPlayerQuit(PlayerQuitEvent event) {
+
+    if (!Wand.ENABLED) {
+      return;
+    }
+
+    WandEdit.onPlayerQuit(event);
+
+  }
+
+
+
+  /*public void replaceData(int x, int y, int z) {
+    return;
+    if (this.clipboardMemory == null) {
+      return;
+    }
+
+    for (WandBlock wandBlock : this.clipboardMemory) {
+      BlockData blockData = wandBlock.getBlockData();
+      if (!(blockData instanceof Directional)) {
+        continue;
       }
-    }, 0, 100);
-  }
-
-  public void disableParticleArea() {
-    particleTimer.cancel();
-  }
+      Directional directional = (Directional) blockData;
+      BlockFace face = directional.getFacing();
+      BlockFace newFace;
+      switch (face) {
+        case NORTH: {
+          face = BlockFace.EAST;
+          break;
+        }
+        case EAST: {
+          face = BlockFace.SOUTH;
+          break;
+        }
+        case SOUTH: {
+          face = BlockFace.WEST;
+          break;
+        }
+        case WEST: {
+          face = BlockFace.NORTH;
+          break;
+        }
+        directional.setFacing(face);
+      }
+      wandBlock.setLocation(loc);
+    }
+  }*/
 
   public enum ItemType {
 
@@ -689,72 +709,6 @@ public class Wand {
     }
 
     return msg;
-  }
-
-  /**
-   * Get Wand
-   */
-  public static Wand getWand(UUID uuid) {
-    if (wands.containsKey(uuid)) {
-      return wands.get(uuid);
-    }
-    else {
-      return new Wand(uuid);
-    }
-  }
-
-  public static Wand getWand(Player player) {
-    if (wands.containsKey(player.getUniqueId())) {
-      return wands.get(player.getUniqueId());
-    }
-    else {
-      return new Wand(player);
-    }
-  }
-
-  /*public void replaceData(int x, int y, int z) {
-    return;
-    if (this.clipboardMemory == null) {
-      return;
-    }
-
-    for (WandBlock wandBlock : this.clipboardMemory) {
-      BlockData blockData = wandBlock.getBlockData();
-      if (!(blockData instanceof Directional)) {
-        continue;
-      }
-      Directional directional = (Directional) blockData;
-      BlockFace face = directional.getFacing();
-      BlockFace newFace;
-      switch (face) {
-        case NORTH: {
-          face = BlockFace.EAST;
-          break;
-        }
-        case EAST: {
-          face = BlockFace.SOUTH;
-          break;
-        }
-        case SOUTH: {
-          face = BlockFace.WEST;
-          break;
-        }
-        case WEST: {
-          face = BlockFace.NORTH;
-          break;
-        }
-        directional.setFacing(face);
-      }
-      wandBlock.setLocation(loc);
-    }
-  }*/
-
-  public static List<Wand> getWands() {
-    List<Wand> wandsList = new ArrayList<>();
-    for (Map.Entry<UUID, Wand> w : wands.entrySet()) {
-      wandsList.add(w.getValue());
-    }
-    return wandsList;
   }
 
   public static boolean exist(UUID uuid) {
@@ -886,8 +840,9 @@ public class Wand {
   }
 
   public static void onDisable() {
-    for (Wand w : getWands()) {
-      w.disableParticleArea();
+    for (Wand wand : wands.values()) {
+      WandEdit edit = wand.getEdit();
+      edit.stopParticleArea();
     }
   }
 

@@ -147,25 +147,23 @@ public class WandEditCommand implements CommandExecutor {
           }
         }
 
-        WandEdit wandEdit = wand.getEdit();
+        WandEdit edit = wand.getEdit();
 
-        wandEdit.setPosition(1, location);
+        edit.setPosition(1, location);
 
         String message = "첫번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY() + "&r, " + Wand.COLOR + location.getZ() + "&r)";
-        if (wandEdit.getPosition(1) != null && wandEdit.getPosition(2) != null) {
-          int count = Area.CUBE.getArea(wandEdit.getPosition(1), wandEdit.getPosition(2)).size();
+        if (edit.getPosition(1) != null && edit.getPosition(2) != null) {
+          int count = Area.CUBE.getArea(edit.getPosition(1), edit.getPosition(2)).size();
           message += " (" + Wand.COLOR + count + "&r블록)";
-          wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wandEdit.getPosition(1), wandEdit.getPosition(2)));
+          edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(2)));
         }
         else {
-          wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wandEdit.getPosition(1), wandEdit.getPosition(1)));
+          edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(1)));
         }
 
         if (!silent) {
           Message.info(sender, Wand.PREFIX + Message.effect(message));
         }
-
-        wand.showParticleArea();
 
         return true;
       }
@@ -235,25 +233,23 @@ public class WandEditCommand implements CommandExecutor {
           }
         }
 
-        WandEdit wandEdit = wand.getEdit();
+        WandEdit edit = wand.getEdit();
 
-        wandEdit.setPosition(2, location);
+        edit.setPosition(2, location);
 
         String message = "두번째 포지션이 설정되었습니다 (" + Wand.COLOR + location.getX() + "&r, " + Wand.COLOR + location.getY() + "&r, " + Wand.COLOR + location.getZ() + "&r)";
-        if (wandEdit.getPosition(1) != null && wandEdit.getPosition(2) != null) {
-          int count = Area.CUBE.getArea(wandEdit.getPosition(1), wandEdit.getPosition(2)).size();
+        if (edit.getPosition(1) != null && edit.getPosition(2) != null) {
+          int count = Area.CUBE.getArea(edit.getPosition(1), edit.getPosition(2)).size();
           message += " (" + Wand.COLOR + count + "&r블록)";
-          wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wandEdit.getPosition(1), wandEdit.getPosition(2)));
+          edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(1), edit.getPosition(2)));
         }
         else {
-          wand.setParticleArea(Area.CUBE_PARTICLE.getArea(wandEdit.getPosition(2), wandEdit.getPosition(2)));
+          edit.setParticleArea(Area.CUBE_PARTICLE.getArea(edit.getPosition(2), edit.getPosition(2)));
         }
 
         if (!silent) {
           Message.info(sender, Wand.PREFIX + Message.effect(message));
         }
-
-        wand.showParticleArea();
 
         return true;
       }

@@ -5,6 +5,7 @@ import io.wany.cherry.Console;
 import io.wany.cherry.Message;
 import io.wany.cherry.playerdata.PlayerData;
 import io.wany.cherry.terminal.TerminalPlayers;
+import io.wany.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -29,6 +30,7 @@ public class PlayerQuit implements Listener {
     playPlayerQuitSound(event);
     chatPlayerChangeQuitMessage(event);
     consolePlayerChangeQuitMessage(event);
+    Wand.onPlayerQuit(event);
   }
 
   private void chatPlayerQuitMessage(PlayerQuitEvent event) {

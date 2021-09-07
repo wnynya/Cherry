@@ -1,5 +1,7 @@
-package io.wany.cherry;
+package io.wany.cherry.realworldsync;
 
+import io.wany.cherry.Cherry;
+import io.wany.cherry.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.json.simple.JSONArray;
@@ -12,19 +14,21 @@ import java.io.Reader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class SyncWeather {
+public class WeatherSync {
+
+  public static String NAME = "WeatherSync";
+  public static String PREFIX = RealWorldSync.PREFIX + "[" + NAME +"]: ";
+  public static boolean ENABLE = false;
+  public static String location;
 
   private final World world;
   private Timer timer = new Timer();
 
-  public SyncWeather(World world) {
+  public WeatherSync(World world) {
     this.world = world;
   }
 
@@ -39,7 +43,7 @@ public class SyncWeather {
           public void run() {
             clear();
           }
-        }, 0, 1000 * 10);
+        }, 0, 1000 * 60 * 5);
       }
       case RAIN -> {
         this.timer.cancel();
@@ -50,7 +54,7 @@ public class SyncWeather {
           public void run() {
             rain();
           }
-        }, 0, 1000 * 10);
+        }, 0, 1000 * 60);
       }
       case STORM -> {
         this.timer.cancel();
@@ -61,7 +65,7 @@ public class SyncWeather {
           public void run() {
             storm();
           }
-        }, 0, 1000 * 10);
+        }, 0, 1000 * 60);
       }
     }
   }
@@ -106,18 +110,34 @@ public class SyncWeather {
 
   private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
   private static final Timer mainTimer = new Timer();
-  private static final List<SyncWeather> syncWeathers = new ArrayList<>();
+  private static final List<WeatherSync> weatherSyncs = new ArrayList<>();
 
   public static void onEnable() {
+    if (!Cherry.CONFIG.getBoolean("realworldsync.weather.enable")) {
+      Console.debug(PREFIX + NAME + " Disabled");
+      return;
+    }
+    Console.debug(PREFIX + "Enabling " + NAME);
+    ENABLE = true;
+
+    location = Cherry.CONFIG.getString("realworldsync.weather.location");
+    if (location == null || location.equals("")) {
+      Console.debug(PREFIX + "ERROR: No location");
+      return;
+    }
+    Console.debug(PREFIX + "Sync with the weather in " + location + "");
+
     for (World world : Bukkit.getWorlds()) {
-      syncWeathers.add(new SyncWeather(world));
+      if (world.isNatural()) {
+        weatherSyncs.add(new WeatherSync(world));
+      }
     }
     executorService.submit(() -> mainTimer.schedule(new TimerTask() {
       @Override
       public void run() {
         Weather weather = Weather.UNKNOWN;
         try {
-          URL url = new URL( "https://api.wany.io/terminal/weather/Busan,KR");
+          URL url = new URL( "https://api.wany.io/terminal/weather/" + location);
 
           HttpURLConnection connection = (HttpURLConnection) url.openConnection();
           connection.setRequestMethod("GET");
@@ -136,41 +156,53 @@ public class SyncWeather {
             }
             streamReader.close();
             connection.disconnect();
+
             JSONParser parser = new JSONParser();
             JSONObject object = (JSONObject) parser.parse(content.toString());
             JSONObject data = (JSONObject) object.get("data");
             JSONObject current = (JSONObject) data.get("current");
+            JSONObject sys = (JSONObject) current.get("sys");
             JSONObject weatherData = (JSONObject) ((JSONArray) current.get("weather")).get(0);
-            long id = (long) weatherData.get("id");
-            if (200 <= id && id <= 299) { //Thunderstorm
+            long weatherID = (long) weatherData.get("id");
+            String weatherName = (String) weatherData.get("main");
+            String city = (String) current.get("name");
+            String country = (String) sys.get("country");
+            country = new Locale("", country).getDisplayCountry(new Locale("en"));
+
+            Console.debug(PREFIX + "Current weather in " + city + ", " + country + ": " + weatherID + ", " + weatherName.toUpperCase());
+
+            if (200 <= weatherID && weatherID <= 299) { //Thunderstorm
               weather = Weather.STORM;
             }
-            else if (300 <= id && id <= 399) { // Drizzle
+            else if (300 <= weatherID && weatherID <= 399) { // Drizzle
               weather = Weather.STORM;
             }
-            else if (500 <= id && id <= 599) { // Rain
+            else if (500 <= weatherID && weatherID <= 599) { // Rain
               weather = Weather.RAIN;
             }
-            else if (600 <= id && id <= 699) { // Snow
+            else if (600 <= weatherID && weatherID <= 699) { // Snow
               weather = Weather.RAIN;
             }
-            else if (700 <= id && id <= 799) { // Atmosphere
+            else if (700 <= weatherID && weatherID <= 799) { // Atmosphere
               weather = Weather.CLEAR;
             }
-            else if (800 == id) { // Clear
+            else if (800 == weatherID) { // Clear
               weather = Weather.CLEAR;
             }
-            else if (801 <= id && id <= 899) { // Clouds
+            else if (801 <= weatherID && weatherID <= 899) { // Clouds
               weather = Weather.CLEAR;
             }
+          }
+          else {
+            Console.debug(PREFIX + "ERROR: Fail to sync with the weather in " + location + ": " + responseCode);
           }
           connection.disconnect();
         }
         catch (Exception e) {
           e.printStackTrace();
         }
-        for (SyncWeather syncWeather : syncWeathers) {
-          syncWeather.set(weather);
+        for (WeatherSync weatherSync : weatherSyncs) {
+          weatherSync.set(weather);
         }
       }
     }, 0, 1000 * 60 * 10));
@@ -178,10 +210,10 @@ public class SyncWeather {
 
   public static void onDisable() {
     mainTimer.cancel();
-    for (SyncWeather syncWeather : syncWeathers) {
-      syncWeather.close();
+    for (WeatherSync weatherSync : weatherSyncs) {
+      weatherSync.close();
     }
     executorService.shutdownNow();
   }
-
+  
 }

@@ -28,7 +28,7 @@ import java.util.*;
 
 public class ItemOnWorld {
 
-  public static String COLOR = "#FF782D;";
+  public static String COLOR = "#FF425A;";
   public static String PREFIX = COLOR + "&l[ItemOnWorld]:&r ";
   public static boolean ENABLED = false;
 

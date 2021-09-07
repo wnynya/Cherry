@@ -100,7 +100,19 @@ public class Cube {
     for (int x = (int) minX; x <= maxX; x++) {
       for (int y = (int) minY; y <= maxY; y++) {
         for (int z = (int) minZ; z <= maxZ; z++) {
-          if ((x == (int) maxX && y == (int) maxY) || (y == (int) maxY && z == (int) maxZ) || (x == (int) maxX && z == (int) maxZ) || (x == (int) minX && y == (int) minY) || (y == (int) minY && z == (int) minZ) || (x == (int) minX && z == (int) minZ) || (x == (int) maxX && y == (int) minY) || (x == (int) maxX && z == (int) minZ) || (y == (int) maxY && x == (int) minX) || (y == (int) maxY && z == (int) minZ) || (z == (int) maxZ && x == (int) minX) || (z == (int) maxZ && y == (int) minY)) {
+          if ((x == (int) maxX && y == (int) maxY)
+            || (y == (int) maxY && z == (int) maxZ)
+            || (x == (int) maxX && z == (int) maxZ)
+            || (x == (int) minX && y == (int) minY)
+            || (y == (int) minY && z == (int) minZ)
+            || (x == (int) minX && z == (int) minZ)
+            || (x == (int) maxX && y == (int) minY)
+            || (x == (int) maxX && z == (int) minZ)
+            || (y == (int) maxY && x == (int) minX)
+            || (y == (int) maxY && z == (int) minZ)
+            || (z == (int) maxZ && x == (int) minX)
+            || (z == (int) maxZ && y == (int) minY)
+          ) {
             double x1 = x;
             double y1 = y;
             double z1 = z;
@@ -274,29 +286,6 @@ public class Cube {
             }
 
             list.add(new Location(pos1.getWorld(), x1, y1, z1));
-
-            /*else if ((x == (int) maxX && y == (int) minZ)) {
-              x1 += 1;
-            }
-            else if ((x == (int) maxY && x == (int) minX)) {
-              x1 += 1;
-            }
-            else if ((y == (int) maxY && z == (int) minZ)) {
-              y1 += 1;
-            }
-            else if ((y == (int) maxX && y == (int) minY)) {
-              y1 += 1;
-            }
-            else if ((z == (int) maxZ && x == (int) minX)) {
-              z1 += 1;
-            }
-            else if ((z == (int) maxZ && y == (int) minY)) {
-              z1 += 1;
-            }*/
-            /*
-            if (x1 == (int) minX) { x1 -= 0.5; }
-            if (y1 == (int) minY) { y1 -= 0.5; }
-            if (z1 == (int) minZ) { z1 -= 0.5; }*/
           }
         }
       }

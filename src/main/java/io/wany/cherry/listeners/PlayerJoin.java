@@ -7,6 +7,7 @@ import io.wany.cherry.playerdata.PlayerData;
 import io.wany.cherry.supports.cucumbery.CucumberySupport;
 import io.wany.cherry.supports.vault.VaultEconomySync;
 import io.wany.cherry.terminal.TerminalPlayers;
+import io.wany.cherry.wand.Wand;
 import org.bukkit.Bukkit;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
@@ -31,6 +32,7 @@ public class PlayerJoin implements Listener {
     consolePlayerJoinMessage(event);
     playPlayerJoinSound(event);
     updatePlayerJoin(event);
+    Wand.onPlayerJoin(event);
     VaultEconomySync.onPlayerJoin(event);
   }
 

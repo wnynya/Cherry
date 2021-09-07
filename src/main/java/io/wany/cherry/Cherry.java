@@ -7,6 +7,7 @@ import io.wany.cherry.itemonworld.ItemOnWorld;
 import io.wany.cherry.listeners.*;
 import io.wany.cherry.playerdata.PlayerData;
 import io.wany.cherry.portal.Portal;
+import io.wany.cherry.realworldsync.RealWorldSync;
 import io.wany.cherry.supports.bungeecord.BungeecordSupport;
 import io.wany.cherry.supports.coreprotect.CoreProtectSupport;
 import io.wany.cherry.supports.cucumbery.CucumberySupport;
@@ -68,6 +69,7 @@ public class Cherry extends JavaPlugin {
     Wand.onEnable();
     Portal.onEnable();
     ItemOnWorld.onEnable();
+    RealWorldSync.onEnable();
 
     registerCommand("cherry", new CherryCommand(), new CherryTabCompleter());
     registerCommand("wandedit", new WandEditCommand(), new WandEditTabCompleter());
@@ -126,6 +128,7 @@ public class Cherry extends JavaPlugin {
     Terminal.onDisable();
     PlayerData.onDisable();
     Wand.onDisable();
+    RealWorldSync.onDisable();
 
     VaultSupport.onDisable();
     CucumberySupport.onDisable();

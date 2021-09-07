@@ -172,7 +172,7 @@ event:
 
   #===== TNT 점화 시 이벤트
   tntPrimed:
-    fixVelocity: false
+    fixVelocity: true
 
 #======================================#
 # 완드 설정
@@ -335,11 +335,10 @@ itemonworld:
 realworldsync:
   datetime:
     enable: false
-    timezone:
-      offset: 9;
+    timezone: "Asia/Seoul"
   weather:
     enable: false
-    location: "Busan,KR"
+    location: "Seoul,KR"
 
 #======================================#
 # 자동화 설정
