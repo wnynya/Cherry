@@ -2,13 +2,27 @@ name: Cherry
 version: 1.17-dev
 main: io.wany.cherry.Cherry
 
-description: A Minecraft plugin
+description: Cherry
 author: Wany
 website: https://cherry.wany.io
 
 api-version: 1.17
-softdepend: [Vault, ProtocolLib, Cucumbery, CoreProtect]
-loadbefore: [CoreProtect, Cucumbery, Essentials, HolographicDisplays, LuckPerms, NoteBlockAPI, PlugMan, ProtocolLib, Vault, VoxelSniper, WorldEdit, WorldGuard, mcMMO]
+softdepend: [CoreProtect, Cucumbery, Vault]
+loadbefore:
+  - CoreProtect
+  - Cucumbery
+  - Essentials
+  - HolographicDisplays
+  - LuckPerms
+  - mcMMO
+  - NoteBlockAPI
+  - PlugMan
+  - ProtocolLib
+  - QuickShop
+  - Vault
+  - VoxelSniper
+  - WorldEdit
+  - WorldGuard
 
 commands:
 
@@ -41,6 +55,12 @@ commands:
   bungeeteleport:
     permission: cherry.command.bungeeteleport
     aliases: [btp, gtp, tpb]
+
+  list:
+    description: "Close player's opened inventory"
+    usage: "/<command> [group|world]"
+    permission: cherry.command.list
+    aliases: [clist]
 
   exit:
     description: "Exit the game"

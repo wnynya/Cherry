@@ -15,6 +15,7 @@ import io.wany.cherry.amethyst.SystemInfo;
 import io.wany.cherry.gui.Menu;
 import io.wany.cherry.supports.coreprotect.CoreProtectSupport;
 import io.wany.cherry.supports.cucumbery.CucumberySupport;
+import io.wany.cherry.terminal.Terminal;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -24,13 +25,18 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
 import java.lang.management.ManagementFactory;
+import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -61,6 +67,7 @@ public class CherryCommand implements CommandExecutor {
           return true;
         }
         long s = System.currentTimeMillis();
+        Terminal.STATUS = Terminal.Status.RELOAD;
         PluginLoader.unload();
         PluginLoader.load(Cherry.FILE);
         long e = System.currentTimeMillis();
@@ -235,9 +242,9 @@ public class CherryCommand implements CommandExecutor {
 
             Message.info(sender, Cherry.PREFIX + "Processor");
             com.sun.management.OperatingSystemMXBean osb = (com.sun.management.OperatingSystemMXBean) ManagementFactory.getOperatingSystemMXBean();
-            for (final Cpu cpu : SystemInfo.cpus) {
+            /*for (final Cpu cpu : SystemInfo.cpus) {
               Message.info(sender, Cherry.PREFIX + "  Name: " + Cherry.COLOR + cpu.name);
-            }
+            }*/
             Message.info(sender, Cherry.PREFIX + "  System Load: " + Cherry.COLOR + Math.round(osb.getCpuLoad() * 10000) / 100.0 + "&r%");
             Message.info(sender, Cherry.PREFIX + "  Server Load: " + Cherry.COLOR + Math.round(osb.getProcessCpuLoad() * 10000) / 100.0 + "&r%");
 
@@ -247,7 +254,16 @@ public class CherryCommand implements CommandExecutor {
             long maxM = Math.round(r.maxMemory() / 1024.0 / 1024.0);
             long totalM = Math.round(r.totalMemory() / 1024.0 / 1024.0);
             long usedM = Math.round((r.totalMemory() - r.freeMemory()) / 1024.0 / 1024.0);
-            Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedM + "&rM / " + Cherry.COLOR + totalM + "&rM / " + Cherry.COLOR + maxM + "&rM");
+            if (maxM <= 16384) {
+              Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedM + "&rM / " + Cherry.COLOR + totalM + "&rM / " + Cherry.COLOR + maxM + "&rM");
+            }
+            else {
+              double freeMd = Math.round(freeM / 1024.0 * 100.0) / 100.0;
+              double maxMd = Math.round(maxM / 1024.0 * 100.0) / 100.0;
+              double totalMd = Math.round(totalM / 1024.0 * 100.0) / 100.0;
+              double usedMd = Math.round(usedM / 1024.0 * 100.0) / 100.0;
+              Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedMd + "&rG / " + Cherry.COLOR + totalMd + "&rG / " + Cherry.COLOR + maxMd + "&rG");
+            }
 
             Message.info(sender, Cherry.PREFIX + "TPS");
             double[] bukkitTPS = Bukkit.getTPS();
@@ -267,6 +283,7 @@ public class CherryCommand implements CommandExecutor {
             return true;
           }
 
+          /*
           case "processor", "processors", "cpu", "cpus" -> {
             if (!sender.hasPermission("cherry.system.processor")) {
               return true;
@@ -358,6 +375,7 @@ public class CherryCommand implements CommandExecutor {
 
             return true;
           }
+          */
 
           case "disk", "disks", "storage", "storages" -> {
             if (!sender.hasPermission("cherry.system.disk")) {
@@ -465,13 +483,50 @@ public class CherryCommand implements CommandExecutor {
           return true;
         }
 
-        World world = Bukkit.getWorld("world");
-        world.setWeatherDuration(20 * 60 * 60);
-        world.setThunderDuration(20 * 60 * 60);
-        world.setStorm(false);
-        world.setThundering(false);
+        StringBuilder b = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+          b.append(args[i]);
+          if (i < args.length - 1) {
+            b.append(" ");
+          }
+        }
 
-        player.sendMessage(Message.parse(""));
+        sender.sendMessage(b.toString());
+        String[] s = b.toString().split("(?:^| )'([^']*)'(?:$| )|(?:^| )\"([^\"]*)\"(?:$| )|([^ ]*)");
+        List<String> l = new ArrayList<>();
+        for (String value : s) {
+          if (!(value == null || value.equals(""))) {
+            l.add(value);
+          }
+        }
+
+        sender.sendMessage(l.toString());
+
+        return true;
+      }
+
+      case "translate" -> {
+        if (!sender.hasPermission("cherry.translate")) {
+          return true;
+        }
+        if (!(sender instanceof Player player)) {
+          return true;
+        }
+
+        StringBuilder sb1 = new StringBuilder();
+        StringBuilder sb2 = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+          sb1.append(args[i]);
+          sb2.append(getTranslate(args[i]));
+          if (i < args.length - 1) {
+            sb1.append(" ");
+            sb2.append(" ");
+          }
+        }
+
+        for (Player p : Bukkit.getOnlinePlayers()) {
+          p.sendMessage(Message.parse(player, " => ", sb1.toString(), " => ", sb2.toString()));
+        }
 
         return true;
       }
@@ -700,6 +755,50 @@ public class CherryCommand implements CommandExecutor {
 
     }
 
+  }
+
+  public static String getTranslate(String text) {
+
+    JSONObject objecta = new JSONObject();
+    objecta.put("source", "");
+    objecta.put("target", "ko");
+    objecta.put("text", text);
+
+    try {
+
+      URL url = new URL("https://api.wany.io/terminal/translate");
+
+      HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+      connection.setDoOutput(true);
+      connection.setRequestMethod("POST");
+      connection.setRequestProperty("Content-Type", "application/json");
+      connection.setRequestProperty("User-Agent", "Cherry");
+      connection.setConnectTimeout(2000);
+      connection.setReadTimeout(2000);
+
+      OutputStream outputStream = connection.getOutputStream();
+      outputStream.write(objecta.toJSONString().getBytes(StandardCharsets.UTF_8));
+      outputStream.flush();
+
+      int responseCode = connection.getResponseCode();
+      if (responseCode == 200) { // OK
+        Reader inputReader = new InputStreamReader(connection.getInputStream(), StandardCharsets.UTF_8);
+        BufferedReader streamReader = new BufferedReader(inputReader);
+        String streamLine;
+        StringBuilder content = new StringBuilder();
+        while ((streamLine = streamReader.readLine()) != null) {
+          content.append(streamLine);
+        }
+        streamReader.close();
+        connection.disconnect();
+        JSONParser parser = new JSONParser();
+        JSONObject object = (JSONObject) parser.parse(content.toString());
+        return object.get("data").toString();
+      }
+      connection.disconnect();
+
+    } catch (Exception e) {}
+    return "";
   }
 
 }

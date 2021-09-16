@@ -1,17 +1,12 @@
 package io.wany.cherry.amethyst;
 
-import com.profesorfalken.jsensors.JSensors;
-import com.profesorfalken.jsensors.model.components.*;
 import com.sun.management.OperatingSystemMXBean;
 import io.wany.cherry.Cherry;
-import io.wany.cherry.Console;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.io.File;
 import java.lang.management.ManagementFactory;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.ExecutorService;
@@ -42,11 +37,6 @@ public class SystemInfo {
 
   private static int serverCurrentTPS = 0;
   public static int serverLastTPS = 0;
-
-  public static List<Cpu> cpus = new ArrayList<>();
-  public static List<Gpu> gpus = new ArrayList<>();
-  public static List<Disk> disks = new ArrayList<>();
-  public static List<Mobo> mobos = new ArrayList<>();
 
   private static final ExecutorService executorService = Executors.newFixedThreadPool(1);
   private static BukkitTask bukkitTask1t;
@@ -113,11 +103,6 @@ public class SystemInfo {
           serverCurrentTPS = 0;
         }
       }, 0, 1000);
-      Components components = JSensors.get.components();
-      cpus = components.cpus;
-      gpus = components.gpus;
-      disks = components.disks;
-      mobos = components.mobos;
     });
   }
 

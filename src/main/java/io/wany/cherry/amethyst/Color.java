@@ -625,12 +625,12 @@ public class Color {
 
   private static class ColorPattern {
 
-    public static Pattern HEX_6 =Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
-    public static Pattern HEX_3 =Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEX_6 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEX_3 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEX_2 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])");
     public static Pattern HEX_1 = Pattern.compile("([0-9a-fA-F])");
-    public static Pattern HEXA_8 =Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
-    public static Pattern HEXA_4 =Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEXA_8 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
+    public static Pattern HEXA_4 = Pattern.compile("([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])([0-9a-fA-F])");
 
     public static Pattern RGB = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
     public static Pattern RGBA = Pattern.compile("(([0-9]){1,3})([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))([.,:;|! ]+(([0-9]){1,3}))");
@@ -647,7 +647,7 @@ public class Color {
     public static Pattern MFC_AND = Pattern.compile("&([0-9a-fA-Frlmnokx])");
     public static Pattern CHAT_HEX = Pattern.compile("#([a-fA-F0-9]|[a-fA-F0-9]{2}|[a-fA-F0-9]{3}|[a-fA-F0-9]{6});");
     public static Pattern CHAT_RGB = Pattern.compile("([rgbRGB]{1,3})\\(?([0-9]{1,3})(?:,([0-9]{1,3}))?(?:,([0-9]{1,3}))?\\)?;");
-    public static Pattern CHAT_HSL = Pattern.compile("(([hslHSL]){1,3})\\(?(([0-9]){1,3})(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?\\)?;");
+    public static Pattern CHAT_HSL = Pattern.compile("(([hslHSL]){1,3})\\(?(([0-9]){1,3})([,.;:_](([0-9]){1,3}))?([,.;:_](([0-9]){1,3}))?\\)?;");
     public static Pattern CHAT_CYMK = Pattern.compile("(([cmykCMYK]){1,4})\\(?(([0-9]){1,3})(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?(,(([0-9]){1,3}))?\\)?;");
 
     public static Pattern ANSI_RGB = Pattern.compile("(([0-9]){1,3})([.,:;|! ](([0-9]){1,3}))([.,:;|! ](([0-9]){1,3}))");

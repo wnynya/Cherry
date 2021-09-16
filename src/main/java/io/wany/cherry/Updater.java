@@ -2,6 +2,7 @@ package io.wany.cherry;
 
 import io.wany.cherry.amethyst.PluginLoader;
 import io.wany.cherry.amethyst.RandomString;
+import io.wany.cherry.terminal.Terminal;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -205,6 +206,7 @@ public class Updater {
       Files.write(path, data);
 
       Bukkit.getScheduler().runTask(plugin, () -> {
+        Terminal.STATUS = Terminal.Status.UPDATE;
         PluginLoader.unload();
         if (!pluginFile.getPath().equals(Cherry.FILE.getPath())) {
           Cherry.FILE.delete();

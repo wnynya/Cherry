@@ -8,6 +8,8 @@ import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
 
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 
 public class TerminalConsoleLogFilter implements Filter {
@@ -15,6 +17,7 @@ public class TerminalConsoleLogFilter implements Filter {
   public boolean closed = false;
 
   public void close() {
+    Terminal.debug(Terminal.PREFIX + "LogFilter removed");
     closed = true;
   }
 
@@ -140,7 +143,14 @@ public class TerminalConsoleLogFilter implements Filter {
         catch (InterruptedException ignored) {
         }
 
-        TerminalConsole.onConsoleLog(message, time, level, thread, logger);
+        TerminalConsole.Log log = new TerminalConsole.Log(message, time, level, thread, logger);
+
+        if (Terminal.webSocketClient.ready && TerminalConsole.OfflineLogs.size() <= 0) {
+          TerminalConsole.onConsoleLog(log);
+        }
+        else {
+          TerminalConsole.OfflineLogs.add(log);
+        }
       }
       catch (Exception ignored) {
       }

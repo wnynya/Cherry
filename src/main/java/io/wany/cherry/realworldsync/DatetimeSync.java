@@ -39,6 +39,9 @@ public class DatetimeSync {
     this.timer.schedule(new TimerTask() {
       @Override
       public void run() {
+        if (timezone == null) {
+          return;
+        }
         int day = timezone.getDayOfYear();
         int hour = timezone.getHour();
         int minute = timezone.getMinute();

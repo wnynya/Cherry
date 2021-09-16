@@ -1,5 +1,6 @@
 package io.wany.cherry.terminal;
 
+import io.wany.cherry.Cherry;
 import io.wany.cherry.Config;
 import io.wany.cherry.Console;
 import org.json.JSONObject;
@@ -15,6 +16,8 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.WebSocket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.concurrent.CompletionException;
@@ -32,48 +35,20 @@ public class Terminal {
   //public static boolean ENABLE = true;
   public static boolean DEBUG = false;
 
+  public static Status STATUS = Status.UNLOAD;
+
+  public enum Status {
+    UNLOAD,
+    NORMAL,
+    UPDATE,
+    RELOAD,
+    STOP
+  }
+
   private static final ExecutorService connectExecutorService = Executors.newFixedThreadPool(1);
   private static final Timer connectTimer = new Timer();
   public static WebSocketClient webSocketClient;
   protected static String key = null;
-
-  public static void onLoad() {
-    Terminal.debug(PREFIX + "Load Terminal");
-    webSocketClient = new WebSocketClient("wss://protocol.wany.io/cherry/terminal/plugin");
-    connectExecutorService.submit(() -> connectTimer.schedule(new TimerTask() {
-      @Override
-      public void run() {
-        if (!webSocketClient.connected && webSocketClient.reconnect) {
-          try {
-            webSocketClient.connect();
-          }
-          catch (Exception e) {
-            Terminal.debug(PREFIX + "Connect Failed: " + e);
-          }
-        }
-        else if (!Terminal.webSocketClient.ready) {
-          webSocketClient.disconnect();
-          webSocketClient.connected = false;
-        }
-      }
-    }, 0, 1000));
-    TerminalConsole.onLoad();
-  }
-
-  public static void onEnable() {
-    Terminal.debug(PREFIX + "Enabling Terminal");
-    TerminalServerStatus.onEnable();
-  }
-
-  public static void onDisable() {
-    Terminal.debug(PREFIX + "Disabling Terminal");
-    TerminalConsole.onDisable();
-    TerminalServerStatus.onDisable();
-    connectTimer.cancel();
-    connectExecutorService.shutdownNow();
-    webSocketClient.close();
-    webSocketClient.disconnect();
-  }
 
   public static void send(String event, String message, JSONObject data) {
     if (webSocketClient != null && webSocketClient.ready) {
@@ -252,6 +227,57 @@ public class Terminal {
     if (DEBUG) {
       Console.debug(message);
     }
+  }
+
+  public static void onLoad() {
+    STATUS = Status.NORMAL;
+    Terminal.debug(PREFIX + "Load Terminal");
+    webSocketClient = new WebSocketClient("wss://protocol.wany.io/cherry/terminal/plugin");
+    connectExecutorService.submit(() -> connectTimer.schedule(new TimerTask() {
+      @Override
+      public void run() {
+        if (!webSocketClient.connected && webSocketClient.reconnect) {
+          try {
+            webSocketClient.connect();
+          }
+          catch (Exception e) {
+            Terminal.debug(PREFIX + "Connect Failed: " + e);
+          }
+        }
+        else if (!Terminal.webSocketClient.ready) {
+          webSocketClient.disconnect();
+          webSocketClient.connected = false;
+        }
+      }
+    }, 0, 1000));
+    TerminalConsole.onLoad();
+  }
+
+  public static void onEnable() {
+    Terminal.debug(PREFIX + "Enabling Terminal");
+    TerminalServerStatus.onEnable();
+  }
+
+  public static void onDisable() {
+    if (STATUS == Status.NORMAL) {
+      STATUS = Status.STOP;
+    }
+    long delay = 0;
+    if (Terminal.STATUS == Terminal.Status.STOP) {
+      delay = 500;
+    }
+    new Timer().schedule(new TimerTask() {
+      @Override
+      public void run() {
+        Terminal.debug(PREFIX + "Disabling Terminal");
+        TerminalConsole.onDisable();
+        TerminalServerStatus.onDisable();
+        connectTimer.cancel();
+        connectExecutorService.shutdownNow();
+        webSocketClient.close();
+        webSocketClient.disconnect();
+      }
+    }, delay);
   }
 
 }

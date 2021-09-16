@@ -44,6 +44,12 @@ public class TerminalMessageHandler {
           TerminalServerStatus.sendInfo();
           TerminalServerStatus.sendSystem();
           TerminalPlayers.sendPlayers();
+
+          while(TerminalConsole.OfflineLogs.size() > 0) {
+            TerminalConsole.Log log = TerminalConsole.OfflineLogs.get(0);
+            TerminalConsole.onConsoleLog(log);
+            TerminalConsole.OfflineLogs.remove(0);
+          }
         }
         case "init-null" -> {
           Terminal.debug(Terminal.PREFIX + "Connection refused");
@@ -53,6 +59,7 @@ public class TerminalMessageHandler {
           config.file().deleteOnExit();
           Terminal.key = null;
           Terminal.webSocketClient.disconnect();
+          Terminal.webSocketClient.ready = false;
           Terminal.webSocketClient.connected = false;
         }
         case "console-command" -> {

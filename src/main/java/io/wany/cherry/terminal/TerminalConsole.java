@@ -16,20 +16,37 @@ public class TerminalConsole {
 
   public static TerminalConsoleLogFilter logFilter;
 
-  public static void onConsoleLog(String msg, long time, String level, String thread, String logger) {
+  public static List<Log> OfflineLogs = new ArrayList<>();
+
+  public static class Log {
+    public String message;
+    public long time;
+    public String level;
+    public String thread;
+    public String logger;
+    public Log (String message, long time, String level, String thread, String logger) {
+      this.message = message;
+      this.time = time;
+      this.level = level;
+      this.thread = thread;
+      this.logger = logger;
+    }
+  }
+
+  public static void onConsoleLog(Log log) {
     String event = "console-log";
-    String message = "[" + level + "]: " + msg;
+    String message = "[" + log.level + "]: " + log.message;
     JSONObject data = new JSONObject();
-    data.put("message", msg);
-    data.put("time", time);
-    data.put("level", level);
-    data.put("thread", thread);
-    data.put("logger", logger);
+    data.put("message", log.message);
+    data.put("time", log.time);
+    data.put("level", log.level);
+    data.put("thread", log.thread);
+    data.put("logger", log.logger);
     Terminal.send(event, message, data);
   }
 
   public static void onConsoleCommand(String input) {
-    onConsoleLog("> " + input, System.currentTimeMillis(), "INFO", "ConsoleCommand", "ConsoleCommand");
+    onConsoleLog(new Log("> " + input, System.currentTimeMillis(), "INFO", "ConsoleCommand", "ConsoleCommand"));
     Bukkit.getScheduler().runTask(Cherry.PLUGIN, () -> Bukkit.getServer().dispatchCommand(Bukkit.getConsoleSender(), input));
   }
 
@@ -63,6 +80,7 @@ public class TerminalConsole {
     Logger logger = (Logger) LogManager.getRootLogger();
     logFilter = new TerminalConsoleLogFilter();
     logger.addFilter(logFilter);
+    Terminal.debug(Terminal.PREFIX + "LogFilter added");
   }
 
   public static void onDisable() {
