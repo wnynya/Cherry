@@ -113,8 +113,8 @@ public class CucumberySupport {
       return;
     }
     try {
-      pluginCommand.setExecutor(new com.jho5245.cucumbery.command.Menu());
-      pluginCommand.setTabCompleter(Cucumbery.getPlugin().getTabCompleter());
+      pluginCommand.setExecutor(new com.jho5245.cucumbery.commands.CommandMenu());
+      pluginCommand.setTabCompleter(new com.jho5245.cucumbery.commands.CommandMenu());
       Console.debug(PREFIX + "Recover menu command");
     } catch (Exception | Error ignored) {}
   }

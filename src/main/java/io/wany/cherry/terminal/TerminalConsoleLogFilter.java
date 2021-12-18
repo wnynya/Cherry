@@ -118,13 +118,14 @@ public class TerminalConsoleLogFilter implements Filter {
             stack.append("\r\n\tat ").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(" (").append(ste.getClassName()).append(".").append(ste.getMethodName()).append(")");
           }
           Throwable tc = t.getCause();
-          if (tc != null) {
+          while (tc != null) {
             stack.append("\r\nCaused by: ");
             stack.append(tc.getClass().getName());
             StackTraceElement[] cstea = tc.getStackTrace();
             for (StackTraceElement ste : cstea) {
               stack.append("\r\n\tat ").append(ste.getFileName()).append(":").append(ste.getLineNumber()).append(" (").append(ste.getClassName()).append(".").append(ste.getMethodName()).append(")");
             }
+            tc = tc.getCause();
           }
         }
         message += stack;

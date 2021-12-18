@@ -37,10 +37,8 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
-import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -94,6 +92,10 @@ public class CherryCommand implements CommandExecutor {
                 force = true;
               }
             }
+          }
+
+          if (sender.getName().equals("jho5245")) {
+            silent = true;
           }
 
           long s = System.currentTimeMillis();
@@ -564,6 +566,14 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
 
+      case "ping" -> {
+        for(Player p : Bukkit.getOnlinePlayers()) {
+          sender.sendMessage(p.getName() + ": " + p.getPing());
+        }
+
+        return true;
+      }
+
 
       // Crystal
       // Boooooooooom!
@@ -761,7 +771,7 @@ public class CherryCommand implements CommandExecutor {
 
     JSONObject objecta = new JSONObject();
     objecta.put("source", "");
-    objecta.put("target", "ko");
+    objecta.put("target", "en");
     objecta.put("text", text);
 
     try {

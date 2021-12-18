@@ -1688,6 +1688,41 @@ public class WandEditCommand implements CommandExecutor {
         return true;
       }
 
+      case "scan" -> {
+        if (!sender.hasPermission("cherry.wand.scan")) {
+          Message.error(sender, Message.CommandFeedback.NO_PERMISSION);
+          return true;
+        }
+        if (player == null) {
+          Message.error(sender, Message.CommandFeedback.ONLY_PLAYER);
+          return true;
+        }
+        List<Location> area = Area.CUBE.getArea(player.getLocation().getBlock().getLocation(), 100);
+
+        // 설치할 블록 데이터 파싱
+        String blockDataString = args[1];
+        BlockData blockData;
+        try {
+          blockData = Wand.getBlockData(blockDataString);
+        }
+        catch (Exception e) {
+          Wand.error(sender, "블록 데이터 파싱 에러: " + e.getMessage());
+          return true;
+        }
+
+        List<Location> found = wand.scan(area, blockData, false);
+        player.sendMessage(Message.parse(Wand.PREFIX, Wand.COLOR + found.size(), " 개의 데이터가 검색되었습니다"));
+        if (found.size() > 50) {
+          player.sendMessage(Message.parse(Wand.PREFIX, "데이터가 출력하기에 너무 많습니다"));
+        }
+        else {
+          for (Location loc : found) {
+            player.sendMessage(Wand.PREFIX, loc.toString());
+          }
+        }
+
+      }
+
     }
 
     Message.error(sender, Message.CommandFeedback.UNKNOWN);

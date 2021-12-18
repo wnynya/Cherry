@@ -84,13 +84,9 @@ public class Wand {
     this.player = event.getPlayer();
   }
 
-  /**
-   * 작업을 되돌립니다.
-   *
-   * @param applyPhysics 물리 적용 여부
-   */
-  public boolean undo(boolean applyPhysics) {
-    if (this.undoStack.size() == 0) {
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              public boolean undo(boolean applyPhysics) {
+    if (this.undoStack.size() == 0) {                                                                                                                                                                                                               
       return false;
     }
     List<WandBlock> wandBlocks = undoStack.peek();

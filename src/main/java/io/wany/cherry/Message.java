@@ -2,6 +2,7 @@ package io.wany.cherry;
 
 import io.papermc.paper.inventory.ItemRarity;
 import io.wany.cherry.amethyst.Color;
+import io.wany.cherry.supports.cucumbery.CucumberySupport;
 import io.wany.cherry.supports.vault.VaultChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.ComponentLike;
@@ -183,6 +184,16 @@ public class Message {
     return style;
   }
 
+  public static Component prefix(String name, Color color) {
+    Component component = Component.empty();
+    component = component.append(
+      Component.translatable("[%s]:")
+        .args(Component.text(name))
+        .color(color.getTextColor())
+    );
+    component = component.append(Component.text(" "));
+    return component;
+  }
 
   public static Component parse(@NotNull Object... objects) {
     Component component = Component.empty();
@@ -559,6 +570,9 @@ public class Message {
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
           Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          if (CucumberySupport.LOADED) {
+            part = com.jho5245.cucumbery.util.storage.component.util.ComponentUtil.create(VaultChat.getPrefix(player));
+          }
           part = part.hoverEvent(player.displayName().hoverEvent());
           part = part.clickEvent(player.displayName().clickEvent());
           component = component.append(part);
@@ -568,6 +582,9 @@ public class Message {
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
           Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          if (CucumberySupport.LOADED) {
+            part = com.jho5245.cucumbery.util.storage.component.util.ComponentUtil.create(VaultChat.getSuffix(player));
+          }
           part = part.hoverEvent(player.displayName().hoverEvent());
           part = part.clickEvent(player.displayName().clickEvent());
           component = component.append(part);
@@ -659,6 +676,9 @@ public class Message {
         stringBuilder = new StringBuilder();
         if (formatPatternCompiler("prefix").matcher(processFormat).find()) {
           Component part = Message.parse(Message.effect(VaultChat.getPrefix(player)));
+          if (CucumberySupport.LOADED) {
+            part = com.jho5245.cucumbery.util.storage.component.util.ComponentUtil.create(VaultChat.getPrefix(player));
+          }
           part = part.hoverEvent(player.displayName().hoverEvent());
           part = part.clickEvent(player.displayName().clickEvent());
           component = component.append(part);
@@ -668,6 +688,9 @@ public class Message {
         }
         if (formatPatternCompiler("suffix").matcher(processFormat).find()) {
           Component part = Message.parse(Message.effect(VaultChat.getSuffix(player)));
+          if (CucumberySupport.LOADED) {
+            part = com.jho5245.cucumbery.util.storage.component.util.ComponentUtil.create(VaultChat.getSuffix(player));
+          }
           part = part.hoverEvent(player.displayName().hoverEvent());
           part = part.clickEvent(player.displayName().clickEvent());
           component = component.append(part);

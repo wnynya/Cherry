@@ -24,7 +24,7 @@ public class ListCommand implements CommandExecutor {
     int max = Bukkit.getMaxPlayers();
     HashMap<String, List<Player>> groupPlayers = new HashMap<>();
 
-    if (VaultSupport.LOADED) {
+    if (VaultSupport.EXIST) {
       sender.sendMessage(Component.translatable("commands.list.players").args(Message.parse("§r" + current), Message.parse("§r" + max), Message.parse("")));
       for (Player player : onlinePlayers) {
         String group = VaultSupport.CHAT.getPrimaryGroup(player);
@@ -38,11 +38,7 @@ public class ListCommand implements CommandExecutor {
         if (players.size() > 0) {
           List<Component> displayNames = new ArrayList<>();
           for (Player player : players) {
-            Component c = player.displayName();
-            if (c.color() == null) {
-              c = c.color(TextColor.color(255, 204, 0));
-            }
-            displayNames.add(Message.parse(VaultChat.getPrefix(player), c, VaultChat.getSuffix(player)));
+            displayNames.add(Message.formatPlayer(player, "{prefix}§r{displayname}§r{suffix}"));
           }
           String s = "%s, ".repeat(players.size());
           s = s.substring(0, s.length() - 2);
@@ -53,11 +49,7 @@ public class ListCommand implements CommandExecutor {
     else {
       List<Component> displayNames = new ArrayList<>();
       for (Player player : onlinePlayers) {
-        Component c = player.displayName();
-        if (c.color() == null) {
-          c = c.color(TextColor.color(255, 204, 0));
-        }
-        displayNames.add(Message.parse(VaultChat.getPrefix(player), c, VaultChat.getSuffix(player)));
+        displayNames.add(Message.formatPlayer(player, "{prefix}§r{displayname}§r{suffix}"));
       }
       String s = "%s, ".repeat(onlinePlayers.size());
       s = s.substring(0, s.length() - 2);
