@@ -1,5 +1,6 @@
 package io.wany.cherry.gui;
 
+import com.jho5245.cucumbery.customeffect.CustomEffectGUI;
 import com.jho5245.cucumbery.customrecipe.recipeinventory.RecipeInventoryMainMenu;
 import com.jho5245.cucumbery.gui.GUI;
 import com.jho5245.cucumbery.util.storage.CustomConfig;
@@ -12,12 +13,18 @@ import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.format.NamedTextColor;
 import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.List;
 
@@ -30,15 +37,25 @@ public class CucumberySupportMenu {
     public static Inventory inventory(Player player) {
       Inventory inventory = Bukkit.createInventory(null, 45, title);
 
-      inventory.setItem(13, ItemTool.meta(Material.CRAFTING_TABLE, Message.parse(Message.effect("&e아이템 제작")), List.of(Message.parse("§7아이템 제작 메뉴를 엽니다."), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
-      inventory.setItem(35, ItemTool.meta(Material.TRIPWIRE_HOOK, Message.parse(Message.effect("&b개인 설정")), List.of(Message.parse("§7서버에서 제공하는 몇몇 기능들을 설정합니다."), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
+      inventory.setItem(12, ItemTool.meta(Material.CRAFTING_TABLE, Message.parse(Message.effect("#FFCC00;아이템 제작")), List.of(Message.parse("§7아이템 제작 메뉴를 엽니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
+
+      ItemStack itemStack14 = new ItemStack(Material.POTION);
+      ItemMeta itemMeta14 = itemStack14.getItemMeta();
+      PotionMeta potionMeta14 = (PotionMeta) itemMeta14;
+      potionMeta14.setColor(Color.fromRGB(255, 77, 96));
+      potionMeta14.addItemFlags(ItemFlag.HIDE_POTION_EFFECTS);
+      potionMeta14.addCustomEffect(new PotionEffect(PotionEffectType.ABSORPTION, 0, 0), true);
+      itemStack14.setItemMeta(potionMeta14);
+      inventory.setItem(14, ItemTool.meta(itemStack14, Message.parse(Message.effect("#FFCC00;커스텀 이펙트 메뉴")), List.of(Message.parse("§7커스텀 이펙트 메뉴를 엽니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
+
+      inventory.setItem(35, ItemTool.meta(Material.TRIPWIRE_HOOK, Message.parse(Message.effect("#FFCC00;개인 설정")), List.of(Message.parse("§7서버에서 제공하는 몇몇 기능들을 설정합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
+
 
       inventory.setItem(29, ItemTool.meta(Skull.SETTINGS.toItemStack(), Message.parse(Message.effect("#52EE52;일반 설정")), List.of(Message.parse("§7일반적인 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
 
       inventory.setItem(30, ItemTool.meta(Skull.NOTE_BLOCK.toItemStack(), Message.parse(Message.effect("#52EE52;소리 설정")), List.of(Message.parse("§7소리와 관련된 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
 
       inventory.setItem(31, ItemTool.meta(Skull.MESSAGE.toItemStack(), Message.parse(Message.effect("#52EE52;메시징 설정")), List.of(Message.parse("§7출력되는 메시지와 관련된 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
-
 
       if (player.hasPermission("cucumbery.gui.serversettingsadmin") || player.getGameMode().equals(GameMode.CREATIVE)) {
         inventory.setItem(32, ItemTool.meta(Skull.GRASS_BLOCK.toItemStack(), Message.parse(Message.effect("#52EE52;크리에이티브 설정")), List.of(Message.parse("§7크리이에티브 모드와 관련된 큐컴버리 개인 설정들을"), Message.parse("§7확인하고 변경합니다"), Message.parse("§r"), Message.parse("§e열려면 클릭하세요!"))));
@@ -63,8 +80,11 @@ public class CucumberySupportMenu {
 
       switch (slot) {
 
-        case 13 -> {
+        case 12 -> {
           RecipeInventoryMainMenu.openRecipeInventory(player, 1, true);
+        }
+        case 14 -> {
+          CustomEffectGUI.openGUI(player, true);
         }
         case 35 -> {
           GUI.openGUI(player, GUI.GUIType.SERVER_SETTINGS);

@@ -57,7 +57,7 @@ public class Menu {
         }
 
         case 34 -> {
-          if (!CucumberySupport.ENABLE && CucumberySupport.EXIST) {
+          if (!(CucumberySupport.ENABLE && CucumberySupport.EXIST)) {
             return;
           }
           show(player, CucumberySupportMenu.Main.inventory(player));

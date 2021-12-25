@@ -47,13 +47,18 @@ public class ListCommand implements CommandExecutor {
       }
     }
     else {
+
       List<Component> displayNames = new ArrayList<>();
       for (Player player : onlinePlayers) {
         displayNames.add(Message.formatPlayer(player, "{prefix}§r{displayname}§r{suffix}"));
       }
       String s = "%s, ".repeat(onlinePlayers.size());
-      s = s.substring(0, s.length() - 2);
+      if (current > 0) {
+        s = s.substring(0, s.length() - 2);
+      }
+
       sender.sendMessage(Component.translatable("commands.list.players").args(Message.parse("§r" + current), Message.parse("§r" + max), Component.translatable(s).args(displayNames)));
+
     }
 
     return true;

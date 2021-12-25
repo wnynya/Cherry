@@ -1,10 +1,5 @@
 package io.wany.cherry.commands;
 
-import com.profesorfalken.jsensors.model.components.Cpu;
-import com.profesorfalken.jsensors.model.components.Gpu;
-import com.profesorfalken.jsensors.model.sensors.Fan;
-import com.profesorfalken.jsensors.model.sensors.Load;
-import com.profesorfalken.jsensors.model.sensors.Temperature;
 import io.wany.cherry.Cherry;
 import io.wany.cherry.Message;
 import io.wany.cherry.Updater;
@@ -30,15 +25,16 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
 import java.lang.management.ManagementFactory;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 

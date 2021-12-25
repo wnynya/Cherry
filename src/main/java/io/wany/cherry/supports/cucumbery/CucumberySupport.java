@@ -1,8 +1,6 @@
 package io.wany.cherry.supports.cucumbery;
 
-import com.jho5245.cucumbery.Cucumbery;
 import com.jho5245.cucumbery.util.storage.CustomConfig;
-import com.jho5245.cucumbery.util.storage.data.Variable;
 import io.wany.cherry.Cherry;
 import io.wany.cherry.Config;
 import io.wany.cherry.Console;
@@ -72,15 +70,13 @@ public class CucumberySupport {
   }
 
   public static Config getUserDataConfig(Player player) {
-    if (!ENABLE || !EXIST) {
-      return null;
-    }
-    if (Variable.userData.containsKey(player.getUniqueId())) {
+    /*if (Variable.userData.containsKey(player.getUniqueId())) {
       return new Config(Variable.userData.get(player.getUniqueId()));
     }
     else {
       return new Config(CustomConfig.getPlayerConfig(player.getUniqueId()).getFile());
-    }
+    }*/
+    return new Config(CustomConfig.getPlayerConfig(player.getUniqueId()).getFile());
   }
 
   public static void overrideCucumberyMenuCommand() {
