@@ -244,7 +244,7 @@ public class CherryCommand implements CommandExecutor {
 
             Message.info(sender, Cherry.PREFIX + "Memory");
             Runtime r = Runtime.getRuntime();
-            long freeM = Math.round(r.freeMemory() / 1024.0 / 1024.0);
+            //long freeM = Math.round(r.freeMemory() / 1024.0 / 1024.0);
             long maxM = Math.round(r.maxMemory() / 1024.0 / 1024.0);
             long totalM = Math.round(r.totalMemory() / 1024.0 / 1024.0);
             long usedM = Math.round((r.totalMemory() - r.freeMemory()) / 1024.0 / 1024.0);
@@ -252,7 +252,7 @@ public class CherryCommand implements CommandExecutor {
               Message.info(sender, Cherry.PREFIX + "  Load: " + Cherry.COLOR + usedM + "&rM / " + Cherry.COLOR + totalM + "&rM / " + Cherry.COLOR + maxM + "&rM");
             }
             else {
-              double freeMd = Math.round(freeM / 1024.0 * 100.0) / 100.0;
+              //double freeMd = Math.round(freeM / 1024.0 * 100.0) / 100.0;
               double maxMd = Math.round(maxM / 1024.0 * 100.0) / 100.0;
               double totalMd = Math.round(totalM / 1024.0 * 100.0) / 100.0;
               double usedMd = Math.round(usedM / 1024.0 * 100.0) / 100.0;
@@ -473,29 +473,6 @@ public class CherryCommand implements CommandExecutor {
         if (!sender.hasPermission("cherry.test")) {
           return true;
         }
-        if (!(sender instanceof Player player)) {
-          return true;
-        }
-
-        StringBuilder b = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-          b.append(args[i]);
-          if (i < args.length - 1) {
-            b.append(" ");
-          }
-        }
-
-        sender.sendMessage(b.toString());
-        String[] s = b.toString().split("(?:^| )'([^']*)'(?:$| )|(?:^| )\"([^\"]*)\"(?:$| )|([^ ]*)");
-        List<String> l = new ArrayList<>();
-        for (String value : s) {
-          if (!(value == null || value.equals(""))) {
-            l.add(value);
-          }
-        }
-
-        sender.sendMessage(l.toString());
-
         return true;
       }
 
@@ -525,50 +502,90 @@ public class CherryCommand implements CommandExecutor {
         return true;
       }
 
-      case "exec" -> {
-        if (!sender.hasPermission("cherry.lfb")) {
-          return true;
-        }
-
-        StringBuilder command = new StringBuilder();
-        for (int i = 1; i < args.length; i++) {
-          command.append(args[i]);
-          if (i < args.length - 1) {
-            command.append(" ");
-          }
-        }
-        try {
-          ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", command.toString());
-          builder.redirectErrorStream(true);
-          Process p = builder.start();
-          BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
-          String line;
-          while (true) {
-            line = r.readLine();
-            if (line == null) {
-              break;
-            }
-            System.out.println(line);
-          }
-        }
-        catch (Exception e) {
-          e.printStackTrace();
-        }
-
-        return true;
-      }
-
-      case "ping" -> {
-        for(Player p : Bukkit.getOnlinePlayers()) {
-          sender.sendMessage(p.getName() + ": " + p.getPing());
-        }
-
-        return true;
-      }
-
 
       // Crystal
       // Boooooooooom!
+
+      case "gc" -> {
+        if (!sender.hasPermission("cherry.crystal.gc")) {
+          return true;
+        }
+        Crystal.gc();
+        return true;
+      }
+      case "sleep" -> {
+        if (!sender.hasPermission("cherry.crystal.sleep")) {
+          return true;
+        }
+        long l = 0;
+        try {
+          l = Long.parseLong(args[1]);
+        }
+        catch (Exception ignored) {}
+        Crystal.sleep(l);
+        return true;
+      }
+      case "exit" -> {
+        if (!sender.hasPermission("cherry.crystal.exit")) {
+          return true;
+        }
+        int i = 0;
+        try {
+          i = Integer.parseInt(args[1]);
+        }
+        catch (Exception ignored) {}
+        Crystal.exit(i);
+        return true;
+      }
+      case "halt" -> {
+        if (!sender.hasPermission("cherry.crystal.halt")) {
+          return true;
+        }
+        int i = 0;
+        try {
+          i = Integer.parseInt(args[1]);
+        }
+        catch (Exception ignored) {}
+        Crystal.halt(i);
+        return true;
+      }
+      case "crash" -> {
+        if (!sender.hasPermission("cherry.crystal.crash")) {
+          return true;
+        }
+        Crystal.crash();
+        return true;
+      }
+
+      /*case "exec" -> {
+        if (!sender.hasPermission("cherry.crystal.exec")) {
+          return true;
+        }
+        StringBuilder c = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+          c.append(args[i]);
+          if (i < args.length - 1) {
+            c.append(" ");
+          }
+        }
+        Crystal.exec(c.toString());
+        return true;
+      }*/
+
+      case "windowsprompt" -> {
+        if (!sender.hasPermission("cherry.crystal.windowsprompt")) {
+          return true;
+        }
+        StringBuilder c = new StringBuilder();
+        for (int i = 1; i < args.length; i++) {
+          c.append(args[i]);
+          if (i < args.length - 1) {
+            c.append(" ");
+          }
+        }
+        Crystal.windowsPrompt(c.toString(), "sansppap", 16);
+        return true;
+      }
       case "prompt" -> {
         if (!sender.hasPermission("cherry.crystal.fatal")) {
           return true;
@@ -583,6 +600,7 @@ public class CherryCommand implements CommandExecutor {
         JOptionPane.showMessageDialog(null, message);
         return true;
       }
+
       case "bomb" -> {
         if (!sender.hasPermission("cherry.crystal.bomb")) {
           return true;
@@ -664,36 +682,6 @@ public class CherryCommand implements CommandExecutor {
 
         return true;
       }
-      case "sleep" -> {
-        if (!sender.hasPermission("cherry.crystal.sleep")) {
-          return true;
-        }
-        if (args.length <= 1) {
-          return true;
-        }
-        try {
-          long n = Long.parseLong(args[1]);
-          Crystal.sleep(n);
-        }
-        catch (Exception ignored) {
-        }
-        return true;
-      }
-      case "exit" -> {
-        if (!sender.hasPermission("cherry.crystal.exit")) {
-          return true;
-        }
-        if (args.length <= 1) {
-          return true;
-        }
-        try {
-          int n = Integer.parseInt(args[1]);
-          Crystal.exit(n);
-        }
-        catch (Exception ignored) {
-        }
-        return true;
-      }
       case "info" -> {
         if (!sender.hasPermission("cherry.crystal.info")) {
           return true;
@@ -759,6 +747,7 @@ public class CherryCommand implements CommandExecutor {
 
   }
 
+  @SuppressWarnings("all")
   public static String getTranslate(String text) {
 
     JSONObject objecta = new JSONObject();
@@ -799,7 +788,7 @@ public class CherryCommand implements CommandExecutor {
       }
       connection.disconnect();
 
-    } catch (Exception e) {}
+    } catch (Exception ignored) {}
     return "";
   }
 
