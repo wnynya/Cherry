@@ -90,10 +90,6 @@ public class CherryCommand implements CommandExecutor {
             }
           }
 
-          if (sender.getName().equals("jho5245")) {
-            silent = true;
-          }
-
           long s = System.currentTimeMillis();
           Updater.Version version = null;
           if (!silent) {

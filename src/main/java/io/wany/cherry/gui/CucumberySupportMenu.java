@@ -464,7 +464,7 @@ public class CucumberySupportMenu {
             Menu.show(player, inventory(player));
           }
           case 3, 12 -> {
-            CustomConfig.UserData.SHOW_COMMAND_BLOCK_EXECUTION_LOCATION.setToggle(player);
+            userDataConfig.toggle("명령-블록-실행-위치-출력");
             Menu.show(player, inventory(player));
           }
           case 4, 13 -> {

@@ -25,7 +25,7 @@ public class DiceOnWorld {
 
   private static List<Skull> skulls;
   private static final HashMap<Player, Long> lastUseTimestamp = new HashMap<>();
-  private static final List<Block> runningDices = new ArrayList<>();
+  private static final List<Location> runningDices = new ArrayList<>();
 
   private static Skull isDiceSkull(Block block) {
     if (!(block.getState() instanceof org.bukkit.block.Skull skull)) {
@@ -68,16 +68,18 @@ public class DiceOnWorld {
     Player player = event.getPlayer();
     Block block = event.getClickedBlock();
 
-    if (event.getAction().equals(Action.LEFT_CLICK_BLOCK) && runningDices.contains(block)) {
+    if (block == null) {
+      return;
+    }
+
+    if (event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && runningDices.contains(block.getLocation())) {
       event.setCancelled(true);
       return;
     }
 
-    if (!event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-      || player.getGameMode().equals(GameMode.SPECTATOR)
+    if (player.getGameMode().equals(GameMode.SPECTATOR)
       || player.isSneaking()
       || (lastUseTimestamp.containsKey(player) && lastUseTimestamp.get(player) > System.currentTimeMillis() - 200)
-      || block == null
     ) {
       return;
     }
@@ -100,7 +102,7 @@ public class DiceOnWorld {
     event.setCancelled(true);
 
     // Run Dice
-    runningDices.add(block);
+    runningDices.add(block.getLocation());
     BlockState blockState = block.getState();
     org.bukkit.block.Skull skull = (org.bukkit.block.Skull) blockState;
     int time = new Random().nextInt(6000) + 1000;
@@ -123,7 +125,7 @@ public class DiceOnWorld {
       @Override
       public void run() {
         timer.cancel();
-        runningDices.remove(block);
+        runningDices.remove(block.getLocation());
       }
     }, time);
 
@@ -160,7 +162,7 @@ public class DiceOnWorld {
     if (!textures.contains(texture)) {
       return;
     }
-    if (runningDices.contains(item.getLocation().getBlock())) {
+    if (runningDices.contains(item.getLocation().getBlock().getLocation())) {
       event.setCancelled(true);
       return;
     }

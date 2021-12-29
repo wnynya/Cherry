@@ -1,10 +1,8 @@
 package io.wany.cherry.commands;
 
 import io.wany.cherry.Message;
-import io.wany.cherry.supports.vault.VaultChat;
 import io.wany.cherry.supports.vault.VaultSupport;
 import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,7 +22,7 @@ public class ListCommand implements CommandExecutor {
     int max = Bukkit.getMaxPlayers();
     HashMap<String, List<Player>> groupPlayers = new HashMap<>();
 
-    if (VaultSupport.EXIST) {
+    if (VaultSupport.EXIST && VaultSupport.CHAT != null && VaultSupport.CHAT.getGroups().length > 0) {
       sender.sendMessage(Component.translatable("commands.list.players").args(Message.parse("§r" + current), Message.parse("§r" + max), Message.parse("")));
       for (Player player : onlinePlayers) {
         String group = VaultSupport.CHAT.getPrimaryGroup(player);
