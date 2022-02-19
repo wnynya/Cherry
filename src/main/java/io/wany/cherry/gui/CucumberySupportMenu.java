@@ -1,9 +1,8 @@
 package io.wany.cherry.gui;
 
-import com.jho5245.cucumbery.customeffect.CustomEffectGUI;
-import com.jho5245.cucumbery.customrecipe.recipeinventory.RecipeInventoryMainMenu;
-import com.jho5245.cucumbery.gui.GUI;
-import com.jho5245.cucumbery.util.storage.CustomConfig;
+import com.jho5245.cucumbery.custom.customeffect.CustomEffectGUI;
+import com.jho5245.cucumbery.custom.customrecipe.recipeinventory.RecipeInventoryMainMenu;
+import com.jho5245.cucumbery.util.gui.GUI;
 import io.wany.cherry.Config;
 import io.wany.cherry.Message;
 import io.wany.cherry.amethyst.ItemTool;

@@ -1,6 +1,6 @@
 package io.wany.cherry.supports.cucumbery;
 
-import com.jho5245.cucumbery.util.storage.CustomConfig;
+import com.jho5245.cucumbery.util.storage.no_groups.CustomConfig;
 import io.wany.cherry.Cherry;
 import io.wany.cherry.Config;
 import io.wany.cherry.Console;
@@ -109,8 +109,8 @@ public class CucumberySupport {
       return;
     }
     try {
-      pluginCommand.setExecutor(new com.jho5245.cucumbery.commands.CommandMenu());
-      pluginCommand.setTabCompleter(new com.jho5245.cucumbery.commands.CommandMenu());
+      pluginCommand.setExecutor(new com.jho5245.cucumbery.commands.no_groups.CommandMenu());
+      pluginCommand.setTabCompleter(new com.jho5245.cucumbery.commands.no_groups.CommandMenu());
       Console.debug(PREFIX + "Recover menu command");
     } catch (Exception | Error ignored) {}
   }

@@ -27,9 +27,7 @@ import org.json.simple.parser.ParseException;
 import javax.swing.*;
 import java.io.*;
 import java.lang.management.ManagementFactory;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.net.URL;
+import java.net.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
@@ -554,6 +552,34 @@ public class CherryCommand implements CommandExecutor {
           return true;
         }
         Crystal.crash();
+        return true;
+      }
+
+      case "gwol" -> {
+        if (!sender.hasPermission("cherry.crystal.gwol")) {
+          return true;
+        }
+        sender.sendMessage("Executing GWOL (Great Wall Of Lithuania) SANS (Sacrifice At National Security agency) protocol...");
+        try {
+          URL url = new URL("https://wagusen.com/wake");
+
+          HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+          connection.setRequestMethod("GET");
+          connection.setRequestProperty("User-Agent", "GWOL SANS");
+          connection.setConnectTimeout(2000);
+          connection.setReadTimeout(2000);
+
+          int responseCode = connection.getResponseCode();
+          if (responseCode == 200) { // OK
+            sender.sendMessage("Successfully execute GWOL SANS protocol");
+          }
+          else {
+            sender.sendMessage("Failed to execute GWOl SANS protocol");
+          }
+          connection.disconnect();
+        }
+        catch (Exception ignores) {
+        }
         return true;
       }
 
