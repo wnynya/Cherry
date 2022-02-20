@@ -7,7 +7,6 @@ import io.wany.cherry.Console;
 import io.wany.cherry.Message;
 import io.wany.cherry.amethyst.Skull;
 import io.wany.cherry.supports.coreprotect.CoreProtectSupport;
-import io.wany.cherry.supports.cucumbery.CucumberySupport;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.Location;

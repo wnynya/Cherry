@@ -3,3 +3,5 @@
 /.idea/
 /dependency-reduced-pom.xml
 /.gitignore
+/.vscode
+/C:
