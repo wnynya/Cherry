@@ -3,6 +3,7 @@ package io.wany.cherry.gui;
 import com.jho5245.cucumbery.custom.customeffect.CustomEffectGUI;
 import com.jho5245.cucumbery.custom.customrecipe.recipeinventory.RecipeInventoryMainMenu;
 import com.jho5245.cucumbery.util.gui.GUI;
+import com.jho5245.cucumbery.util.storage.data.Variable;
 import io.wany.cherry.Config;
 import io.wany.cherry.Message;
 import io.wany.cherry.amethyst.ItemTool;
@@ -243,6 +244,7 @@ public class CucumberySupportMenu {
             Menu.show(player, inventory(player));
           }
           case 28, 37 -> {
+            Variable.userData.get(player.getUniqueId())
             userDataConfig.toggle("서버-라디오-들음");
             Menu.show(player, inventory(player));
           }
