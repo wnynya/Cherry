@@ -111,7 +111,7 @@
         <dependency>
             <groupId>com.jho5245.cucumbery</groupId>
             <artifactId>Cucumbery</artifactId>
-            <version>1.1.1-dev-22050-093233</version>
+            <version>1.1.1-dev-22051-123444</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
